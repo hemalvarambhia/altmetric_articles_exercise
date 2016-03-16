@@ -29,6 +29,8 @@ describe 'Article CSV row' do
     article = double(:article).as_null_object
     
     expect(article).to receive(:author).and_return expected
-    expect(render(article)).to include expected
+    row = render article
+    expect(row).to include expected
+    expect(row.index(expected)).to eq 2
   end
 end
