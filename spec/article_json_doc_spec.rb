@@ -4,7 +4,8 @@ describe 'Article JSON Doc' do
       'doi' => article.doi, 
       'title' => article.title, 
       'author' => article.author,
-      'issn' => article.issn
+      'issn' => article.issn,
+      'journal' => article.journal
    }
   end
 
@@ -45,5 +46,14 @@ describe 'Article JSON Doc' do
     article_json_doc = render article
  
     expect(article_json_doc['issn']).to eq expected
+  end
+
+  it 'stores the journal' do
+    expected = 'Journal of Physics B'
+    article = double(:article).as_null_object
+    expect(article).to receive(:journal).and_return expected
+
+    article_json_doc = render article
+    expect(article_json_doc['journal']).to eq expected
   end
 end
