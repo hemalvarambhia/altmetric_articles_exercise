@@ -9,8 +9,7 @@ describe 'Article CSV row' do
     article = double(:article).as_null_object
     
     expect(article).to receive(:doi).and_return expected
-    row = render article     
-    expect(row).to have(expected).in_column 1
+    expect(render(article)).to have(expected).in_column 1
   end
 
   it 'stores the title in the 2nd column' do
@@ -18,8 +17,7 @@ describe 'Article CSV row' do
     article = double(:article).as_null_object
 
     expect(article).to receive(:title).and_return expected
-    row = render article
-    expect(row).to have(expected).in_column 2
+    expect(render(article)).to have(expected).in_column 2
   end
 
   it 'stores author name in the 3rd column' do
@@ -27,8 +25,7 @@ describe 'Article CSV row' do
     article = double(:article).as_null_object
     
     expect(article).to receive(:author).and_return expected
-    row = render article
-    expect(row).to have(expected).in_column 3
+    expect(render(article)).to have(expected).in_column 3
   end
 
   it 'stores the journal in the 4th column' do
