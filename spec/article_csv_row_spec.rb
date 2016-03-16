@@ -1,7 +1,7 @@
 require 'csv'
 describe 'Article CSV row' do
   def render article
-    [article.doi, article.title, article.author, article.journal]
+    [article.doi, article.title, article.author, article.journal, article.issn]
   end
 
   it 'stores the DOI in the 1st column' do
@@ -37,6 +37,14 @@ describe 'Article CSV row' do
 
     expect(article).to receive(:journal).and_return expected
     expect(render(article)).to have(expected).in_column 4
+  end
+
+  it "stores the journal's ISSN in the last column" do
+    issn = '1234-5678'
+    article = double(:article).as_null_object
+
+    expect(article).to receive(:issn).and_return issn
+    expect(render(article)).to have(issn).in_column 5
   end
 
   RSpec::Matchers.define :have do |expected|
