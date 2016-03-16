@@ -1,14 +1,18 @@
 describe 'Article JSON Doc' do
   def render article
-   {'doi' => '10.1234/altmetric0'}
+   {'doi' => article.doi }
   end
 
   it 'stores the DOI' do
-    expected = '10.1234/altmetric0'
+    expected = a_doi
     article = double :article
-    allow(article).to receive(:doi).and_return expected
+    expect(article).to receive(:doi).and_return expected
     article_json_doc = render article
 
     expect(article_json_doc['doi']).to eq expected
+  end
+
+  def a_doi
+    "10.1234/altmetric#{rand(10000)}"
   end
 end
