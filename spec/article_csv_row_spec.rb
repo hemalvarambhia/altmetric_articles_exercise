@@ -3,7 +3,7 @@ describe 'Article CSV row' do
   def render article
     [article.doi, article.title, article.author, article.journal, article.issn]
   end
- 
+
   it 'stores the DOI in the 1st column' do
     expected = '10.1234/altmetric0'
     article = double(:article).as_null_object
