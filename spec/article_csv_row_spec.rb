@@ -10,8 +10,7 @@ describe 'Article CSV row' do
     
     expect(article).to receive(:doi).and_return expected
     row = render article     
-    expect(row).to include expected
-    expect(row.index(expected)).to eq 0
+    expect(row).to have(expected).in_column 1
   end
 
   it 'stores the title' do
@@ -20,8 +19,7 @@ describe 'Article CSV row' do
 
     expect(article).to receive(:title).and_return expected
     row = render article
-    expect(row).to include expected
-    expect(row.index(expected)).to eq 1
+    expect(row).to have(expected).in_column 2
   end
 
   it 'stores author name' do
@@ -30,7 +28,20 @@ describe 'Article CSV row' do
     
     expect(article).to receive(:author).and_return expected
     row = render article
-    expect(row).to include expected
-    expect(row.index(expected)).to eq 2
+    expect(row).to have(expected).in_column 3
+  end
+
+  RSpec::Matchers.define :have do |expected|
+    match do |row|
+      row.include?(expected) and row.index(expected) == @expected_index
+    end
+
+    chain :in_column do |column_number|
+      @expected_index = column_number - 1
+    end
+
+    failure_message do |row|
+      "Expected #{row} to include '#{expected}' in column #{@expected_index}"
+    end
   end
 end
