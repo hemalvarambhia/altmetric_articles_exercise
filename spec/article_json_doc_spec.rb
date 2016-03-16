@@ -13,6 +13,7 @@ describe 'Article JSON Doc' do
     expected = '10.1234/altmetric0'
     article = double(:article).as_null_object
     expect(article).to receive(:doi).and_return expected
+
     article_json_doc = render article
 
     expect(article_json_doc['doi']).to eq expected
@@ -54,6 +55,7 @@ describe 'Article JSON Doc' do
     expect(article).to receive(:journal).and_return expected
 
     article_json_doc = render article
+
     expect(article_json_doc['journal']).to eq expected
   end
 end
