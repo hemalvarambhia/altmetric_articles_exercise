@@ -20,8 +20,8 @@ describe 'Article CSV row' do
 
     expect(article).to receive(:title).and_return expected
     row = render article
-    expect(row.index(expected)).to eq 1
     expect(row).to include expected
+    expect(row.index(expected)).to eq 1
   end
 
   it 'stores author name' do
