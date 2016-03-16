@@ -4,7 +4,7 @@ describe 'Article CSV row' do
     [article.doi, article.title, article.author]
   end
 
-  it 'stores the DOI' do
+  it 'stores the DOI in the 1st column' do
     expected = '10.1234/altmetric0'
     article = double(:article).as_null_object
     
@@ -13,7 +13,7 @@ describe 'Article CSV row' do
     expect(row).to have(expected).in_column 1
   end
 
-  it 'stores the title' do
+  it 'stores the title in the 2nd column' do
     expected = 'Chemistry article'
     article = double(:article).as_null_object
 
@@ -22,7 +22,7 @@ describe 'Article CSV row' do
     expect(row).to have(expected).in_column 2
   end
 
-  it 'stores author name' do
+  it 'stores author name in the 3rd column' do
     expected = 'Chemist'
     article = double(:article).as_null_object
     
