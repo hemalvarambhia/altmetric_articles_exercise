@@ -1,6 +1,10 @@
 describe 'Article JSON Doc' do
   def render article
-   {'doi' => article.doi, 'title' => article.title }
+   {
+      'doi' => article.doi, 
+      'title' => article.title, 
+      'author' => article.author 
+   }
   end
 
   it 'stores the DOI' do
@@ -14,12 +18,22 @@ describe 'Article JSON Doc' do
 
   it 'stores the title' do
     expected = 'Physics article'
-    article = double :article
-    allow(article).to receive :doi
+    article = double(:article).as_null_object
     expect(article).to receive(:title).and_return expected
+
     article_json_doc = render article
 
     expect(article_json_doc['title']).to eq expected
+  end
+
+  it 'stores the author' do
+    expected = 'Physicists'
+    article = double(:author).as_null_object
+    expect(article).to receive(:author).and_return expected
+
+    article_json_doc = render article
+
+    expect(article_json_doc['author']).to eq expected
   end
 
   def a_doi
