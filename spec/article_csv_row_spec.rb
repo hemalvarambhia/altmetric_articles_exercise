@@ -28,6 +28,16 @@ describe 'Article CSV row' do
     expect(render(article)).to have(author).in_column 3
   end
 
+  describe 'an article with multiple authors' do
+    it 'lists all the authors as a comma-separated list' do
+      authors = 'Chemist 1, Chemist 2, Chemist 3'
+      article = double(:article).as_null_object
+      allow(article).to receive(:author).and_return authors
+
+      expect(render(article)[2]).to eq authors
+    end
+  end
+
   it 'stores the journal in the 4th column' do
     journal = 'Journal of Physics B'
     article = double(:article).as_null_object
