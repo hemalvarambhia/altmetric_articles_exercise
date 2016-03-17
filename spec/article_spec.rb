@@ -5,6 +5,10 @@ describe 'An article' do
     def initialize(doi)
       @doi = doi 
     end
+
+    def title
+      'Electron Scattering by HCN'
+    end
   end
 
   it 'stores its DOI' do
@@ -19,5 +23,11 @@ describe 'An article' do
     article = Article.new(doi)
 
     expect(article.doi).to eq doi
+  end
+
+  it 'stores the title' do
+    title = 'Electron Scattering by HCN'
+    article = Article.new(nil)
+    expect(article.title).to eq title
   end
 end
