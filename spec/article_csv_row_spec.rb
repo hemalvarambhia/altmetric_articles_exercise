@@ -5,35 +5,35 @@ describe 'Article CSV row' do
   end
 
   it 'stores the DOI in the 1st column' do
-    expected = '10.1234/altmetric0'
+    doi = '10.1234/altmetric0'
     article = double(:article).as_null_object
     
-    expect(article).to receive(:doi).and_return expected
-    expect(render(article)).to have(expected).in_column 1
+    expect(article).to receive(:doi).and_return doi
+    expect(render(article)).to have(doi).in_column 1
   end
 
   it 'stores the title in the 2nd column' do
-    expected = 'Chemistry article'
+    title = 'Chemistry article'
     article = double(:article).as_null_object
 
-    expect(article).to receive(:title).and_return expected
-    expect(render(article)).to have(expected).in_column 2
+    expect(article).to receive(:title).and_return title
+    expect(render(article)).to have(title).in_column 2
   end
 
   it 'stores author name in the 3rd column' do
-    expected = 'Chemist'
+    author = 'Chemist'
     article = double(:article).as_null_object
     
-    expect(article).to receive(:author).and_return expected
-    expect(render(article)).to have(expected).in_column 3
+    expect(article).to receive(:author).and_return author
+    expect(render(article)).to have(author).in_column 3
   end
 
   it 'stores the journal in the 4th column' do
-    expected = 'Journal of Physics B'
+    journal = 'Journal of Physics B'
     article = double(:article).as_null_object
 
-    expect(article).to receive(:journal).and_return expected
-    expect(render(article)).to have(expected).in_column 4
+    expect(article).to receive(:journal).and_return journal
+    expect(render(article)).to have(journal).in_column 4
   end
 
   it "stores the journal's ISSN in the last column" do
