@@ -6,6 +6,10 @@ describe 'An article' do
       @doi = doi 
       @title = title
     end
+
+    def author
+      'Physicist'
+    end
   end
 
   it 'stores its DOI' do
@@ -35,4 +39,11 @@ describe 'An article' do
 
     expect(article.title).to eq title
   end 
+
+  it 'stores the author' do
+    author = 'Physicist'
+    article = Article.new(nil, nil)
+    
+    expect(article.author).to eq author
+  end
 end
