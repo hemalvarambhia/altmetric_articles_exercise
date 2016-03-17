@@ -2,13 +2,14 @@ describe 'An article' do
   class Article
     attr_reader :doi, :title
 
-    def initialize(doi, title)
+    def initialize(doi, title, author = 'Physicist')
       @doi = doi 
       @title = title
+      @author = author
     end
 
     def author
-      'Physicist'
+      @author
     end
   end
 
@@ -42,8 +43,15 @@ describe 'An article' do
 
   it 'stores the author' do
     author = 'Physicist'
-    article = Article.new(nil, nil)
+    article = Article.new(nil, nil, author)
     
+    expect(article.author).to eq author
+  end
+
+  it 'stores any author passed to it' do
+    author = 'Chemist'
+    article = Article.new(nil, nil, author)
+
     expect(article.author).to eq author
   end
 end
