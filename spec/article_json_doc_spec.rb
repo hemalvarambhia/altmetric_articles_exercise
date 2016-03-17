@@ -10,52 +10,52 @@ describe 'Article JSON Doc' do
   end
 
   it 'stores the DOI' do
-    expected = '10.1234/altmetric0'
+    doi = '10.1234/altmetric0'
     article = double(:article).as_null_object
-    expect(article).to receive(:doi).and_return expected
+    expect(article).to receive(:doi).and_return doi
 
     article_json_doc = render article
 
-    expect(article_json_doc['doi']).to eq expected
+    expect(article_json_doc['doi']).to eq doi
   end
 
   it 'stores the title' do
-    expected = 'Physics article'
+    title = 'Physics article'
     article = double(:article).as_null_object
-    expect(article).to receive(:title).and_return expected
+    expect(article).to receive(:title).and_return title
 
     article_json_doc = render article
 
-    expect(article_json_doc['title']).to eq expected
+    expect(article_json_doc['title']).to eq title
   end
 
   it 'stores the author' do
-    expected = 'Physicists'
+    author = 'Physicists'
     article = double(:author).as_null_object
-    expect(article).to receive(:author).and_return expected
+    expect(article).to receive(:author).and_return author
 
     article_json_doc = render article
 
-    expect(article_json_doc['author']).to eq expected
+    expect(article_json_doc['author']).to eq author
   end
 
   it 'stores the ISSN' do
-    expected = '1234-5678'
+    issn = '1234-5678'
     article = double(:article).as_null_object
-    expect(article).to receive(:issn).and_return expected
+    expect(article).to receive(:issn).and_return issn
   
     article_json_doc = render article
  
-    expect(article_json_doc['issn']).to eq expected
+    expect(article_json_doc['issn']).to eq issn
   end
 
   it 'stores the journal' do
-    expected = 'Journal of Physics B'
+    journal = 'Journal of Physics B'
     article = double(:article).as_null_object
-    expect(article).to receive(:journal).and_return expected
+    expect(article).to receive(:journal).and_return journal
 
     article_json_doc = render article
 
-    expect(article_json_doc['journal']).to eq expected
+    expect(article_json_doc['journal']).to eq journal
   end
 end
