@@ -1,15 +1,11 @@
 describe 'An article' do
   class Article
-    attr_reader :doi, :title
+    attr_reader :doi, :title, :author
 
     def initialize(doi, title, author)
       @doi = doi 
       @title = title
       @author = author
-    end
-
-    def author
-      @author
     end
   end
 
