@@ -39,6 +39,16 @@ describe 'Article JSON Doc' do
     expect(article_json_doc['author']).to eq author
   end
 
+  describe 'an article with multiple authors' do
+    it 'lists all the authors' do
+      authors = ['Physicist 1', 'Physicist 2', 'Physicist 3']
+      article = double(:article).as_null_object
+      allow(article).to receive(:author).and_return authors
+
+      expect(render(article)['author']).to eq authors
+    end
+  end
+
   it 'stores the ISSN' do
     issn = '1234-5678'
     article = double(:article).as_null_object
