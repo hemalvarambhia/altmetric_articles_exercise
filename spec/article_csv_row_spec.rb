@@ -1,7 +1,13 @@
 require 'csv'
 describe 'Article CSV row' do
   def render article
-    [article.doi, article.title, article.author, article.journal, article.issn]
+    [
+      article.doi,
+      article.title,
+      article.author.join(', '),
+      article.journal,
+      article.issn
+    ]
   end
 
   it 'stores the DOI in the 1st column' do
@@ -21,20 +27,20 @@ describe 'Article CSV row' do
   end
 
   it 'stores author name in the 3rd column' do
-    author = 'Chemist'
+    author = ['Chemist']
     article = double(:article).as_null_object
     
     expect(article).to receive(:author).and_return author
-    expect(render(article)).to have(author).in_column 3
+    expect(render(article)).to have('Chemist').in_column 3
   end
 
   describe 'an article with multiple authors' do
     it 'lists all the authors as a comma-separated list' do
-      authors = 'Chemist 1, Chemist 2, Chemist 3'
+      authors = ['Chemist 1', 'Chemist 2', 'Chemist 3']
       article = double(:article).as_null_object
       allow(article).to receive(:author).and_return authors
 
-      expect(render(article)[2]).to eq authors
+      expect(render(article)[2]).to eq 'Chemist 1, Chemist 2, Chemist 3'
     end
   end
 
