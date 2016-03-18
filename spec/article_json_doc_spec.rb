@@ -3,7 +3,7 @@ describe 'Article JSON Doc' do
    {
       'doi' => article.doi, 
       'title' => article.title, 
-      'author' => article.author,
+      'author' => article.author.join(', '),
       'issn' => article.issn,
       'journal' => article.journal
    }
@@ -26,20 +26,21 @@ describe 'Article JSON Doc' do
   end
 
   it 'stores the author' do
-    author = 'Physicists'
+    author = ['Physicist']
     article = double(:author).as_null_object
 
     expect(article).to receive(:author).and_return author
-    expect(render(article)['author']).to eq author
+    expect(render(article)['author']).to eq 'Physicist'
   end
 
   describe 'an article with multiple authors' do
     it 'lists all the authors comma separated' do
-      authors = 'Physicist 1, Physicist 2, Physicist 3'
+      authors = ['Physicist 1', 'Physicist 2', 'Physicist 3']
       article = double(:article).as_null_object
       allow(article).to receive(:author).and_return authors
 
-      expect(render(article)['author']).to eq authors
+      expect(render(article)['author']).
+        to eq 'Physicist 1, Physicist 2, Physicist 3'
     end
   end
 
