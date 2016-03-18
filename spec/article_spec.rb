@@ -7,6 +7,10 @@ describe 'An article' do
       @title = title
       @author = author
     end
+
+    def issn
+      '1234-5678'
+    end
   end
 
   it 'stores its DOI' do
@@ -58,5 +62,12 @@ describe 'An article' do
       
       expect(article.author).to eq authors
     end
+  end
+
+  it 'stores its ISSN' do
+    issn = '1234-5678'
+    article = Article.new(nil, nil, nil)
+    
+    expect(article.issn).to eq issn
   end
 end
