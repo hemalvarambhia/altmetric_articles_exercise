@@ -38,16 +38,25 @@ describe 'An article' do
   end 
 
   it 'stores the author' do
-    author = 'Physicist'
+    author = ['Physicist']
     article = Article.new(nil, nil, author)
     
     expect(article.author).to eq author
   end
 
   it 'stores any author passed to it' do
-    author = 'Chemist'
+    author = ['Chemist']
     article = Article.new(nil, nil, author)
 
     expect(article.author).to eq author
+  end
+
+  describe 'an article with multiple authors' do
+    it 'stores all the authors' do
+      authors = ['Author 1', 'Author 2', 'Author 3']
+      article = Article.new(nil, nil, authors)
+      
+      expect(article.author).to eq authors
+    end
   end
 end
