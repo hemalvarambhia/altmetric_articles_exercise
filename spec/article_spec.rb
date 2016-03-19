@@ -8,6 +8,10 @@ describe 'An article' do
       @author = args[:author]
       @issn = args[:issn]
     end
+
+    def journal
+      'Journal of Physics B'
+    end
   end
 
   it 'stores its DOI' do
@@ -73,5 +77,12 @@ describe 'An article' do
     article = Article.new(issn: issn)
     
     expect(article.issn).to eq issn
+  end
+
+  it 'stores the journal it was published in' do
+    journal = 'Journal of Physics B'
+    article = Article.new(journal: journal)
+    
+    expect(article.journal).to eq journal
   end
 end
