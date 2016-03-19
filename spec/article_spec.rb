@@ -115,5 +115,11 @@ describe 'An article' do
         expect(article).not_to eq with_different_doi
       end
     end
+
+    it 'is reflexive' do
+      article = Article.new(doi: '10.1234/altmetric345')
+      
+      expect(article).to eq article
+    end
   end
 end
