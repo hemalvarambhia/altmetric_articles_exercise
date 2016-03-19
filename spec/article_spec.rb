@@ -128,5 +128,15 @@ describe 'An article' do
       
       expect(article_1).to eq article_2
     end
+
+    it 'is transitive' do
+      article_1 = Article.new(doi: '10.1234/altmetric541')
+      article_2 = Article.new(doi: '10.1234/altmetric541')
+      article_3 = Article.new(doi: '10.1234/altmetric541')
+      
+      expect(article_1).to eq article_2
+      expect(article_2).to eq article_3
+      expect(article_3).to eq article_1
+    end
   end
 end
