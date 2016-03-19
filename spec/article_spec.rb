@@ -1,16 +1,13 @@
 describe 'An article' do
   class Article
-    attr_reader :doi, :title, :author, :issn
+    attr_reader :doi, :title, :author, :issn, :journal
 
     def initialize(args)
       @doi = args[:doi] 
       @title = args[:title]
       @author = args[:author]
       @issn = args[:issn]
-    end
-
-    def journal
-      'Journal of Physics B'
+      @journal = args[:journal]
     end
   end
 
@@ -81,6 +78,13 @@ describe 'An article' do
 
   it 'stores the journal it was published in' do
     journal = 'Journal of Physics B'
+    article = Article.new(journal: journal)
+    
+    expect(article.journal).to eq journal
+  end
+
+  it 'stores any journal passed to it' do
+    journal = 'Physical Review Letters'
     article = Article.new(journal: journal)
     
     expect(article.journal).to eq journal
