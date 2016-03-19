@@ -121,5 +121,12 @@ describe 'An article' do
       
       expect(article).to eq article
     end
+
+    it 'is symmetric' do
+      article_1 = Article.new(doi: '10.1234/altmetric123')
+      article_2 = Article.new(doi: '10.1234/altmetric123')
+      
+      expect(article_1).to eq article_2
+    end
   end
 end
