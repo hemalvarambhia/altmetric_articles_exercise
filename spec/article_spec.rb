@@ -9,6 +9,10 @@ describe 'An article' do
       @issn = args[:issn]
       @journal = args[:journal]
     end
+
+    def ==(other)
+      true
+    end
   end
 
   it 'stores its DOI' do
@@ -88,5 +92,18 @@ describe 'An article' do
     article = Article.new(journal: journal)
     
     expect(article.journal).to eq journal
+  end
+
+  describe 'equating two journals' do
+    context 'when they both have the same DOI' do
+      it 'marks them as being the same' do
+        article = Article.new(doi: '10.1234/altmetric123')
+        article_with_same_doi = Article.new(
+          doi: '10.1234/altmetric123'
+        )
+        
+        expect(article).to eq article_with_same_doi
+      end
+    end
   end
 end
