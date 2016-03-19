@@ -94,7 +94,7 @@ describe 'An article' do
     expect(article.journal).to eq journal
   end
 
-  describe 'equating two journals' do
+  describe 'equating two articles' do
     context 'when they both have the same DOI' do
       it 'marks them as being the same' do
         article = Article.new(doi: '10.1234/altmetric123')
