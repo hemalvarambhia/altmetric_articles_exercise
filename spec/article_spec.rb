@@ -11,7 +11,7 @@ describe 'An article' do
     end
 
     def ==(other)
-      true
+      doi == other.doi
     end
   end
 
@@ -103,6 +103,16 @@ describe 'An article' do
         )
         
         expect(article).to eq article_with_same_doi
+      end
+    end
+
+    context 'when they have different DOIs' do
+      it 'marks them as not being the same' do
+        article = Article.new(doi: '10.1234/altmetric222')
+        with_different_doi = Article.new(
+          doi: '10.1234/altmetric999'
+        )
+        expect(article).not_to eq with_different_doi
       end
     end
   end
