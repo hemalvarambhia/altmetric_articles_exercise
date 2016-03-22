@@ -37,10 +37,12 @@ describe 'A Journal' do
   end
 
   describe 'Equating two journals' do
-    it 'marks two journals with the same ISSNs as the same' do
-      journal = Journal.new(nil, '5555-7777')
-      journal_with_same_issn = Journal.new(nil, '5555-7777')
-      expect(journal).to eq journal_with_same_issn
+    context 'when they have the same ISSN' do
+     it 'marks them as being the same' do
+        journal = Journal.new(nil, '5555-7777')
+        journal_with_same_issn = Journal.new(nil, '5555-7777')
+        expect(journal).to eq journal_with_same_issn
+      end
     end
   end
 end
