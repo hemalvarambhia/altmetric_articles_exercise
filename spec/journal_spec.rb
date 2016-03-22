@@ -8,7 +8,7 @@ describe 'A Journal' do
     end
 
     def ==(other)
-      true
+      issn == other.issn
     end
   end
 
@@ -42,6 +42,15 @@ describe 'A Journal' do
         journal = Journal.new(nil, '5555-7777')
         journal_with_same_issn = Journal.new(nil, '5555-7777')
         expect(journal).to eq journal_with_same_issn
+      end
+    end
+
+    context 'when they have different ISSNs' do
+      it 'marks them as being different' do
+        journal = Journal.new(nil, '1111-2222')
+        with_different_issn = Journal.new(nil, '4444-6542')    
+
+        expect(journal).not_to eq with_different_issn
       end
     end
   end
