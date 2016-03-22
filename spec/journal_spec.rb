@@ -53,5 +53,11 @@ describe 'A Journal' do
         expect(journal).not_to eq with_different_issn
       end
     end
+
+    it 'is reflexive' do
+      journal = Journal.new(nil, '6543-9875')      
+
+      expect(journal).to eq journal
+    end
   end
 end
