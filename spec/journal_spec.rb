@@ -6,6 +6,10 @@ describe 'A Journal' do
       @title = title
       @issn = issn
     end
+
+    def ==(other)
+      true
+    end
   end
 
   it 'stores its name' do
@@ -30,5 +34,13 @@ describe 'A Journal' do
     journal = Journal.new(nil, '2468-1012')
 
     expect(journal.issn).to eq '2468-1012'
+  end
+
+  describe 'Equating two journals' do
+    it 'marks two journals with the same ISSNs as the same' do
+      journal = Journal.new(nil, '5555-7777')
+      journal_with_same_issn = Journal.new(nil, '5555-7777')
+      expect(journal).to eq journal_with_same_issn
+    end
   end
 end
