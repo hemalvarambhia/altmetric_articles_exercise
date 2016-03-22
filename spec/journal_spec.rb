@@ -59,5 +59,13 @@ describe 'A Journal' do
 
       expect(journal).to eq journal
     end
+
+    it 'is symmetric' do
+      journal_1 = Journal.new(nil, '7956-4233')
+      journal_2 = Journal.new(nil, '7956-4233')
+
+      expect(journal_1).to eq journal_2
+      expect(journal_2).to eq journal_1
+    end
   end
 end
