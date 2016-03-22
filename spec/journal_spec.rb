@@ -67,5 +67,15 @@ describe 'A Journal' do
       expect(journal_1).to eq journal_2
       expect(journal_2).to eq journal_1
     end
+
+    it 'is transitive' do
+      journal_1 = Journal.new(nil, '3141-5917')
+      journal_2 = Journal.new(nil, '3141-5917')
+      journal_3 = Journal.new(nil, '3141-5917')
+
+      expect(journal_1).to eq journal_2
+      expect(journal_2).to eq journal_3
+      expect(journal_3).to eq journal_1
+    end
   end
 end
