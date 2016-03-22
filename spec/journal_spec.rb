@@ -9,6 +9,10 @@ describe 'A Journal' do
     def title
       @title
     end
+
+    def issn
+      '1234-5678'
+    end
   end
 
   it 'stores its name' do
@@ -22,4 +26,10 @@ describe 'A Journal' do
 
     expect(journal.title).to eq 'Chemical Physics Letters'
   end
+
+  it 'stores its ISSN' do
+    journal = Journal.new(nil)
+
+    expect(journal.issn).to eq '1234-5678'
+  end 
 end
