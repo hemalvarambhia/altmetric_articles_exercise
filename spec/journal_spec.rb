@@ -12,7 +12,7 @@ describe 'A Journal' do
     end
   end
 
-  it 'stores its name' do
+  it 'stores its title' do
     journal = Journal.new('Journal of Physics B', nil)
 
     expect(journal.title).to eq 'Journal of Physics B'
