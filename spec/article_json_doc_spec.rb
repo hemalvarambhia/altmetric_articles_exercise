@@ -9,7 +9,7 @@ describe 'Article JSON Doc' do
    }
   end
 
-  it 'stores the DOI' do
+  it 'publishes the DOI' do
     doi = '10.1234/altmetric0'
     article = double(:article).as_null_object
 
@@ -17,7 +17,7 @@ describe 'Article JSON Doc' do
     expect(render(article)['doi']).to eq doi
   end
 
-  it 'stores the title' do
+  it 'publishes the title' do
     title = 'Physics article'
     article = double(:article).as_null_object
 
@@ -25,7 +25,7 @@ describe 'Article JSON Doc' do
     expect(render(article)['title']).to eq title
   end
 
-  it 'stores the author' do
+  it 'publishes the author' do
     author = ['Physicist']
     article = double(:author).as_null_object
 
@@ -34,7 +34,7 @@ describe 'Article JSON Doc' do
   end
 
   describe 'an article with multiple authors' do
-    it 'lists all the authors comma separated' do
+    it 'publishes all the authors comma separated' do
       authors = ['Physicist 1', 'Physicist 2', 'Physicist 3']
       article = double(:article).as_null_object
       allow(article).to receive(:author).and_return authors
@@ -44,7 +44,7 @@ describe 'Article JSON Doc' do
     end
   end
 
-  it 'stores the ISSN' do
+  it 'publishes the ISSN' do
     issn = '1234-5678'
     article = double(:article).as_null_object
 
@@ -52,7 +52,7 @@ describe 'Article JSON Doc' do
     expect(render(article)['issn']).to eq issn
   end
 
-  it 'stores the journal' do
+  it 'publishes the journal' do
     journal = 'Journal of Physics B'
     article = double(:article).as_null_object
 
