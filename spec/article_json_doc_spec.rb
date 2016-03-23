@@ -13,7 +13,7 @@ describe 'Article JSON Doc' do
     doi = '10.1234/altmetric0'
     article = double(:article).as_null_object
 
-    expect(article).to receive(:doi).and_return doi
+    allow(article).to receive(:doi).and_return doi
     expect(render(article)['doi']).to eq doi
   end
 
@@ -21,7 +21,7 @@ describe 'Article JSON Doc' do
     title = 'Physics article'
     article = double(:article).as_null_object
 
-    expect(article).to receive(:title).and_return title
+    allow(article).to receive(:title).and_return title
     expect(render(article)['title']).to eq title
   end
 
@@ -29,7 +29,7 @@ describe 'Article JSON Doc' do
     author = ['Physicist']
     article = double(:author).as_null_object
 
-    expect(article).to receive(:author).and_return author
+    allow(article).to receive(:author).and_return author
     expect(render(article)['author']).to eq 'Physicist'
   end
 
@@ -48,7 +48,7 @@ describe 'Article JSON Doc' do
     issn = '1234-5678'
     article = double(:article).as_null_object
 
-    expect(article).to receive(:issn).and_return issn  
+    allow(article).to receive(:issn).and_return issn  
     expect(render(article)['issn']).to eq issn
   end
 
@@ -56,7 +56,7 @@ describe 'Article JSON Doc' do
     journal = 'Journal of Physics B'
     article = double(:article).as_null_object
 
-    expect(article).to receive(:journal).and_return journal
+    allow(article).to receive(:journal).and_return journal
     expect(render(article)['journal']).to eq journal
   end
 end
