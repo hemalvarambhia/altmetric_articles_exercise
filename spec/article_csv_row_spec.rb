@@ -10,32 +10,32 @@ describe 'Article CSV row' do
     ]
   end
 
-  it 'stores the DOI in the 1st column' do
+  it 'publishes the DOI in the 1st column' do
     doi = '10.1234/altmetric0'
     article = double(:article).as_null_object
     
-    expect(article).to receive(:doi).and_return doi
+    allow(article).to receive(:doi).and_return doi
     expect(render(article)).to have(doi).in_column 1
   end
 
-  it 'stores the title in the 2nd column' do
+  it 'publishes the title in the 2nd column' do
     title = 'Chemistry article'
     article = double(:article).as_null_object
 
-    expect(article).to receive(:title).and_return title
+    allow(article).to receive(:title).and_return title
     expect(render(article)).to have(title).in_column 2
   end
 
-  it 'stores author name in the 3rd column' do
+  it 'publishes author name in the 3rd column' do
     author = ['Chemist']
     article = double(:article).as_null_object
     
-    expect(article).to receive(:author).and_return author
+    allow(article).to receive(:author).and_return author
     expect(render(article)).to have('Chemist').in_column 3
   end
 
   describe 'an article with multiple authors' do
-    it 'lists all the authors as a comma-separated list' do
+    it 'publishes all the authors as a comma-separated list' do
       authors = ['Chemist 1', 'Chemist 2', 'Chemist 3']
       article = double(:article).as_null_object
       allow(article).to receive(:author).and_return authors
@@ -44,19 +44,19 @@ describe 'Article CSV row' do
     end
   end
 
-  it 'stores the journal in the 4th column' do
+  it 'publishes the journal in the 4th column' do
     journal = 'Journal of Physics B'
     article = double(:article).as_null_object
 
-    expect(article).to receive(:journal).and_return journal
+    allow(article).to receive(:journal).and_return journal
     expect(render(article)).to have(journal).in_column 4
   end
 
-  it "stores the journal's ISSN in the last column" do
+  it "publishes the journal's ISSN in the last column" do
     issn = '1234-5678'
     article = double(:article).as_null_object
 
-    expect(article).to receive(:issn).and_return issn
+    allow(article).to receive(:issn).and_return issn
     expect(render(article)).to have(issn).in_column 5
   end
 
