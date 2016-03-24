@@ -1,17 +1,7 @@
+$LOAD_PATH.unshift '../lib'
+require 'journal'
+
 describe 'A Journal' do
-  class Journal
-    attr_reader :title, :issn
-
-    def initialize(title, issn)
-      @title = title
-      @issn = issn
-    end
-
-    def ==(other)
-      issn == other.issn
-    end
-  end
-
   describe 'Equating two journals' do
     context 'when they have the same ISSN' do
      it 'marks them as being the same' do
