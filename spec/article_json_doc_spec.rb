@@ -1,4 +1,3 @@
-$LOAD_PATH.unshift '../lib'
 require 'article'
 
 describe 'Article JSON Doc' do

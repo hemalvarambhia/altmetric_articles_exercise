@@ -1,4 +1,3 @@
-$LOAD_PATH.unshift '../lib'
 require 'journal'
 
 describe 'A Journal' do
