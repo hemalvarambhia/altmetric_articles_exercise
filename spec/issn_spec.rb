@@ -16,13 +16,19 @@ describe 'ISSNs' do
     end
   end
 
-  context "when it consists of just 8 numbers and a '-' in the middle" do
+  context "when it consists of just 8 numbers with a '-' in the middle" do
     it 'is well formed' do
       expect{ ISSN.new('1234-5678') }.not_to raise_error
     end
 
     it 'stores the code' do
       expect(ISSN.new('1234-5678').code).to eq '1234-5678'
+    end
+  end
+
+  context 'when the ISSN consists of just 8 numbers and no dash' do
+    it 'is well formed' do
+      expect{ ISSN.new ('34567890') }.not_to raise_error
     end
   end
 end
