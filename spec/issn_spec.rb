@@ -7,6 +7,7 @@ describe 'ISSNs' do
       digits = code.scan(/\d/)
       raise Malformed.new unless digits.count == 8
       @code = code
+      @code = code.insert(4, '-') if code.scan(/-/).none?
     end
   end
 
@@ -29,6 +30,10 @@ describe 'ISSNs' do
   context 'when the ISSN consists of just 8 numbers and no dash' do
     it 'is well formed' do
       expect{ ISSN.new ('34567890') }.not_to raise_error
+    end
+
+    it 'adds a dash in the middle' do
+      expect(ISSN.new('78904321').code).to eq '7890-4321'
     end
   end
 end
