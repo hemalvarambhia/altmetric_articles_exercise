@@ -1,3 +1,4 @@
+require 'article'
 require 'csv'
 describe 'Article CSV row' do
   def render article
@@ -12,33 +13,28 @@ describe 'Article CSV row' do
 
   it 'publishes the DOI in the 1st column' do
     doi = '10.1234/altmetric0'
-    article = double(:article).as_null_object    
-
-    expect(article).to receive(:doi).and_return doi
+    article = Article.new(doi: doi)
     expect(render(article)).to have(doi).in_column 1
   end
 
   it 'publishes the title in the 2nd column' do
     title = 'Chemistry article'
-    article = double(:article).as_null_object
+    article = Article.new(title: title)
 
-    expect(article).to receive(:title).and_return title
     expect(render(article)).to have(title).in_column 2
   end
 
   it 'publishes author name in the 3rd column' do
     author = ['Chemist']
-    article = double(:article).as_null_object    
+    article = Article.new(author: author)
 
-    expect(article).to receive(:author).and_return author
     expect(render(article)).to have('Chemist').in_column 3
   end
 
   describe 'an article with multiple authors' do
     it 'publishes all the authors as a comma-separated list' do
       authors = ['Chemist 1', 'Chemist 2', 'Chemist 3']
-      article = double(:article).as_null_object
-      allow(article).to receive(:author).and_return authors
+      article = Article.new(author: authors)
 
       expect(render(article)[2]).to eq 'Chemist 1, Chemist 2, Chemist 3'
     end
@@ -46,17 +42,15 @@ describe 'Article CSV row' do
 
   it 'publishes the journal in the 4th column' do
     journal = 'Journal of Physics B'
-    article = double(:article).as_null_object
+    article = Article.new(journal: journal)
 
-    expect(article).to receive(:journal).and_return journal
     expect(render(article)).to have(journal).in_column 4
   end
 
   it "publishes the journal's ISSN in the last column" do
     issn = '1234-5678'
-    article = double(:article).as_null_object
+    article = Article.new(issn: issn)
 
-    expect(article).to receive(:issn).and_return issn
     expect(render(article)).to have(issn).in_column 5
   end
 
