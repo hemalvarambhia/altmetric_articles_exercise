@@ -8,7 +8,7 @@ class Article
   def initialize(args)
     @doi = args[:doi]
     @title = args[:title]
-    @author = args[:author]
+    @author = args[:author] || []
     @journal = Journal.new(args[:journal], args[:issn])
   end
 
