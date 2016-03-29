@@ -27,7 +27,7 @@ describe 'ISSNs' do
     end
   end
 
-  context 'when the it consists of just 8 numbers and no dash' do
+  context 'when it consists of just 8 numbers and no dash' do
     it 'is well formed' do
       expect{ ISSN.new ('34567890') }.not_to raise_error
     end
