@@ -17,7 +17,7 @@ describe 'ISSNs' do
   end
 
   context "when it consists of just 8 numbers and a '-' in the middle" do
-    it 'is not malformed' do
+    it 'is well formed' do
       expect{ ISSN.new('1234-5678') }.not_to raise_error
     end
 
