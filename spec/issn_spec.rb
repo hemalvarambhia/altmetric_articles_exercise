@@ -71,5 +71,11 @@ describe 'ISSNs' do
         expect(issn).to eq with_same_code
       end
     end
+
+    it 'is reflexive' do
+      issn = ISSN.new '8768-6453'
+
+      expect(issn).to eq issn
+    end
   end
 end
