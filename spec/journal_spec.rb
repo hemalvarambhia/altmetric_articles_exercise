@@ -1,7 +1,7 @@
 require 'journal'
 
 describe 'A Journal' do
-  describe 'Equating two journals' do
+  describe '#equals' do
     context 'when they have the same ISSN' do
      it 'marks them as being the same' do
         journal = Journal.new(nil, '5555-7777')
