@@ -18,7 +18,7 @@ describe 'DOIs' do
 
   context 'when it has the correct registry' do
     it 'is well-formed' do
-      expect { DOI.new '10.' }.not_to raise_error DOI::Malformed
+      expect { DOI.new '10.' }.not_to raise_error
     end
   end
 
