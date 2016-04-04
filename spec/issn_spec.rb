@@ -85,5 +85,15 @@ describe 'ISSNs' do
       expect(issn_1).to eq issn_2
       expect(issn_2).to eq issn_1
     end
+
+    it 'is transitive' do
+      issn_1 = ISSN.new '1486-2016'
+      issn_2 = ISSN.new '1486-2016'
+      issn_3 = ISSN.new '1486-2016'
+
+      expect(issn_1).to eq issn_2
+      expect(issn_2).to eq issn_3
+      expect(issn_1).to eq issn_3
+    end
   end
 end
