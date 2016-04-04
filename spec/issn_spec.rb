@@ -77,5 +77,13 @@ describe 'ISSNs' do
 
       expect(issn).to eq issn
     end
+
+    it 'is symmetric' do
+      issn_1 = ISSN.new '1324-1983'
+      issn_2 = ISSN.new '1324-1983'   
+
+      expect(issn_1).to eq issn_2
+      expect(issn_2).to eq issn_1
+    end
   end
 end
