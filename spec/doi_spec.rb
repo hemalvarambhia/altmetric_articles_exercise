@@ -11,7 +11,7 @@ describe 'DOIs' do
 
   context 'when it is blank' do
     it 'is malformed' do
-      expect { DOI.new('') }.to raise_error DOI::Malformed
+      expect { DOI.new '' }.to raise_error DOI::Malformed
       expect { DOI.new nil }.to raise_error DOI::Malformed
     end
   end
