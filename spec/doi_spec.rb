@@ -23,7 +23,7 @@ describe 'DOIs' do
   end
 
   context 'when it has an invalid registry' do
-    it 'is well-formed' do
+    it 'is malformed' do
       expect { DOI.new '12.'}.to raise_error DOI::Malformed
     end
   end
