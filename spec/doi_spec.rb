@@ -45,7 +45,7 @@ describe 'DOIs' do
     end
   end
 
-  context 'when it does not have a object ID' do
+  context 'when it does not have an object ID' do
     it 'is malformed' do
       expect { DOI.new '10.1254/'}.to raise_error DOI::Malformed
     end
