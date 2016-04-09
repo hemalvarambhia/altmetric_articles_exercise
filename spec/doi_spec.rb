@@ -5,7 +5,7 @@ describe 'DOIs' do
 
     def initialize(doi)
       raise Malformed.new if doi.nil? or doi.length == 0
-      raise Malformed.new unless doi[0..2] == '10.'
+      raise Malformed.new unless doi.start_with? '10.'
       raise Malformed.new if doi[3..-1].empty?
     end
   end
