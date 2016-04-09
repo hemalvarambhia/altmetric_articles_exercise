@@ -6,6 +6,7 @@ describe 'DOIs' do
     def initialize(doi)
       raise Malformed.new if doi.nil? or doi.length == 0
       raise Malformed.new unless doi[0..2] == '10.'
+      raise Malformed.new if doi[3..-1].empty?
     end
   end
 
@@ -18,13 +19,25 @@ describe 'DOIs' do
 
   context 'when it has the correct registry' do
     it 'is well-formed' do
-      expect { DOI.new '10.' }.not_to raise_error
+      expect { DOI.new '10.1234' }.not_to raise_error
     end
   end
 
   context 'when it has an invalid registry' do
     it 'is malformed' do
       expect { DOI.new '12.'}.to raise_error DOI::Malformed
+    end
+  end
+
+  context 'when it has a registrant' do
+    it 'is well-formed' do
+      expect { DOI.new '10.1234'}.not_to raise_error
+    end
+  end
+
+  context 'when it does not have a registrant' do
+    it 'is malformed' do
+      expect { DOI.new '10.' }.to raise_error DOI::Malformed
     end
   end
 end
