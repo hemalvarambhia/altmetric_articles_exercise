@@ -1,4 +1,3 @@
-require 'journal'
 class Article
   extend Forwardable
 
@@ -9,7 +8,7 @@ class Article
     @doi = args[:doi]
     @title = args[:title]
     @author = args[:author] || []
-    @journal = Journal.new(args[:journal], args[:issn])
+    @journal = args[:journal]
   end
 
   def journal

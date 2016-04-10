@@ -1,16 +1,14 @@
 require 'issn'
+require 'journal'
 require 'article'
 
 describe 'An article' do
-  it 'stores the name of the journal' do
-    article = Article.new(journal: 'Journal of Physics B')
-  
+  it 'stores the name and ISSN of the journal' do
+    article = Article.new(
+      journal: Journal.new('Journal of Physics B', ISSN.new('4321-8765'))
+    )
+
     expect(article.journal).to eq 'Journal of Physics B'    
-  end
-
-  it 'stores the ISSN of the journal' do
-    article = Article.new(issn: ISSN.new('4321-8765'))
-
     expect(article.issn).to eq ISSN.new('4321-8765')
   end
 
