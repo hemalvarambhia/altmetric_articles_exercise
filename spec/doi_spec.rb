@@ -1,5 +1,4 @@
 describe 'DOIs' do
-  DOI = Class.new
   class DOI
     Malformed = Class.new(Exception)
 
