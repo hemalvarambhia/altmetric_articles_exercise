@@ -1,3 +1,4 @@
+require 'issn'
 require 'article'
 
 describe 'An article' do
@@ -8,9 +9,9 @@ describe 'An article' do
   end
 
   it 'stores the ISSN of the journal' do
-    article = Article.new(issn: '4321-8765')
+    article = Article.new(issn: ISSN.new('4321-8765'))
 
-    expect(article.issn).to eq '4321-8765'
+    expect(article.issn).to eq ISSN.new('4321-8765')
   end
 
   describe '#equals' do
