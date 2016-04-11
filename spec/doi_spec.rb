@@ -42,4 +42,12 @@ describe 'DOIs' do
       expect { DOI.new '10.5943/altmetric1983' }.not_to raise_error
     end
   end
+
+  describe '#equals' do
+    it 'is reflexive' do
+      doi = DOI.new '10.4520/altmetric888'
+    
+      expect(doi).to eq doi
+    end
+  end
 end
