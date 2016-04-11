@@ -1,3 +1,4 @@
+require 'doi'
 require 'article'
 require 'csv'
 describe 'Article CSV row' do
@@ -12,7 +13,7 @@ describe 'Article CSV row' do
   end
 
   it 'publishes the DOI in the 1st column' do
-    doi = '10.1234/altmetric0'
+    doi = DOI.new '10.1234/altmetric0'
     article = Article.new(doi: doi)
     expect(render(article)).to have(doi).in_column 1
   end
