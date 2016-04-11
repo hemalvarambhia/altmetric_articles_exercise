@@ -42,17 +42,12 @@ describe 'Article JSON Doc' do
     end
   end
 
-  it 'publishes the ISSN' do
-    issn = '1234-5678'
-    article = Article.new(issn: issn)
-
-    expect(render(article)['issn']).to eq issn
-  end
-
-  it 'publishes the journal' do
-    journal = 'Journal of Physics B'
+  it 'publishes the ISSN and title of the journal' do
+    issn = ISSN.new '1234-5678'
+    journal = Journal.new('Journal of Physics B', issn)
     article = Article.new(journal: journal)
 
-    expect(render(article)['journal']).to eq journal
+    expect(render(article)['issn']).to eq issn
+    expect(render(article)['journal']).to eq 'Journal of Physics B'
   end
 end

@@ -42,14 +42,13 @@ describe 'Article CSV row' do
 
   it 'publishes the journal in the 4th column' do
     journal = 'Journal of Physics B'
-    article = Article.new(journal: journal)
-
+    article = Article.new(journal: Journal.new(journal, nil))
     expect(render(article)).to have(journal).in_column 4
   end
 
   it "publishes the journal's ISSN in the last column" do
-    issn = '1234-5678'
-    article = Article.new(issn: issn)
+    issn = ISSN.new '1234-5678'
+    article = Article.new(issn: issn, journal: Journal.new(nil, issn))
 
     expect(render(article)).to have(issn).in_column 5
   end
