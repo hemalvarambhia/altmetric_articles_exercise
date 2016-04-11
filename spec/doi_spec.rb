@@ -57,5 +57,15 @@ describe 'DOIs' do
       expect(doi).to eq same_doi
       expect(same_doi).to eq doi
     end
+
+    it 'is transitive' do
+      doi_1 = DOI.new '10.6743/altmetric8795'
+      doi_2 = DOI.new '10.6743/altmetric8795'
+      doi_3 = DOI.new '10.6743/altmetric8795'
+
+      expect(doi_1).to eq doi_2
+      expect(doi_2).to eq doi_3
+      expect(doi_3).to eq doi_1
+    end
   end
 end
