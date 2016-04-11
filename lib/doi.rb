@@ -1,4 +1,6 @@
 class DOI
+  attr_reader :serial_code
+
   Malformed = Class.new(Exception)
 
   def initialize(doi)
@@ -9,9 +11,10 @@ class DOI
     raise Malformed.new if registrant.empty?
     object_id = doi[partition + 1..-1]
     raise Malformed.new if object_id.empty?
+    @serial_code = doi    
   end
 
-  def ==(other)
+  def == other
     true
   end
 end

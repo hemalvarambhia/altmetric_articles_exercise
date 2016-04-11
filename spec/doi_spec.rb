@@ -43,6 +43,13 @@ describe 'DOIs' do
     end
   end
 
+  context 'when it is well-formed' do
+    it 'stores the serial code' do
+      doi = DOI.new '10.6456/altmetric96054'
+      expect(doi.serial_code).to eq '10.6456/altmetric96054'
+    end 
+  end
+
   describe '#equals' do
     it 'is reflexive' do
       doi = DOI.new '10.4520/altmetric888'
