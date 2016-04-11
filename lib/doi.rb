@@ -17,5 +17,9 @@ class DOI
   def == other
     serial_code == other.serial_code
   end
+
+  def to_s
+    serial_code
+  end
 end
 

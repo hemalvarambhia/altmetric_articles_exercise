@@ -18,4 +18,8 @@ class ISSN
   def ==(other)
     code == other.code
   end
+
+  def to_s
+    code
+  end
 end
