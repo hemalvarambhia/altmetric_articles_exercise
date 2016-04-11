@@ -49,5 +49,13 @@ describe 'DOIs' do
     
       expect(doi).to eq doi
     end
+    
+    it 'is symmetric' do
+      doi = DOI.new '10.5699/altmetric6593'
+      same_doi = DOI.new '10.5699/altmetric6593'
+
+      expect(doi).to eq same_doi
+      expect(same_doi).to eq doi
+    end
   end
 end
