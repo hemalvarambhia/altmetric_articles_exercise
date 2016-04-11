@@ -15,7 +15,7 @@ class DOI
   end
 
   def == other
-    true
+    serial_code == other.serial_code
   end
 end
 

@@ -74,5 +74,11 @@ describe 'DOIs' do
       expect(doi_2).to eq doi_3
       expect(doi_3).to eq doi_1
     end
+
+    it 'marks two different DOIs as being unequal' do
+      doi = DOI.new '10.5686/altmetric123'
+      different = DOI.new '10.3334/altmetric000'
+      expect(doi).not_to eq different
+    end
   end
 end
