@@ -45,16 +45,13 @@ describe 'Combiner' do
            )
       allow(@journals_file).to(
         receive(:find).with(ISSN.new('1432-0456'))
-        .and_return(Journal.new('Journal', ISSN.new('1432-0456')))
-      )
+        .and_return(Journal.new('Journal', ISSN.new('1432-0456'))))
       allow(@authors_file).to(
         receive(:find).with(DOI.new('10.5649/altmetric098'))
-        .and_return(['Author 1', 'Author 2', 'Author 3'])
-      )      
+        .and_return(['Author 1', 'Author 2', 'Author 3']))
       combiner = Combiner.new(
-        articles_file, @journals_file, @authors_file
-      )
-                              
+        articles_file, @journals_file, @authors_file)
+      
       expect { |b| combiner.each(&b) }.to(
         yield_successive_args(
           {
