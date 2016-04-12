@@ -11,7 +11,6 @@ describe 'Combiner' do
     end
 
     def each
-      merged = []
       @articles_file.each do |article|       
         merged = {
           doi: article[:doi],
