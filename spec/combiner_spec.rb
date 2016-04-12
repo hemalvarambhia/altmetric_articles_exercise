@@ -12,13 +12,12 @@ describe 'Combiner' do
 
     def each
       @articles_file.each do |article|       
-        merged = {
-          doi: article[:doi],
-          title: article[:title],
-          journal: @journals_file.find(article[:issn]),
-          authors: @authors_file.find(article[:doi])
-        }
-        yield merged
+        yield Hash[
+                :doi, article[:doi],
+                :title, article[:title],
+                :journal, @journals_file.find(article[:issn]),
+                :authors, @authors_file.find(article[:doi])
+              ]
       end
     end
   end
