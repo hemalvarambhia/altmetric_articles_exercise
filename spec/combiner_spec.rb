@@ -28,18 +28,21 @@ describe 'Combiner' do
       @journals_file = double(:journals_file)
       @authors_file = double(:authors_file)
     end
+    
     it 'merges them together with the article' do
       articles_file = double(:articles_file)
-      expect(articles_file).to(
-        receive(:read).and_return(
-        [
-          {
-            doi: DOI.new('10.5649/altmetric098'),
-            title: 'Physics',
-            issn: ISSN.new('1432-0456')
-          }
-        ])
-      )
+      expect(articles_file)
+        .to(receive(:read)
+             .and_return(
+               [                          
+                 {
+                   doi: DOI.new('10.5649/altmetric098'),
+                   title: 'Physics',
+                   issn: ISSN.new('1432-0456')
+                 }
+               ]
+             )
+           )
       allow(@journals_file).to(
         receive(:find).with(ISSN.new('1432-0456'))
         .and_return(Journal.new('Journal', ISSN.new('1432-0456')))
@@ -47,7 +50,7 @@ describe 'Combiner' do
       allow(@authors_file).to(
         receive(:find).with(DOI.new('10.5649/altmetric098'))
         .and_return(['Author 1', 'Author 2', 'Author 3'])
-      )
+      )      
       combiner = Combiner.new(
         articles_file, @journals_file, @authors_file
       )
