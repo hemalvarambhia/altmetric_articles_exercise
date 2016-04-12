@@ -11,15 +11,16 @@ describe 'Combiner' do
     end
 
     def each
-      merged = @articles_file.read.collect do |article|
-        the_article = { doi: article[:doi], title: article[:title] }
-        the_article.merge(
+      merged = []
+      @articles_file.each do |article|       
+        merged = {
+          doi: article[:doi],
+          title: article[:title],
           journal: @journals_file.find(article[:issn]),
           authors: @authors_file.find(article[:doi])
-        )
+        }
+        yield merged
       end
-
-      merged.each { |merge| yield merge }
     end
   end
   
@@ -32,15 +33,13 @@ describe 'Combiner' do
     it 'merges them together with the article' do
       articles_file = double(:articles_file)
       expect(articles_file)
-        .to(receive(:read)
-             .and_return(
-               [                          
+        .to(receive(:each)
+             .and_yield(                     
                  {
                    doi: DOI.new('10.5649/altmetric098'),
                    title: 'Physics',
                    issn: ISSN.new('1432-0456')
                  }
-               ]
              )
            )
       allow(@journals_file).to(
