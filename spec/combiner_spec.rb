@@ -4,7 +4,7 @@ require 'journal'
 
 describe 'Combiner' do
   class Combiner
-    def initialize(articles_file, journals_file, authors_file)
+    def initialize(journals_file, articles_file, authors_file)
       @articles_file = articles_file
       @journals_file = journals_file
       @authors_file = authors_file
@@ -46,7 +46,7 @@ describe 'Combiner' do
       receive(:find).with(DOI.new('10.5649/altmetric098'))
       .and_return(['Author 1', 'Author 2', 'Author 3']))
     combiner = Combiner.new(
-      articles_file, @journals_file, @authors_file)
+      @journals_file, articles_file, @authors_file)
       
     expect { |b| combiner.each(&b) }.to(
       yield_successive_args(
