@@ -7,7 +7,7 @@ describe 'Processing an article' do
       @articles_store = articles_store
     end
 
-    def process combiner, document = nil
+    def process combiner, document
       @articles_store.each {|article| document << combiner.combine(article) }
     end
   end
