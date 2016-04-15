@@ -4,23 +4,21 @@ require 'journal'
 
 describe 'Combiner' do
   class Combiner
-    def initialize(journals_file, articles_file, authors_file)
-      @articles_file = articles_file
+    def initialize(journals_file, authors_file)
       @journals_file = journals_file
       @authors_file = authors_file
     end
 
-    def each
-      @articles_file.each do |article|       
-        yield Hash[
-                :doi, article[:doi],
-                :title, article[:title],
-                :journal, @journals_file.find(article[:issn]),
-                :authors, @authors_file.find(article[:doi])
-              ]
+    def combine line
+      Hash[
+          :doi, line[0],
+          :title, line[1],
+          :issn, line[2],
+          :journal, @journals_file.find(line[2]),
+          :authors, @authors_file.find(line[0])
+      ]
       end
     end
-  end
   
   before(:each) do
     @journals_file = double(:journals_file)
@@ -28,32 +26,22 @@ describe 'Combiner' do
   end
     
   it 'merges articles, journals and authors together' do
-    articles_file = double(:articles_file)
-    expect(articles_file)
-      .to(receive(:each)
-           .and_yield(                     
-             {
-               doi: DOI.new('10.5649/altmetric098'),
-               title: 'Physics',
-               issn: ISSN.new('1432-0456')
-             }
-           )
-         )
     allow(@journals_file).to(
       receive(:find).with(ISSN.new('1432-0456'))
-      .and_return(Journal.new('Journal', ISSN.new('1432-0456'))))
+      .and_return('Journal'))
     allow(@authors_file).to(
       receive(:find).with(DOI.new('10.5649/altmetric098'))
       .and_return(['Author 1', 'Author 2', 'Author 3']))
-    combiner = Combiner.new(
-      @journals_file, articles_file, @authors_file)
-      
-    expect { |b| combiner.each(&b) }.to(
-      yield_successive_args(
+    combiner = Combiner.new(@journals_file, @authors_file)
+
+    line = [DOI.new('10.5649/altmetric098'), 'Physics', ISSN.new('1432-0456')]
+    expect(combiner.combine(line)).to(
+      eq(
         {
           doi: DOI.new('10.5649/altmetric098'),
           title: 'Physics',
-          journal: Journal.new('Journal', ISSN.new('1432-0456')),
+          issn: ISSN.new('1432-0456'),
+          journal: 'Journal',
           authors: [ 'Author 1', 'Author 2', 'Author 3' ]
         }
       ))
