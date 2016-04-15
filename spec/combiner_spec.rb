@@ -27,11 +27,10 @@ describe 'Combiner' do
     
   it 'merges articles, journals and authors together' do
     allow(@journals_file).to(
-      receive(:find).with(ISSN.new('1432-0456'))
-      .and_return('Journal'))
+      receive(:find).with(ISSN.new('1432-0456')).and_return('Journal'))
     allow(@authors_file).to(
       receive(:find).with(DOI.new('10.5649/altmetric098'))
-      .and_return(['Author 1', 'Author 2', 'Author 3']))
+          .and_return(['Author 1', 'Author 2', 'Author 3']))
     combiner = Combiner.new(@journals_file, @authors_file)
     line = [DOI.new('10.5649/altmetric098'), 'Physics', ISSN.new('1432-0456')]
 
