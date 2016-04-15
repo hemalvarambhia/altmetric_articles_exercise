@@ -33,8 +33,8 @@ describe 'Combiner' do
       receive(:find).with(DOI.new('10.5649/altmetric098'))
       .and_return(['Author 1', 'Author 2', 'Author 3']))
     combiner = Combiner.new(@journals_file, @authors_file)
-
     line = [DOI.new('10.5649/altmetric098'), 'Physics', ISSN.new('1432-0456')]
+
     expect(combiner.combine(line)).to(
       eq(
         {
