@@ -6,7 +6,7 @@ describe 'Articles Table' do
       @row = row
     end
 
-    def merge(journal_table, author_table = nil)
+    def join(journal_table, author_table = nil)
       @row.merge(
           {
               journal: journal_table.find(@row[:issn]),
@@ -23,7 +23,7 @@ describe 'Articles Table' do
       journals_table = double(:journals_table).as_null_object
       articles_table = ArticlesTable.new(row)
 
-      expect(articles_table.merge(journals_table, authors_table)).to include(row)
+      expect(articles_table.join(journals_table, authors_table)).to include(row)
     end
 
     describe 'merging with a journals table' do
@@ -34,7 +34,7 @@ describe 'Articles Table' do
         articles_table = ArticlesTable.new(row)
         expect(journals_table).to receive(:find).with(row[:issn]).and_return 'Science'
 
-        expect(articles_table.merge(journals_table, authors_table)).to include(journal: 'Science')
+        expect(articles_table.join(journals_table, authors_table)).to include(journal: 'Science')
       end
     end
 
@@ -46,7 +46,7 @@ describe 'Articles Table' do
         journals_table = double(:journals_table).as_null_object
         articles_table = ArticlesTable.new(row)
 
-        expect(articles_table.merge(journals_table, authors_table)).to(include(authors: ['Scientist']))
+        expect(articles_table.join(journals_table, authors_table)).to(include(authors: ['Scientist']))
       end
     end
   end
