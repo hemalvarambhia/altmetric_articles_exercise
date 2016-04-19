@@ -10,7 +10,7 @@ describe 'Merging one article with its journal and author' do
     end
 
     def output_to document
-       document << @articles.output_to(@journals, @authors)
+       document << @articles.merge(@journals, @authors)
     end
   end
 
@@ -21,7 +21,7 @@ describe 'Merging one article with its journal and author' do
     document = double(:document)
     line = a_line
     expect(articles_table).to(
-        receive(:output_to).with(journals_table, authors_table).and_return line
+        receive(:merge).with(journals_table, authors_table).and_return line
     )
     expect(document).to receive(:<<).with(line)
     combiner = Combiner.new(articles_table, journals_table, authors_table)
