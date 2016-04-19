@@ -23,6 +23,7 @@ describe 'Articles Table' do
       authors_table = double(:authors_table).as_null_object
       journals_table = double(:journals_table).as_null_object
       articles_table = ArticlesTable.new({ issn: issn, doi: doi })
+
       expect(articles_table.merge(journals_table, authors_table)).to include(issn: issn, doi: doi)
     end
 
@@ -45,6 +46,7 @@ describe 'Articles Table' do
         expect(authors_table).to receive(:find).with(doi).and_return ['Scientist']
         journals_table = double(:journals_table).as_null_object
         articles_table = ArticlesTable.new({ doi: doi })
+
         expect(articles_table.merge(journals_table, authors_table)).to(include(authors: ['Scientist']))
       end
     end
