@@ -18,22 +18,21 @@ describe 'Articles Table' do
 
   describe '#merge' do
     it 'includes the DOI and ISSN' do
-      issn = an_issn
-      doi = a_doi
+      row = {issn: an_issn, doi: a_doi}
       authors_table = double(:authors_table).as_null_object
       journals_table = double(:journals_table).as_null_object
-      articles_table = ArticlesTable.new({ issn: issn, doi: doi })
+      articles_table = ArticlesTable.new(row)
 
-      expect(articles_table.merge(journals_table, authors_table)).to include(issn: issn, doi: doi)
+      expect(articles_table.merge(journals_table, authors_table)).to include(row)
     end
 
     describe 'merging with a journals table' do
       it 'includes the title of the journal in the row' do
-        issn = an_issn
+        row = {issn: an_issn}
         authors_table = double(:authors_table).as_null_object
         journals_table = double(:journals_table)
-        articles_table = ArticlesTable.new({ issn: issn })
-        expect(journals_table).to receive(:find).with(issn).and_return 'Science'
+        articles_table = ArticlesTable.new(row)
+        expect(journals_table).to receive(:find).with(row[:issn]).and_return 'Science'
 
         expect(articles_table.merge(journals_table, authors_table)).to include(journal: 'Science')
       end
@@ -41,11 +40,11 @@ describe 'Articles Table' do
 
     describe 'merging with an authors table' do
       it 'includes the author in the row' do
-        doi = a_doi
+        row = {doi: a_doi}
         authors_table = double(:authors_table)
-        expect(authors_table).to receive(:find).with(doi).and_return ['Scientist']
+        expect(authors_table).to receive(:find).with(row[:doi]).and_return ['Scientist']
         journals_table = double(:journals_table).as_null_object
-        articles_table = ArticlesTable.new({ doi: doi })
+        articles_table = ArticlesTable.new(row)
 
         expect(articles_table.merge(journals_table, authors_table)).to(include(authors: ['Scientist']))
       end
