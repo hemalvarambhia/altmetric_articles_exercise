@@ -10,7 +10,7 @@ describe 'Articles Table' do
       @row.merge(
           {
               journal: journal_table.find(@row[:issn]),
-              author: author_table.find(@row[:doi])
+              authors: author_table.find(@row[:doi])
           }
       )
     end
@@ -42,10 +42,10 @@ describe 'Articles Table' do
       it 'includes the author in the row' do
         doi = a_doi
         authors_table = double(:authors_table)
-        expect(authors_table).to receive(:find).with(doi).and_return 'Scientist'
+        expect(authors_table).to receive(:find).with(doi).and_return ['Scientist']
         journals_table = double(:journals_table).as_null_object
         articles_table = ArticlesTable.new({ doi: doi })
-        expect(articles_table.merge(journals_table, authors_table)).to(include(author: 'Scientist'))
+        expect(articles_table.merge(journals_table, authors_table)).to(include(authors: ['Scientist']))
       end
     end
   end
