@@ -6,7 +6,7 @@ describe 'Articles Table' do
       @row = row
     end
 
-    def join(journal_table, author_table = nil)
+    def join(journal_table, author_table)
       @row.merge(
           {
               journal: journal_table.find(@row[:issn]),
