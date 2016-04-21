@@ -1,4 +1,6 @@
 class ISSN
+  extend Forwardable
+  def_delegator :@code, :hash
   attr_reader :code
 
   class Malformed < Exception
