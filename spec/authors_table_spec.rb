@@ -26,8 +26,8 @@ describe 'Authors table' do
     it 'returns no authors' do
       authors_table = AuthorsTable.new(
         [
-          OpenStruct.new(name: 'Author 1', publications: [a_doi]),
-          OpenStruct.new(name: 'Author 2', publications: [a_doi])
+          OpenStruct.new(name: 'No Match 1', publications: [a_doi]),
+          OpenStruct.new(name: 'No Match 2', publications: [a_doi])
         ]
       )
 
@@ -40,7 +40,7 @@ describe 'Authors table' do
       authors_table = AuthorsTable.new(
         [
           OpenStruct.new(name: 'Author', publications: [ DOI.new('10.1111/altmetric777') ]),
-          OpenStruct.new(name: 'Non-matching', publications: [a_doi])       
+          OpenStruct.new(name: 'No Matching', publications: [a_doi])       
         ]
       )
       expect(authors_table.find(DOI.new('10.1111/altmetric777'))).to eq ['Author']
