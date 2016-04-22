@@ -48,6 +48,7 @@ describe 'Authors table' do
   end
 
   def a_doi
-    DOI.new("10.6965/altmetric#{rand(100000000)}")
+    registrant = Array.new(4) { rand(0..9) }.join
+    DOI.new("10.#{registrant}/altmetric#{rand(100000000)}")
   end
 end
