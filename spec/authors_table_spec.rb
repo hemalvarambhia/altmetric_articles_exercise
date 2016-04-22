@@ -49,7 +49,7 @@ describe 'Authors table' do
     end
 
     context 'When the article is published by multiple authors' do
-      it 'returns all the authors' do
+      it "returns all the authors' names" do
         authors_table = AuthorsTable.new(
           [
             OpenStruct.new(name: 'Not Author', publications: [a_doi, a_doi]),
