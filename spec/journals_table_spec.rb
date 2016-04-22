@@ -6,7 +6,7 @@ describe 'Journals table' do
     end
 
     def find(issn)
-      @journals[issn] || ''
+      @journals.fetch(issn, '')
     end
   end
 
