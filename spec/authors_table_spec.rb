@@ -14,7 +14,7 @@ describe 'Authors table' do
   end
   
   describe '#find' do
-    context 'When the table is empty' do
+    context 'when the table is empty' do
       it 'returns no authors' do
         authors_table = AuthorsTable.new
 
@@ -22,7 +22,7 @@ describe 'Authors table' do
       end 
     end
 
-    context 'When there are no authors of an article' do
+    context 'when there are no authors of an article' do
       it 'returns no authors' do
         authors_table = AuthorsTable.new(
           [
@@ -35,7 +35,7 @@ describe 'Authors table' do
       end
     end 
 
-    context 'When the table contains the author of an article' do
+    context 'when the table contains the author of an article' do
       it 'returns the name of the author' do
         authors_table = AuthorsTable.new(
           [
@@ -47,7 +47,7 @@ describe 'Authors table' do
       end
     end
 
-    context 'When the article is published by multiple authors' do
+    context 'when the article is published by multiple authors' do
       it "returns all the authors' names" do
         authors_table = AuthorsTable.new(
           [
