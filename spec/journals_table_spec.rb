@@ -11,7 +11,7 @@ describe 'Journals table' do
   end
 
   describe '#find' do
-    context 'When the table does not have a journal with the ISSN' do
+    context 'when the table does not have a journal with the ISSN' do
       it 'returns no title' do
         journals_table = JournalsTable.new(
           [ 
@@ -24,7 +24,7 @@ describe 'Journals table' do
       end
     end
 
-    context 'When the table has a journal with the given ISSN' do
+    context 'when the table has a journal with the given ISSN' do
       it 'returns the title' do
         journals_table = JournalsTable.new(
           [
