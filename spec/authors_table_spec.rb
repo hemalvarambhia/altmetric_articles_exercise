@@ -9,7 +9,6 @@ describe 'Authors table' do
 
     def find(doi)
       author = @authors.select { |author| author.publications.include?(doi) }
-      return [] if author.none?
       author.map { |author| author.name }
     end
   end
