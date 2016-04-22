@@ -14,14 +14,6 @@ describe 'Authors table' do
   end
   
   describe '#find' do
-    context 'when the table is empty' do
-      it 'returns no authors' do
-        authors_table = AuthorsTable.new
-
-        expect(authors_table.find(DOI.new('10.6453/altmetric490'))).to eq []
-      end 
-    end
-
     context 'when there are no authors of an article' do
       it 'returns no authors' do
         authors_table = AuthorsTable.new(
