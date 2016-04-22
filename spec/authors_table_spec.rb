@@ -24,7 +24,8 @@ describe 'Authors table' do
     it 'returns no authors' do
       authors_table = AuthorsTable.new(
         [
-          OpenStruct.new(name: 'Author 1', publications: [DOI.new('10.3454/altmetric001')])
+          OpenStruct.new(name: 'Author 1', publications: [DOI.new('10.3454/altmetric001')]),
+          OpenStruct.new(name: 'Author 1', publications: [DOI.new('10.4854/altmetric021')])
         ]
       )
 
