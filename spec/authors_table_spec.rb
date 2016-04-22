@@ -8,9 +8,9 @@ describe 'Authors table' do
     end
 
     def find(doi)
-      author = @authors.detect { |author| author.publications.include?(doi) }
-      return [] if author.nil?
-      [author.name]
+      author = @authors.select { |author| author.publications.include?(doi) }
+      return [] if author.none?
+      author.map { |author| author.name }
     end
   end
   
@@ -45,6 +45,22 @@ describe 'Authors table' do
           ]
         )
         expect(authors_table.find(DOI.new('10.1111/altmetric777'))).to eq ['Author']
+      end
+    end
+
+    context 'When the article is published by multiple authors' do
+      it 'returns all the authors' do
+        authors_table = AuthorsTable.new(
+          [
+            OpenStruct.new(name: 'Not Author', publications: [a_doi, a_doi]),
+            OpenStruct.new(name: 'Main Author', publications: [ DOI.new('10.2954/altmetric9435') ]),
+            OpenStruct.new(name: 'Co-Author 1', publications: [ DOI.new('10.2954/altmetric9435') ]),
+            OpenStruct.new(name: 'Co-Author 2', publications: [ DOI.new('10.2954/altmetric9435') ])
+          ]
+        )
+
+        expected = [ 'Main Author', 'Co-Author 1', 'Co-Author 2' ]
+        expect(authors_table.find(DOI.new('10.2954/altmetric9435'))).to eq expected
       end
     end
   end
