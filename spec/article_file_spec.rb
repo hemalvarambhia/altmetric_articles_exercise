@@ -6,8 +6,8 @@ describe 'Article File spec' do
       @parser = parser
     end
 
-    def read
-      @io.each { |line| @parser.parse line }
+    def each
+      @io.each { |line| yield @parser.parse(line) }
     end
   end
 
@@ -21,6 +21,6 @@ describe 'Article File spec' do
     expect(parser).to receive(:parse).with csv_line
     file = ArticleFile.new(CSV.new(io), parser)
 
-    file.read
+    file.each {}
   end
 end
