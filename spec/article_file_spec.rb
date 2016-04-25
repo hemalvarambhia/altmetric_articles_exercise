@@ -1,6 +1,6 @@
 require 'csv'
-describe 'Article CSV File spec' do
-  class ArticleCSVFile
+describe 'Article File spec' do
+  class ArticleFile
     def initialize(io, parser)
       @io = io
       @parser = parser
@@ -19,7 +19,7 @@ describe 'Article CSV File spec' do
     csv_line = [ '10.1234/altmetric001', 'About Physics', '1234-5678' ]
     parser = double :parser
     expect(parser).to receive(:parse).with csv_line
-    file = ArticleCSVFile.new(CSV.new(io), parser)
+    file = ArticleFile.new(CSV.new(io), parser)
 
     file.read
   end

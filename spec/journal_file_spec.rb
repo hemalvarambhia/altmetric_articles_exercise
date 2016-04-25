@@ -1,6 +1,6 @@
 require 'csv'
-describe 'Journal CSV File' do
-  class JournalCSVFile
+describe 'Journal File' do
+  class JournalFile
     def initialize(io, parser)
       @io = io
       @parser = parser
@@ -19,7 +19,7 @@ describe 'Journal CSV File' do
     line = [ '8964-5695', 'Journal of Physics B' ]
     parser = double(:parser)
     expect(parser).to receive(:parse).with(line)
-    file = JournalCSVFile.new(CSV.new(io), parser)
+    file = JournalFile.new(CSV.new(io), parser)
 
     file.read
   end
