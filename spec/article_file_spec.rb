@@ -1,5 +1,5 @@
 require 'csv'
-describe 'Article File spec' do
+describe 'Article File' do
   class ArticleFile
     def initialize(io, parser)
       @io = io
