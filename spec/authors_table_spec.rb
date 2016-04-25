@@ -29,29 +29,31 @@ describe 'Authors table' do
 
     context 'when the table contains the author of an article' do
       it 'returns the name of the author' do
+        required = DOI.new('10.1111/altmetric777')
         authors_table = AuthorsTable.new(
           [
-            OpenStruct.new(name: 'Author', publications: [ DOI.new('10.1111/altmetric777') ]),
+            OpenStruct.new(name: 'Author', publications: [ required ]),
             OpenStruct.new(name: 'No Matching', publications: [a_doi])       
           ]
         )
-        expect(authors_table.find(DOI.new('10.1111/altmetric777'))).to eq ['Author']
+        expect(authors_table.find(required)).to eq ['Author']
       end
     end
 
     context 'when the article is published by multiple authors' do
       it "returns all the authors' names" do
+        required = DOI.new('10.2954/altmetric9435')
         authors_table = AuthorsTable.new(
           [
             OpenStruct.new(name: 'Not Author', publications: [a_doi, a_doi]),
-            OpenStruct.new(name: 'Main Author', publications: [ DOI.new('10.2954/altmetric9435') ]),
-            OpenStruct.new(name: 'Co-Author 1', publications: [ DOI.new('10.2954/altmetric9435') ]),
-            OpenStruct.new(name: 'Co-Author 2', publications: [ DOI.new('10.2954/altmetric9435') ])
+            OpenStruct.new(name: 'Main Author', publications: [ required ]),
+            OpenStruct.new(name: 'Co-Author 1', publications: [ required ]),
+            OpenStruct.new(name: 'Co-Author 2', publications: [ required, a_doi ])
           ]
         )
 
         expected = [ 'Main Author', 'Co-Author 1', 'Co-Author 2' ]
-        expect(authors_table.find(DOI.new('10.2954/altmetric9435'))).to eq expected
+        expect(authors_table.find(required)).to eq expected
       end
     end
   end
