@@ -7,7 +7,7 @@ describe 'Article CSV File spec' do
     end
 
     def read
-      CSV.new(@io).each { |line| @parser.parse line }
+      @io.each { |line| @parser.parse line }
     end
   end
 
@@ -19,7 +19,7 @@ describe 'Article CSV File spec' do
     csv_line = [ '10.1234/altmetric001', 'About Physics', '1234-5678' ]
     parser = double :parser
     expect(parser).to receive(:parse).with csv_line
-    file = ArticleCSVFile.new(io, parser)
+    file = ArticleCSVFile.new(CSV.new(io), parser)
 
     file.read
   end
