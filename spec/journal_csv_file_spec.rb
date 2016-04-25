@@ -8,7 +8,6 @@ describe 'Journal CSV File' do
 
     def read
       CSV.new(@io).each { |line| @parser.parse(line) }
-
     end
   end
 
