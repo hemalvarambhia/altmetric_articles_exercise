@@ -13,7 +13,7 @@ describe 'Article CSV File spec' do
 
   it 'parses off the DOI, title and ISSN' do
     io = StringIO.open do |content|
-      content << '10.1234/altmetric001,About Physics,1234-5678'
+      content.puts '10.1234/altmetric001,About Physics,1234-5678'
       content.string
     end
     csv_line = [ '10.1234/altmetric001', 'About Physics', '1234-5678' ]

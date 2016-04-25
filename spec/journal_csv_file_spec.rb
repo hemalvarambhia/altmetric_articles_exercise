@@ -13,7 +13,7 @@ describe 'Journal CSV File' do
 
   it 'parses off the ISSN and title' do
     io = StringIO.open do |content|
-      content << '8964-5695,Journal of Physics B'
+      content.puts '8964-5695,Journal of Physics B'
       content.string
     end
     line = [ '8964-5695', 'Journal of Physics B' ]
