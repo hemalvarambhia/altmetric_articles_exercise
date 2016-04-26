@@ -1,7 +1,7 @@
 require 'rspec'
 require 'doi'
 require 'issn'
-describe 'Merging one article with its journal and author' do
+describe 'Combiner' do
   class Combiner
     def initialize(articles, journals, authors)
       @articles = articles
@@ -14,7 +14,7 @@ describe 'Merging one article with its journal and author' do
     end
   end
 
-  it 'merges them and publishes them to a document' do
+  it 'publishes article merged with its journal and author to a document' do
     articles_table = double(:articles_table)
     journals_table = double(:journals_table)
     authors_table = double(:authors_table)
