@@ -5,11 +5,8 @@ describe 'Author JSON Parser' do
   class AuthorJSONParser
     def self.parse(author_json)
        OpenStruct.new(
-         name: 'Author',
-         publications: [
-           DOI.new('10.6980/altmetric324'), 
-           DOI.new('10.7234/altmetric000')
-         ]
+         name: author_json['name'],
+         publications: author_json['articles'].map { |doi| DOI.new doi }
        )
     end    
   end
@@ -31,5 +28,24 @@ describe 'Author JSON Parser' do
         )
       )
     ) 
+  end
+
+  it 'parses the author from any JSON element' do
+    author_json = {
+      'name' => 'Another',
+      'articles' => [ '10.8100/altmetric222', '10.9786/altmetric999' ]
+    }
+
+    expect(AuthorJSONParser.parse(author_json)).to(
+      eq(
+        OpenStruct.new(
+          name: 'Another',
+          publications: [
+            DOI.new('10.8100/altmetric222'),
+            DOI.new('10.9786/altmetric999')
+          ]
+        )
+      )
+    )
   end
 end
