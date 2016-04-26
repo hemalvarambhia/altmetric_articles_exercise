@@ -16,14 +16,11 @@ describe 'Author JSON Parser' do
       'name' => 'Author',
       'articles' => [ '10.6980/altmetric324', '10.7234/altmetric000' ]
     }
-    expected = 
-      OpenStruct.new(
-        name: 'Author',
-        publications: [
-          DOI.new('10.6980/altmetric324'),
-          DOI.new('10.7234/altmetric000')
-        ]
-      )
+    expected = author_with(
+      name: 'Author',
+      publications:
+        [ DOI.new('10.6980/altmetric324'), DOI.new('10.7234/altmetric000') ]
+    )
 
     expect(AuthorJSONParser.parse(author_json)).to eq expected
   end
@@ -33,15 +30,16 @@ describe 'Author JSON Parser' do
       'name' => 'Another',
       'articles' => [ '10.8100/altmetric222', '10.9786/altmetric999' ]
     }
-    expected = 
-      OpenStruct.new(
-        name: 'Another',
-        publications: [
-          DOI.new('10.8100/altmetric222'),
-          DOI.new('10.9786/altmetric999')
-        ]
-      )
+    expected = author_with(
+      name: 'Another',
+      publications: 
+        [ DOI.new('10.8100/altmetric222'), DOI.new('10.9786/altmetric999') ]
+    )
 
     expect(AuthorJSONParser.parse(author_json)).to eq expected
+  end
+
+  def author_with(attributes)
+    OpenStruct.new attributes
   end
 end
