@@ -1,12 +1,25 @@
 require 'issn'
 describe 'Journals table' do
   class JournalsTable
+    def self.from document
+      new document.read
+    end
+
     def initialize(rows = [])
       @journals = Hash[rows]
     end
 
     def find(issn)
       @journals.fetch(issn, '')
+    end
+  end
+
+  describe '.from' do
+    it 'loads the table from a file' do
+      doc = double(:journal_csv_doc)
+      expect(doc).to receive(:read).and_return([])
+
+      JournalsTable.from doc
     end
   end
 

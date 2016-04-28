@@ -3,6 +3,10 @@ require 'doi'
 
 describe 'Authors table' do
   class AuthorsTable
+    def self.from document
+      new document.read
+    end
+
     def initialize(authors = [])
       @authors = authors
     end
@@ -10,6 +14,15 @@ describe 'Authors table' do
     def find(doi)
       author = @authors.select { |author| author.publications.include?(doi) }
       author.map { |author| author.name }
+    end
+  end
+
+  describe '.from' do
+    it 'loads the table from a file' do
+      doc = double(:author_json_doc)
+      expect(doc).to receive(:read)
+
+      AuthorsTable.from doc
     end
   end
   
