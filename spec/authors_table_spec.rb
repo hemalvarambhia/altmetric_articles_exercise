@@ -16,14 +16,15 @@ describe 'Authors table' do
   describe '#find' do
     context 'when there are no authors of an article' do
       it 'returns no authors' do
+        required = DOI.new('10.8899/altmetric02324')
         authors_table = AuthorsTable.new(
-          [
-            OpenStruct.new(name: 'No Match 1', publications: [a_doi]),
-            OpenStruct.new(name: 'No Match 2', publications: [a_doi])
-          ]
+            [
+                OpenStruct.new(name: 'No Match 1', publications: [a_doi]),
+                OpenStruct.new(name: 'No Match 2', publications: [a_doi])
+            ]
         )
 
-        expect(authors_table.find(DOI.new('10.8899/altmetric02324'))).to eq []
+        expect(authors_table.find(required)).to eq []
       end
     end 
 
