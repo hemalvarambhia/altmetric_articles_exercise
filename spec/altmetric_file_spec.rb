@@ -2,8 +2,8 @@ require 'rspec'
 
 describe 'Altmetric File' do
   class AltmetricFile
-    def initialize(io, parser)
-      @io = io
+    def initialize(document, parser)
+      @io = document
       @parser = parser
     end
 
@@ -14,11 +14,11 @@ describe 'Altmetric File' do
 
   it 'should delegate reading off the content to a parser' do
     content = 'content'
-    io = double(:file)
-    expect(io).to receive(:content).and_return content
+    document = double(:document)
+    expect(document).to receive(:content).and_return content
     parser = double(:parser)
     expect(parser).to receive(:parse).with(content)
-    altmetric_file = AltmetricFile.new(io, parser)
+    altmetric_file = AltmetricFile.new(document, parser)
 
     altmetric_file.read
   end
