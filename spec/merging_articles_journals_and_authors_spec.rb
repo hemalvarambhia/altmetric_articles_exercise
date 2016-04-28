@@ -2,7 +2,7 @@ require 'rspec'
 require 'doi'
 require 'issn'
 describe 'Combiner' do
-  class Combiner
+  class Combined
     def initialize(articles, journals, authors)
       @articles = articles
       @journals = journals
@@ -24,9 +24,9 @@ describe 'Combiner' do
         receive(:join).with(journals_table, authors_table).and_return line
     )
     expect(document).to receive(:<<).with(line)
-    combiner = Combiner.new(articles_table, journals_table, authors_table)
+    combined = Combined.new(articles_table, journals_table, authors_table)
 
-    combiner.output_to(document)
+    combined.output_to(document)
   end
 
   def a_line
