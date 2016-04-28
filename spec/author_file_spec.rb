@@ -7,7 +7,7 @@ describe 'Author File' do
     end
 
     def each
-       @io.each { |author| yield @parser.parse(author) }
+      @io.each { |author| yield @parser.parse(author) }
     end
   end
 
