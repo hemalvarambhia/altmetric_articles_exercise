@@ -2,6 +2,10 @@ require 'issn'
 require 'doi'
 describe 'Articles Table' do
   class ArticlesTable
+    def self.from(file)
+      new(file.read)
+    end
+
     def initialize(row)
       @row = row
     end
@@ -15,6 +19,16 @@ describe 'Articles Table' do
       )
     end
   end
+
+  describe '.from' do
+    it 'loads the table from a file' do
+      file = double(:article_csv_file)
+      expect(file).to receive(:read)
+
+      ArticlesTable.from file
+    end
+  end
+
 
   describe '#join' do
     it 'includes the DOI and ISSN' do
