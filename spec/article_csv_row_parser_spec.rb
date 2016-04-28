@@ -2,11 +2,11 @@ require 'doi'
 require 'issn'
 describe 'Article CSV Parser' do
   class ArticleCSVParser
-    def self.parse(line)
+    def self.parse(row)
       {
-        doi: DOI.new(line.first), 
-        title: line[1], 
-        issn: ISSN.new(line.last)
+        doi: DOI.new(row.first),
+        title: row[1],
+        issn: ISSN.new(row.last)
       }
     end
   end

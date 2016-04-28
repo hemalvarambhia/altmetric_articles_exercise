@@ -1,8 +1,8 @@
 require 'issn'
 describe 'Parsing a line from the journal CSV file' do
   class JournalCSVParser
-    def self.parse line
-      [ISSN.new(line.first), line.last]
+    def self.parse(row)
+      [ISSN.new(row.first), row.last]
     end
   end
 
