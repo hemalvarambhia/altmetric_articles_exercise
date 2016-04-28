@@ -7,19 +7,19 @@ describe 'Altmetric File' do
       @parser = parser
     end
 
-    def each
-      @io.each {|line| yield @parser.parse(line) }
+    def read
+      @parser.parse(@io.content)
     end
   end
 
   it 'should delegate reading off the content to a parser' do
     content = 'content'
     io = double(:file)
-    expect(io).to receive(:each).and_yield content
+    expect(io).to receive(:content).and_return content
     parser = double(:parser)
     expect(parser).to receive(:parse).with(content)
     altmetric_file = AltmetricFile.new(io, parser)
 
-    altmetric_file.each {}
+    altmetric_file.read
   end
 end
