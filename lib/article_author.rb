@@ -11,6 +11,7 @@ class ArticleAuthor
   end
 
   def ==(other)
+    return false if name != other.name
     true
   end
 end
