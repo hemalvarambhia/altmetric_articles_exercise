@@ -67,6 +67,12 @@ describe 'Author' do
         expect(author).not_to eq with_different_publications
       end
     end
+
+    it 'is reflexive' do
+      author = ArticleAuthor.new(name: 'Wolfgang Pauli', publications: [a_doi, a_doi])
+
+      expect(author).to eq author
+    end
   end
 
   def a_doi
