@@ -73,6 +73,15 @@ describe 'Author' do
 
       expect(author).to eq author
     end
+
+    it 'is symmetric' do
+      publications = Array.new(3) { a_doi }
+      author = ArticleAuthor.new(name: 'Albert Einstein', publications: publications)
+      same_author = ArticleAuthor.new(name: 'Albert Einstein', publications: publications)
+
+      expect(author).to eq same_author
+      expect(same_author).to eq author
+    end
   end
 
   def a_doi
