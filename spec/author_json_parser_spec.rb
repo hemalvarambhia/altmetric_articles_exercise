@@ -1,10 +1,11 @@
 require 'ostruct'
+require 'article_author'
 require 'doi'
 
 describe 'Author JSON Parser' do
   class AuthorJSONParser
     def self.parse(author_json)
-       OpenStruct.new(
+       ArticleAuthor.new(
          name: author_json['name'],
          publications: author_json['articles'].map { |doi| DOI.new doi }
        )
@@ -40,6 +41,6 @@ describe 'Author JSON Parser' do
   end
 
   def author_with(attributes)
-    OpenStruct.new attributes
+    ArticleAuthor.new attributes
   end
 end
