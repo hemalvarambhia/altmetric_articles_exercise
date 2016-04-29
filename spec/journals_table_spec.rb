@@ -10,7 +10,7 @@ describe 'Journals table' do
     end
 
     def find(issn)
-      @journals.fetch(issn, '')
+      @journals[issn]
     end
   end
 
@@ -33,7 +33,7 @@ describe 'Journals table' do
           ]
         )
 
-        expect(journals_table.find(ISSN.new('8766-8334'))).to eq ''
+        expect(journals_table.find(ISSN.new('8766-8334'))).to eq nil
       end
     end
 
