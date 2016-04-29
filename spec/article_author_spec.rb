@@ -82,6 +82,17 @@ describe 'Author' do
       expect(author).to eq same_author
       expect(same_author).to eq author
     end
+
+    it 'is transitive' do
+      publications = Array.new(4) { a_doi }
+      author_1 = ArticleAuthor.new(name: 'Werner Heisenberg', publications: publications)
+      author_2 = ArticleAuthor.new(name: 'Werner Heisenberg', publications: publications)
+      author_3 = ArticleAuthor.new(name: 'Werner Heisenberg', publications: publications)
+
+      expect(author_1).to eq author_2
+      expect(author_2).to eq author_3
+      expect(author_3).to eq author_1
+    end
   end
 
   def a_doi
