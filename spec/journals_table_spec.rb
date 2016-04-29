@@ -33,7 +33,7 @@ describe 'Journals table' do
           ]
         )
 
-        expect(journals_table.find(ISSN.new('8766-8334'))).to eq nil
+        expect(journals_table.find(ISSN.new('8766-8334'))).to be_nil
       end
     end
 
