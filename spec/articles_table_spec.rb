@@ -76,6 +76,20 @@ describe 'Articles Table' do
         joined_table = articles_table.join(journals_table, authors_table)
         expect(joined_table).to(include(authors: ['Physicist']))
       end
+
+      context 'when the article has no authors' do
+        it 'lists no authors in the row' do
+          row = {doi: a_doi}
+          authors_table = double(:authors_table)
+          expect(authors_table).to receive(:find).with(row[:doi]).and_return []
+          journals_table = double(:journals_table).as_null_object
+          articles_table = ArticlesTable.new(row)
+
+          joined_table = articles_table.join(journals_table, authors_table)
+          expect(joined_table).to(include(authors: []))
+
+        end
+      end
     end
   end
 
