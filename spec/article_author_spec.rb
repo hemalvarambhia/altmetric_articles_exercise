@@ -57,6 +57,16 @@ describe 'Author' do
         expect(author).not_to eq with_different_name
       end
     end
+
+    context 'when the authors have the same name but different publications' do
+      it 'confirms them as not being the same' do
+        author = ArticleAuthor.new(name: 'Paul Dirac', publications: [a_doi, a_doi, a_doi])
+        with_different_publications =
+            ArticleAuthor.new(name: 'Paul Dirac', publications: [a_doi, a_doi, a_doi])
+
+        expect(author).not_to eq with_different_publications
+      end
+    end
   end
 
   def a_doi
