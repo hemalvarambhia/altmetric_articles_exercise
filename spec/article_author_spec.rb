@@ -37,6 +37,18 @@ describe 'Author' do
     end
   end
 
+  describe '.==' do
+    context 'when two authors have the same name and publications' do
+      it 'confirms them as one and the same' do
+        publications = [a_doi, a_doi]
+        author = ArticleAuthor.new(name: 'Scientist', publications: publications)
+        same_author = ArticleAuthor.new(name: 'Scientist', publications: publications)
+
+        expect(author).to eq same_author
+      end
+    end
+  end
+
   def a_doi
     registrant = Array.new(4) { rand(0..9) }.join
     DOI.new("10.#{registrant}/altmetric#{rand(100000000)}")
