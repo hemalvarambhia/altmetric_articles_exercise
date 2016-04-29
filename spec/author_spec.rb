@@ -32,4 +32,14 @@ describe 'Author' do
       expect(author).not_to be_author_of doi_3
     end
   end
+
+  describe '==' do
+    it 'confirms that authors with the same name and publications are equal' do
+      publications = DOI.new('10.8769/altmetric0965'), DOI.new('10.0587/altmetric1841')
+      author = Author.new(name: 'Biologist', publications: publications)
+      same_author = Author.new(name: 'Biologist', publications: publications)
+
+      expect(author).to eq same_author
+    end
+  end
 end
