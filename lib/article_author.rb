@@ -1,4 +1,4 @@
-class Author
+class ArticleAuthor
   attr_reader :name, :publications
 
   def initialize(args)
