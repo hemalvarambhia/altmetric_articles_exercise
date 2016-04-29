@@ -48,6 +48,7 @@ describe 'Articles Table' do
         expect(journals_table).to receive(:find).with(row[:issn]).and_return 'Science'
 
         joined_table = articles_table.join(journals_table, authors_table)
+
         expect(joined_table).to include(journal: 'Science')
       end
 
@@ -60,6 +61,7 @@ describe 'Articles Table' do
           expect(journals_table).to receive(:find).with(row[:issn]).and_return nil
 
           joined_table = articles_table.join(journals_table, authors_table)
+
           expect(joined_table).to include(journal: nil)
         end
       end
@@ -74,6 +76,7 @@ describe 'Articles Table' do
         articles_table = ArticlesTable.new(row)
 
         joined_table = articles_table.join(journals_table, authors_table)
+
         expect(joined_table).to(include(authors: ['Physicist']))
       end
 
@@ -86,8 +89,8 @@ describe 'Articles Table' do
           articles_table = ArticlesTable.new(row)
 
           joined_table = articles_table.join(journals_table, authors_table)
-          expect(joined_table).to(include(authors: []))
 
+          expect(joined_table).to(include(authors: []))
         end
       end
     end
