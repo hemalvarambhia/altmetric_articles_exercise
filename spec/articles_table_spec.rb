@@ -29,7 +29,6 @@ describe 'Articles Table' do
     end
   end
 
-
   describe '#join' do
     it 'includes the DOI and ISSN' do
       row = {issn: an_issn, doi: a_doi}
