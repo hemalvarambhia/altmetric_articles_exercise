@@ -3,7 +3,7 @@ class ArticleAuthor
 
   def initialize(args)
     @name = args[:name]
-    @publications = args.fetch(:publications, [])
+    @publications = args.fetch(:publications, []).uniq
   end
 
   def author_of?(doi)

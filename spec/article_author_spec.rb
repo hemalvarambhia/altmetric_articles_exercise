@@ -14,6 +14,13 @@ describe 'Author' do
     expect(author.publications).to eq [doi_1, doi_2]
   end
 
+  it 'does not store duplicate publications' do
+    doi_1, doi_2 = a_doi, a_doi
+    author = ArticleAuthor.new(name: nil, publications: [doi_1, doi_1, doi_2])
+
+    expect(author.publications).to eq [doi_1, doi_2]
+  end
+
   describe '#author_of?' do
     it 'confirms that an author published an article' do
       doi_1, doi_2 = a_doi, a_doi
