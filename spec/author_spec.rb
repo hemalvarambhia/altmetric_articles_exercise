@@ -32,31 +32,4 @@ describe 'Author' do
       expect(author).not_to be_author_of doi_3
     end
   end
-
-  describe '==' do
-    context 'two authors have the same name and publications' do
-      it 'confirms that they are one and the same' do
-        publications = DOI.new('10.8769/altmetric0965'), DOI.new('10.0587/altmetric1841')
-        author = ArticleAuthor.new(name: 'Biologist', publications: publications)
-        same_author = ArticleAuthor.new(name: 'Biologist', publications: publications)
-
-        expect(author).to eq same_author
-      end
-    end
-
-    context 'two authors with the different name but same publications' do
-      it 'confirms them as not the same' do
-        publications = a_doi, a_doi
-        author = ArticleAuthor.new(name: 'Biologist', publications: publications)
-        with_different_publications = ArticleAuthor.new(name: 'Physicist', publications: publications)
-
-        expect(author).not_to eq with_different_publications
-      end
-
-      def a_doi
-        registrant = Array.new(4) { rand(0..9) }.join
-        DOI.new("10.#{registrant}/altmetric#{rand(100000000)}")
-      end
-    end
-  end
 end

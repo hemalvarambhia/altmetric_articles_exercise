@@ -9,9 +9,4 @@ class ArticleAuthor
   def author_of?(doi)
     @publications.include? doi
   end
-
-  def ==(other)
-    return false unless name == other.name
-    true
-  end
 end
