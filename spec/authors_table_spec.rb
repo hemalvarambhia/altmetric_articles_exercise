@@ -1,4 +1,5 @@
 require 'ostruct'
+require 'article_author'
 require 'doi'
 
 describe 'Authors table' do
@@ -12,7 +13,7 @@ describe 'Authors table' do
     end
 
     def find(doi)
-      author = @authors.select { |author| author.publications.include?(doi) }
+      author = @authors.select { |author| author.author_of?(doi) }
       author.map { |author| author.name }
     end
   end
@@ -32,8 +33,8 @@ describe 'Authors table' do
         required = DOI.new('10.8899/altmetric02324')
         authors_table = AuthorsTable.new(
             [
-                OpenStruct.new(name: 'No Match 1', publications: [a_doi]),
-                OpenStruct.new(name: 'No Match 2', publications: [a_doi])
+                ArticleAuthor.new(name: 'No Match 1', publications: [a_doi]),
+                ArticleAuthor.new(name: 'No Match 2', publications: [a_doi])
             ]
         )
 
@@ -46,8 +47,8 @@ describe 'Authors table' do
         required = DOI.new('10.1111/altmetric777')
         authors_table = AuthorsTable.new(
           [
-            OpenStruct.new(name: 'Author', publications: [ required ]),
-            OpenStruct.new(name: 'No Matching', publications: [a_doi])       
+            ArticleAuthor.new(name: 'Author', publications: [ required ]),
+            ArticleAuthor.new(name: 'No Matching', publications: [a_doi])
           ]
         )
         expect(authors_table.find(required)).to eq ['Author']
@@ -59,10 +60,10 @@ describe 'Authors table' do
         required = DOI.new('10.2954/altmetric9435')
         authors_table = AuthorsTable.new(
           [
-            OpenStruct.new(name: 'Not Author', publications: [a_doi, a_doi]),
-            OpenStruct.new(name: 'Main Author', publications: [ required ]),
-            OpenStruct.new(name: 'Co-Author 1', publications: [ required ]),
-            OpenStruct.new(name: 'Co-Author 2', publications: [ required, a_doi ])
+            ArticleAuthor.new(name: 'Not Author', publications: [a_doi, a_doi]),
+            ArticleAuthor.new(name: 'Main Author', publications: [ required ]),
+            ArticleAuthor.new(name: 'Co-Author 1', publications: [ required ]),
+            ArticleAuthor.new(name: 'Co-Author 2', publications: [ required, a_doi ])
           ]
         )
 
