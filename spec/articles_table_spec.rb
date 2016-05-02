@@ -22,8 +22,9 @@ describe 'Articles Table' do
 
   describe '.from' do
     it 'loads the table from a file' do
+      csv_rows = []
       file = double(:article_csv_file)
-      expect(file).to receive(:read)
+      expect(file).to receive(:read).and_return csv_rows
 
       ArticlesTable.from file
     end
