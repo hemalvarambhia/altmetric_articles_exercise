@@ -1,4 +1,6 @@
 class ISSN
+  extend Forwardable
+  def_delegator :@code, :hash
   attr_reader :code
 
   class Malformed < Exception
@@ -17,6 +19,10 @@ class ISSN
 
   def ==(other)
     code == other.code
+  end
+
+  def eql?(other)
+    code.eql?(other.code)
   end
 
   def to_s

@@ -1,4 +1,6 @@
 class DOI
+  extend Forwardable
+  def_delegator :@serial_code, :hash
   attr_reader :serial_code
 
   Malformed = Class.new(Exception)
