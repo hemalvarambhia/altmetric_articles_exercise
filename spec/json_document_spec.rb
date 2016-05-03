@@ -5,20 +5,14 @@ describe 'JSON document' do
   include CreateDOI, CreateISSN
 
   class JSONDocument
+    extend Forwardable
+    def_delegators :@content, :<<, :empty?
     def initialize(articles = [])
       @content = articles
     end
 
-    def <<(object)
-      @content << object
-    end
-
     def content
       @content.collect { |object| object.to_json }
-    end
-    
-    def empty?
-      @content.empty?
     end
   end
   
