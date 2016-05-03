@@ -50,9 +50,27 @@ describe 'JSON document' do
       expected = { 'doi' => a_doi, 'title' => 'Chemistry', 'issn' => an_issn }
       article = double(:article)
       allow(article).to receive(:to_json).and_return expected
+
       json_doc << article
   
       expect(json_doc.content).to include expected
+    end
+
+    it 'adds articles in insertion order' do
+      json_doc = JSONDocument.new
+      first = { 'doi' => a_doi, 'title' => 'Article 1', 'issn' => an_issn }
+      article_1 = double(:article, :to_json => first)
+      json_doc << article_1
+      second = { 'doi' => a_doi, 'title' => 'Article 2', 'issn' => an_issn }
+      article_2 = double(:article, :to_json => second)
+      json_doc << article_2
+      last = { 'doi' => a_doi, 'title' => 'Article 2', 'issn' => an_issn }
+      article_3 = double(:article, :to_json => last)
+      json_doc << article_3
+
+      expect(json_doc.content[0]).to eq first
+      expect(json_doc.content[1]).to eq second
+      expect(json_doc.content[2]).to eq last
     end
   end
 end
