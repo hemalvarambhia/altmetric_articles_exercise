@@ -8,7 +8,7 @@ describe 'JSON document' do
     end
 
     def content
-      @content.to_json
+      [ @content.to_json ]
     end
     
     def empty?
@@ -33,7 +33,7 @@ describe 'JSON document' do
       expect(article).to receive(:to_json).and_return expected
       json_doc = JSONDocument.new article
       
-      expect(json_doc.content).to eq expected
+      expect(json_doc.content).to eq [ expected ]
       expect(json_doc).not_to be_empty
     end
 
