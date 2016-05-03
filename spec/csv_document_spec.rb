@@ -7,6 +7,10 @@ describe 'CSV Document' do
       @content = object
     end
 
+    def <<(object)
+      @content = object
+    end
+
     def content
       @content.as_csv
     end
@@ -30,6 +34,18 @@ describe 'CSV Document' do
 
       expect(csv_doc.content).to eq expected
       expect(csv_doc).not_to be_empty
+    end
+  end
+
+  describe '#<<' do
+    it 'appends to the current content' do
+      expected = [ a_doi, 'Quantum Mechanics', an_issn ]
+      csv_doc = CSVDocument.new
+      article = double(:article, as_csv: expected)
+
+      csv_doc << article
+
+      expect(csv_doc.content).to eq expected
     end
   end
 end
