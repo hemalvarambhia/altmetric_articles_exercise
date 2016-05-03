@@ -3,20 +3,15 @@ require 'issn_helper'
 describe 'CSV Document' do
   include CreateDOI, CreateISSN
   class CSVDocument
+    extend Forwardable
+    def_delegators :@content, :<<, :empty?
+
     def initialize(object = nil)
       @content = [ object ].compact
     end
 
-    def <<(object)
-      @content << object
-    end
-
     def content
       @content.collect { |object| object.as_csv }
-    end
-
-    def empty?
-      content.all? { |row| row.empty? }
     end
   end
 
