@@ -39,30 +39,32 @@ describe 'JSON document' do
   end
 
   describe '#<<' do
+    before :each do
+      @doc = JSONDocument.new
+    end
+
     it 'adds an article' do
-      json_doc = JSONDocument.new
       expected = { 'doi' => a_doi, 'title' => 'Chemistry', 'issn' => an_issn }
       article = double(:article)
       allow(article).to receive(:to_json).and_return expected
 
-      json_doc << article
+      @doc << article
   
-      expect(json_doc.content).to include expected
+      expect(@doc.content).to include expected
     end
 
     it 'adds articles in insertion order' do
-      json_doc = JSONDocument.new
       first = { 'doi' => a_doi, 'title' => 'Article 1', 'issn' => an_issn }
       second = { 'doi' => a_doi, 'title' => 'Article 2', 'issn' => an_issn }
       last = { 'doi' => a_doi, 'title' => 'Article 3', 'issn' => an_issn }
       [ first, second, last ].each do |element|
         an_article = double(:article, :to_json => element)
-        json_doc << an_article
+        @doc << an_article
       end
 
-      expect(json_doc.content[0]).to eq first
-      expect(json_doc.content[1]).to eq second
-      expect(json_doc.content[2]).to eq last
+      expect(@doc.content[0]).to eq first
+      expect(@doc.content[1]).to eq second
+      expect(@doc.content[2]).to eq last
     end
   end
 end
