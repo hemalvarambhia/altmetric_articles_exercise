@@ -59,14 +59,12 @@ describe 'JSON document' do
     it 'adds articles in insertion order' do
       json_doc = JSONDocument.new
       first = { 'doi' => a_doi, 'title' => 'Article 1', 'issn' => an_issn }
-      article_1 = double(:article, :to_json => first)
-      json_doc << article_1
       second = { 'doi' => a_doi, 'title' => 'Article 2', 'issn' => an_issn }
-      article_2 = double(:article, :to_json => second)
-      json_doc << article_2
-      last = { 'doi' => a_doi, 'title' => 'Article 2', 'issn' => an_issn }
-      article_3 = double(:article, :to_json => last)
-      json_doc << article_3
+      last = { 'doi' => a_doi, 'title' => 'Article 3', 'issn' => an_issn }
+      [ first, second, last ].each do |element|
+        an_article = double(:article, :to_json => element)
+        json_doc << an_article
+      end
 
       expect(json_doc.content[0]).to eq first
       expect(json_doc.content[1]).to eq second
