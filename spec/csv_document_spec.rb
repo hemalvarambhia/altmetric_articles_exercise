@@ -4,19 +4,19 @@ describe 'CSV Document' do
   include CreateDOI, CreateISSN
   class CSVDocument
     def initialize(object = nil)
-      @content = object
+      @content = [ object ].compact
     end
 
     def <<(object)
-      @content = object
+      @content = [ object ]
     end
 
     def content
-      @content.as_csv
+      @content.collect { |object| object.as_csv }
     end
 
     def empty?
-      @content.nil?
+      content.all? { |row| row.empty? }
     end
   end
 
@@ -32,7 +32,7 @@ describe 'CSV Document' do
       article = double(:article, as_csv: expected)
       csv_doc = CSVDocument.new article
 
-      expect(csv_doc.content).to eq expected
+      expect(csv_doc.content).to eq [ expected ]
       expect(csv_doc).not_to be_empty
     end
   end
@@ -45,7 +45,7 @@ describe 'CSV Document' do
 
       csv_doc << article
 
-      expect(csv_doc.content).to eq expected
+      expect(csv_doc.content).to eq [ expected ]
     end
   end
 end
