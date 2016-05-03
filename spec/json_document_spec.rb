@@ -12,7 +12,7 @@ describe 'JSON document' do
     end
 
     def content
-      @content.collect { |object| object.to_json }
+      @content.collect { |object| object.as_json }
     end
   end
   
@@ -30,7 +30,7 @@ describe 'JSON document' do
         'issn' => an_issn
       }
       article = double(:article)
-      allow(article).to receive(:to_json).and_return expected
+      allow(article).to receive(:as_json).and_return expected
       json_doc = JSONDocument.new [ article ]
       
       expect(json_doc.content).to eq [ expected ]
@@ -46,7 +46,7 @@ describe 'JSON document' do
     it 'adds an article' do
       expected = { 'doi' => a_doi, 'title' => 'Chemistry', 'issn' => an_issn }
       article = double(:article)
-      allow(article).to receive(:to_json).and_return expected
+      allow(article).to receive(:as_json).and_return expected
 
       @doc << article
   
@@ -58,7 +58,7 @@ describe 'JSON document' do
       second = { 'doi' => a_doi, 'title' => 'Article 2', 'issn' => an_issn }
       last = { 'doi' => a_doi, 'title' => 'Article 3', 'issn' => an_issn }
       [ first, second, last ].each do |element|
-        an_article = double(:article, :to_json => element)
+        an_article = double(:article, :as_json => element)
         @doc << an_article
       end
 
