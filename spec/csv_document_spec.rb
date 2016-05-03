@@ -34,6 +34,7 @@ describe 'CSV Document' do
 
   describe '#<<' do
     before(:each) { @doc = CSVDocument.new }
+
     it 'appends to the current content' do
       expected = [ a_doi, 'Quantum Mechanics', an_issn ]
       article = double(:article, as_csv: expected)
