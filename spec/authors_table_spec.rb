@@ -1,8 +1,10 @@
 require 'ostruct'
 require 'article_author'
 require 'doi'
-
+require 'doi_helper'
 describe 'Authors table' do
+  include CreateDOI
+
   class AuthorsTable
     def self.from document
       new document.read
@@ -71,10 +73,5 @@ describe 'Authors table' do
         expect(authors_table.find(required)).to eq expected
       end
     end
-  end
-
-  def a_doi
-    registrant = Array.new(4) { rand(0..9) }.join
-    DOI.new("10.#{registrant}/altmetric#{rand(100000000)}")
   end
 end

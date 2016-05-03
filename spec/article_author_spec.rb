@@ -1,7 +1,9 @@
 require 'rspec'
 require 'article_author'
-require 'doi'
+require 'doi_helper'
 describe 'Author' do
+  include CreateDOI
+
   it 'stores their name' do
     author = ArticleAuthor.new(name: 'Author')
     expect(author.name).to eq 'Author'
@@ -93,10 +95,5 @@ describe 'Author' do
       expect(author_2).to eq author_3
       expect(author_3).to eq author_1
     end
-  end
-
-  def a_doi
-    registrant = Array.new(4) { rand(0..9) }.join
-    DOI.new("10.#{registrant}/altmetric#{rand(100000000)}")
   end
 end

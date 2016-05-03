@@ -1,7 +1,9 @@
 require 'ostruct'
-require 'doi'
 require 'issn'
+require 'doi_helper'
 describe 'JSON document' do
+  include CreateDOI
+
   class JSONDocument
     def initialize(article = nil)
       @content = article
@@ -35,12 +37,6 @@ describe 'JSON document' do
       
       expect(json_doc.content).to eq [ expected ]
       expect(json_doc).not_to be_empty
-    end
-
-    def a_doi
-      registrant = Array.new(4) { rand(0..9) }
-      object_id = "altmetric#{rand(100000)}"
-      DOI.new "10.#{registrant.join}/#{object_id}"
     end
 
     def an_issn

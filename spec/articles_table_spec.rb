@@ -1,6 +1,8 @@
 require 'issn'
-require 'doi'
+require 'doi_helper'
 describe 'Articles Table' do
+  include CreateDOI
+
   class ArticlesTable
     def self.from(file)
       new(file.read)
@@ -98,10 +100,6 @@ describe 'Articles Table' do
   end
 
   private
-
-  def a_doi
-    DOI.new('10.1234/altmetric001')
-  end
 
   def an_issn
     ISSN.new('1234-9865')
