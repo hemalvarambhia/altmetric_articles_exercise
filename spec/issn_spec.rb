@@ -39,7 +39,7 @@ describe 'ISSNs' do
     end
   end
 
-  describe '#equals' do
+  describe '#==' do
     context 'when the ISSNs are different' do
       it 'marks them as being unequal' do
         issn = ISSN.new '4325-8760'

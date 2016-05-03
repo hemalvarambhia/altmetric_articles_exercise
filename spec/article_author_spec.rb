@@ -39,7 +39,7 @@ describe 'Author' do
     end
   end
 
-  describe '.==' do
+  describe '#==' do
     context 'when two authors have the same name and publications' do
       it 'confirms them as one and the same' do
         publications = [a_doi, a_doi]

@@ -50,7 +50,7 @@ describe 'DOIs' do
     end 
   end
 
-  describe '#equals' do
+  describe '#==' do
     it 'is reflexive' do
       doi = DOI.new '10.4520/altmetric888'
     
