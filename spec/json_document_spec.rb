@@ -5,16 +5,16 @@ describe 'JSON document' do
   include CreateDOI, CreateISSN
 
   class JSONDocument
-    def initialize(article = nil)
+    def initialize(article = [])
       @content = article
     end
 
     def content
-      [ @content.to_json ]
+      @content.collect { |object| object.to_json }
     end
     
     def empty?
-      @content.nil?
+      @content.empty?
     end
   end
   
@@ -33,7 +33,7 @@ describe 'JSON document' do
       }
       article = double(:article)
       expect(article).to receive(:to_json).and_return expected
-      json_doc = JSONDocument.new article
+      json_doc = JSONDocument.new [ article ]
       
       expect(json_doc.content).to eq [ expected ]
       expect(json_doc).not_to be_empty
