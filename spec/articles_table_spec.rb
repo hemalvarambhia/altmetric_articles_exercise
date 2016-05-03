@@ -1,7 +1,8 @@
 require 'issn'
+require 'issn_helper'
 require 'doi_helper'
 describe 'Articles Table' do
-  include CreateDOI
+  include CreateDOI, CreateISSN
 
   class ArticlesTable
     def self.from(file)
@@ -97,11 +98,5 @@ describe 'Articles Table' do
         end
       end
     end
-  end
-
-  private
-
-  def an_issn
-    ISSN.new('1234-9865')
   end
 end

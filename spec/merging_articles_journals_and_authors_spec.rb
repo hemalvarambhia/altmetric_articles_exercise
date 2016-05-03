@@ -1,7 +1,11 @@
 require 'rspec'
 require 'doi'
+require 'doi_helper'
 require 'issn'
+require 'issn_helper'
 describe 'Combiner' do
+  include CreateDOI, CreateISSN
+
   class Combined
     def initialize(articles, journals, authors)
       @articles = articles
