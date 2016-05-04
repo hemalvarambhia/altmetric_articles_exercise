@@ -13,7 +13,13 @@ describe 'Article' do
     end
 
     def as_json
-      { 'doi' => @doi, 'issn' => @issn, 'title' => @title, 'journal' => @journal, 'author' => @author.join(',') }
+      { 
+        'doi' => @doi, 
+        'issn' => @issn, 
+        'title' => @title, 
+        'journal' => @journal, 
+        'author' => @author.join(',') 
+      }
     end
   end
  
