@@ -21,8 +21,7 @@ describe 'Article' do
       article = Article.new(doi: expected)
 
       article_json = article.as_json
-      expect(article_json).to have_key 'doi'
-      expect(article_json['doi']).to eq expected
+      expect(article_json).to include('doi' => expected)
     end
 
     it 'renders the ISSN' do
@@ -30,8 +29,7 @@ describe 'Article' do
       article = Article.new(issn: expected)
       
       article_json = article.as_json
-      expect(article_json).to have_key 'issn'
-      expect(article_json['issn']).to eq expected
+      expect(article_json).to include('issn' => expected)
     end
 
     it 'renders the title' do
@@ -39,8 +37,7 @@ describe 'Article' do
       article = Article.new(title: expected)      
 
       article_json = article.as_json
-      expect(article_json).to have_key 'title'
-      expect(article_json['title']).to eq expected
+      expect(article_json).to include('title' => expected)
     end
   end
 end
