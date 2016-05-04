@@ -8,10 +8,11 @@ describe 'Article' do
       @doi = args[:doi]
       @issn = args[:issn]
       @title = args[:title]
+      @journal = args[:journal]
     end
 
     def as_json
-      { 'doi' => @doi, 'issn' => @issn, 'title' => @title }
+      { 'doi' => @doi, 'issn' => @issn, 'title' => @title, 'journal' => @journal }
     end
   end
  
@@ -21,6 +22,7 @@ describe 'Article' do
       article = Article.new(doi: expected)
 
       article_json = article.as_json
+
       expect(article_json).to include('doi' => expected)
     end
 
@@ -29,7 +31,17 @@ describe 'Article' do
       article = Article.new(issn: expected)
       
       article_json = article.as_json
+
       expect(article_json).to include('issn' => expected)
+    end
+
+    it 'renders the title of the journal' do
+      expected = 'Journal of Physics B'
+      article = Article.new(journal: expected)
+
+      article_json = article.as_json      
+
+      expect(article_json).to include('journal' => expected)
     end
 
     it 'renders the title' do
@@ -37,6 +49,7 @@ describe 'Article' do
       article = Article.new(title: expected)      
 
       article_json = article.as_json
+
       expect(article_json).to include('title' => expected)
     end
   end
