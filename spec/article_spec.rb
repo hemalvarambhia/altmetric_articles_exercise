@@ -15,10 +15,10 @@ describe 'Article' do
     def as_json
       { 
         'doi' => @doi, 
-        'issn' => @issn, 
-        'title' => @title, 
-        'journal' => @journal, 
-        'author' => @author.join(',') 
+        'title' => @title,
+        'author' => @author.join(','),
+        'journal' => @journal,
+        'issn' => @issn
       }
     end
   end
@@ -33,27 +33,9 @@ describe 'Article' do
       expect(article_json).to include('doi' => expected)
     end
 
-    it 'renders the ISSN' do
-      expected = an_issn
-      article = Article.new(issn: expected)
-      
-      article_json = article.as_json
-
-      expect(article_json).to include('issn' => expected)
-    end
-
-    it 'renders the title of the journal' do
-      expected = 'Journal of Physics B'
-      article = Article.new(journal: expected)
-
-      article_json = article.as_json      
-
-      expect(article_json).to include('journal' => expected)
-    end
-
     it 'renders the title' do
       expected = 'The R-Matrix Method'
-      article = Article.new(title: expected)      
+      article = Article.new(title: expected)
 
       article_json = article.as_json
 
@@ -68,6 +50,24 @@ describe 'Article' do
       article_json = article.as_json
 
       expect(article_json).to include('author' => expected)
+    end
+
+    it 'renders the title of the journal' do
+      expected = 'Journal of Physics B'
+      article = Article.new(journal: expected)
+
+      article_json = article.as_json
+
+      expect(article_json).to include('journal' => expected)
+    end
+
+    it 'renders the ISSN' do
+      expected = an_issn
+      article = Article.new(issn: expected)
+      
+      article_json = article.as_json
+
+      expect(article_json).to include('issn' => expected)
     end
   end
 end
