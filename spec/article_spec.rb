@@ -9,10 +9,11 @@ describe 'Article' do
       @issn = args[:issn]
       @title = args[:title]
       @journal = args[:journal]
+      @author = args.fetch(:authors, [])
     end
 
     def as_json
-      { 'doi' => @doi, 'issn' => @issn, 'title' => @title, 'journal' => @journal }
+      { 'doi' => @doi, 'issn' => @issn, 'title' => @title, 'journal' => @journal, 'author' => @author.join(',') }
     end
   end
  
@@ -51,6 +52,16 @@ describe 'Article' do
       article_json = article.as_json
 
       expect(article_json).to include('title' => expected)
+    end
+
+    it 'renders the authors' do
+      authors = ['Author 1', 'Co-Author 1', 'Co-Author 2']
+      expected = authors.join(',')
+      article = Article.new(authors: authors)
+
+      article_json = article.as_json
+
+      expect(article_json).to include('author' => expected)
     end
   end
 end
