@@ -7,10 +7,11 @@ describe 'Article' do
     def initialize(args)
       @doi = args[:doi]
       @issn = args[:issn]
+      @title = args[:title]
     end
 
     def as_json
-      { 'doi' => @doi, 'issn' => @issn }
+      { 'doi' => @doi, 'issn' => @issn, 'title' => @title }
     end
   end
  
@@ -31,6 +32,15 @@ describe 'Article' do
       article_json = article.as_json
       expect(article_json).to have_key 'issn'
       expect(article_json['issn']).to eq expected
+    end
+
+    it 'renders the title' do
+      expected = 'The R-Matrix Method'
+      article = Article.new(title: expected)      
+
+      article_json = article.as_json
+      expect(article_json).to have_key 'title'
+      expect(article_json['title']).to eq expected
     end
   end
 end
