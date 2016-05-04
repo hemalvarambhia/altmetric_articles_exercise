@@ -1,14 +1,16 @@
 require 'doi_helper'
+require 'issn_helper'
 describe 'Article' do
-  include CreateDOI
+  include CreateDOI, CreateISSN
 
   class Article
     def initialize(args)
       @doi = args[:doi]
+      @issn = args[:issn]
     end
 
     def as_json
-      { 'doi' => @doi }
+      { 'doi' => @doi, 'issn' => @issn }
     end
   end
  
@@ -20,6 +22,15 @@ describe 'Article' do
       article_json = article.as_json
       expect(article_json).to have_key 'doi'
       expect(article_json['doi']).to eq expected
+    end
+
+    it 'renders the ISSN' do
+      expected = an_issn
+      article = Article.new(issn: expected)
+      
+      article_json = article.as_json
+      expect(article_json).to have_key 'issn'
+      expect(article_json['issn']).to eq expected
     end
   end
 end
