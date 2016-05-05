@@ -49,7 +49,8 @@ describe 'Articles Table' do
         authors_table = double(:authors_table).as_null_object
         journals_table = double(:journals_table)
         articles_table = ArticlesTable.new(row)
-        expect(journals_table).to receive(:find).with(row[:issn]).and_return 'Science'
+        expect(journals_table).to(
+          receive(:find).with(row[:issn]).and_return('Science'))
 
         joined_table = articles_table.join(journals_table, authors_table)
 
