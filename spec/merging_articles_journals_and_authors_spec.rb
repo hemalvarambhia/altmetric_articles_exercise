@@ -1,7 +1,5 @@
 require 'rspec'
-require 'doi'
 require 'doi_helper'
-require 'issn'
 require 'issn_helper'
 describe 'Combiner' do
   include CreateDOI, CreateISSN
@@ -35,9 +33,9 @@ describe 'Combiner' do
 
   def a_line
     {
-        doi: DOI.new('10.1234/altmetric001'),
+        doi: a_doi,
         title: 'Physics',
-        issn: ISSN.new('1234-5678'),
+        issn: an_issn,
         journal: 'Journal of Physics A',
         authors: ['Author 1']
     }
