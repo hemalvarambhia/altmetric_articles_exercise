@@ -23,7 +23,7 @@ describe 'Article' do
     end
 
     def as_csv
-      [ @doi ]
+      [ @doi, @title ]
     end
   end
  
@@ -82,10 +82,17 @@ describe 'Article' do
 
       article_csv = article.as_csv
 
-      expect(article_csv).to have(expected).at_position(1)
+      expect(article_csv).to have(expected).at_position(0)
     end
  
-    it 'renders the title'
+    it 'renders the title' do
+      expected = 'e-HCN Collisions'
+      article = Article.new(title: expected)
+
+      article_csv = article.as_csv
+
+      expect(article_csv).to have(expected).at_position(1)
+    end
 
     it 'renders the authors'
 
@@ -99,11 +106,11 @@ describe 'Article' do
       end
 
       chain :at_position do |position|
-        @expected_position = position - 1
+        @expected_position = position
       end
 
       failure_message_for_should do |actual|
-       "expected that #{actual} would contain of #{expected} at position #{@expected_position}≈ß"
+       "expected that #{actual} would contain of #{expected} at position #{@expected_position}"
       end
     end
   end
