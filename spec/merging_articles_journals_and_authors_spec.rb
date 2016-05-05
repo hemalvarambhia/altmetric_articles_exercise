@@ -1,4 +1,5 @@
 require 'rspec'
+require 'ostruct'
 require 'doi_helper'
 require 'issn_helper'
 describe 'Combiner' do
@@ -12,7 +13,7 @@ describe 'Combiner' do
     end
 
     def output_to document
-       document << @articles.join(@journals, @authors)
+       document << OpenStruct.new(@articles.join(@journals, @authors))
     end
   end
 
@@ -25,10 +26,14 @@ describe 'Combiner' do
     expect(articles_table).to(
         receive(:join).with(journals_table, authors_table).and_return line
     )
-    expect(document).to receive(:<<).with(line)
+    expect(document).to receive(:<<).with(an_article(line))
     combined = Combined.new(articles_table, journals_table, authors_table)
 
     combined.output_to(document)
+  end
+
+  def an_article(line)
+    OpenStruct.new line
   end
 
   def a_line
