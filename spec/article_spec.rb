@@ -23,7 +23,7 @@ describe 'Article' do
     end
 
     def as_csv
-      [ @doi, @title, @author.join(',')]
+      [ @doi, @title, @author.join(','), @journal]
     end
   end
  
@@ -104,7 +104,14 @@ describe 'Article' do
       expect(article_csv).to have(expected).at_position(2)
     end
 
-    it 'renders the title of the journal'
+    it 'renders the title of the journal' do
+      expected = 'Journal of Physics B'
+      article = Article.new(journal: expected)
+
+      article_csv = article.as_csv
+
+      expect(article_csv).to have(expected).at_position(3)
+    end
 
     it "renders the journal's ISSN"
 
