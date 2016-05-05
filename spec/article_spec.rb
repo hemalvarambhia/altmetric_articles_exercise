@@ -23,7 +23,7 @@ describe 'Article' do
     end
 
     def as_csv
-      [ @doi, @title ]
+      [ @doi, @title, @author.join(',')]
     end
   end
  
@@ -94,7 +94,15 @@ describe 'Article' do
       expect(article_csv).to have(expected).at_position(1)
     end
 
-    it 'renders the authors'
+    it 'renders the authors' do
+      authors = ['Author 1', 'Co-Author 2', 'Co-Author']
+      article = Article.new(authors: authors)
+ 
+      article_csv = article.as_csv     
+
+      expected = authors.join ','
+      expect(article_csv).to have(expected).at_position(2)
+    end
 
     it 'renders the title of the journal'
 
@@ -109,8 +117,8 @@ describe 'Article' do
         @expected_position = position
       end
 
-      failure_message_for_should do |actual|
-       "expected that #{actual} would contain of #{expected} at position #{@expected_position}"
+      failure_message do |actual|
+       "expected that #{actual} would contain of '#{expected}' at position #{@expected_position}"
       end
     end
   end
