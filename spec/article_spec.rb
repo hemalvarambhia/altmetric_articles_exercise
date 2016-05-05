@@ -23,7 +23,7 @@ describe 'Article' do
     end
 
     def as_csv
-      [ @doi, @title, @author.join(','), @journal]
+      [ @doi, @title, @author.join(','), @journal, @issn]
     end
   end
  
@@ -113,7 +113,14 @@ describe 'Article' do
       expect(article_csv).to have(expected).at_position(3)
     end
 
-    it "renders the journal's ISSN"
+    it "renders the journal's ISSN" do
+      expected = an_issn
+      article = Article.new(issn: expected)
+
+      article_csv = article.as_csv
+
+      expect(article_csv).to have(expected).at_position(4)
+    end
 
     RSpec::Matchers.define :have do |expected|
       match do |actual|
