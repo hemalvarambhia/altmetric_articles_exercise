@@ -23,7 +23,7 @@ describe 'Article' do
     end
 
     def as_csv
-      [ @doi, @title, @author.join(','), @journal, @issn]
+      [ @doi, @title, @author.join(','), @journal, @issn ]
     end
   end
  
