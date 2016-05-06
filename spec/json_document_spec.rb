@@ -1,20 +1,9 @@
+require 'json_document'
 require 'doi_helper'
 require 'issn_helper'
 describe 'JSON document' do
   include CreateDOI, CreateISSN
 
-  class JSONDocument
-    extend Forwardable
-    def_delegators :@content, :<<, :empty?
-    def initialize(articles = [])
-      @content = articles
-    end
-
-    def content
-      @content.collect { |object| object.as_json }
-    end
-  end
-  
   it 'is initially empty' do
     json_doc = JSONDocument.new
     
