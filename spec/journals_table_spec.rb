@@ -1,19 +1,6 @@
+require 'journals_table'
 require 'issn'
 describe 'Journals table' do
-  class JournalsTable
-    def self.from document
-      new document.read
-    end
-
-    def initialize(rows = [])
-      @journals = Hash[rows]
-    end
-
-    def find(issn)
-      @journals[issn]
-    end
-  end
-
   describe '.from' do
     it 'loads the table from a file' do
       csv_rows = []
