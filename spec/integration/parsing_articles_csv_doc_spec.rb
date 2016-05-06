@@ -1,5 +1,4 @@
 $LOAD_PATH.unshift '../../lib'
-require 'csv'
 require 'doi'
 require 'issn'
 require 'article_csv_doc'
