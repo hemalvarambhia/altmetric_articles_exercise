@@ -1,4 +1,3 @@
-require 'issn'
 require 'issn_helper'
 require 'doi_helper'
 describe 'Articles Table' do
