@@ -1,0 +1,26 @@
+$LOAD_PATH.unshift '../../lib'
+require 'csv'
+require 'doi'
+require 'issn'
+require 'article_csv_doc'
+require 'altmetric_file'
+require 'article_csv_parser'
+describe 'Parsing an Articles CSV Doc' do
+  it 'parses the DOI, title and ISSN' do
+    expected = {
+      doi: DOI.new('10.1234/altmetric0'),
+      title: 'Small Wooden Chair',
+      issn: ISSN.new('1337-8688')
+    }
+    article_csv_doc =
+      ArticleCSVDoc.new(
+      CSV.new(
+      File.open(
+      File.join(
+      File.dirname(__FILE__),'sample_docs','one_article.csv')), headers: true)
+    )
+    altmetric_file = AltmetricFile.new(article_csv_doc, ArticleCSVParser)
+
+    expect(altmetric_file.read[0]).to eq expected
+  end
+end
