@@ -1,4 +1,3 @@
-require 'ostruct'
 require 'doi_helper'
 require 'issn_helper'
 describe 'JSON document' do
