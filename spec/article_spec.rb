@@ -1,32 +1,8 @@
+require 'article'
 require 'doi_helper'
 require 'issn_helper'
 describe 'Article' do
   include CreateDOI, CreateISSN
-
-  class Article
-    def initialize(args)
-      @doi = args[:doi]
-      @issn = args[:issn]
-      @title = args[:title]
-      @journal = args[:journal]
-      @author = args.fetch(:authors, [])
-    end
-
-    def as_json
-      { 
-        'doi' => @doi, 
-        'title' => @title,
-        'author' => @author.join(','),
-        'journal' => @journal,
-        'issn' => @issn
-      }
-    end
-
-    def as_csv
-      [ @doi, @title, @author.join(','), @journal, @issn ]
-    end
-  end
- 
   describe '#as_json' do
     it 'renders the DOI' do
       expected = a_doi
