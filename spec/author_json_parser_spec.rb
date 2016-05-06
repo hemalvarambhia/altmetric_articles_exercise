@@ -1,4 +1,3 @@
-require 'ostruct'
 require 'article_author'
 require 'doi'
 
