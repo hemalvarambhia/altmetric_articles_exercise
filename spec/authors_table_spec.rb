@@ -1,6 +1,4 @@
-require 'ostruct'
 require 'article_author'
-require 'doi'
 require 'doi_helper'
 describe 'Authors table' do
   include CreateDOI
