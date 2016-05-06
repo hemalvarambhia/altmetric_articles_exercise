@@ -1,16 +1,5 @@
-require 'doi'
-require 'issn'
+require 'article_csv_parser'
 describe 'Article CSV Parser' do
-  class ArticleCSVParser
-    def self.parse(row)
-      {
-        doi: DOI.new(row.first),
-        title: row[1],
-        issn: ISSN.new(row.last)
-      }
-    end
-  end
-  
   it 'reads off the DOI, title and ISSN from a line' do
     line = [ '10.4937/altmetric001', 'Physics', '1232-1983' ]
     expected = { 
