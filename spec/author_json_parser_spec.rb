@@ -1,16 +1,5 @@
-require 'article_author'
-require 'doi'
-
+require 'author_json_parser'
 describe 'Author JSON Parser' do
-  class AuthorJSONParser
-    def self.parse(author_json)
-       ArticleAuthor.new(
-         name: author_json['name'],
-         publications: author_json['articles'].map { |doi| DOI.new doi }
-       )
-    end    
-  end
-
   it 'parses the author from the JSON element' do
     author_json = {
       'name' => 'Author',
