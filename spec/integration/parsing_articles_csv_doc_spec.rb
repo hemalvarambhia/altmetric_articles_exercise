@@ -1,7 +1,7 @@
 $LOAD_PATH.unshift '../../lib'
+require 'csv'
 require 'doi'
 require 'issn'
-require 'article_csv_doc'
 require 'altmetric_file'
 require 'article_csv_parser'
 describe 'Parsing an Articles CSV Doc' do
@@ -13,7 +13,7 @@ describe 'Parsing an Articles CSV Doc' do
     }
     path_to_csv_doc = File.join(
       File.dirname(__FILE__),'sample_docs','one_article.csv')
-    article_csv_doc = ArticleCSVDoc.new(File.open(path_to_csv_doc))
+    article_csv_doc = CSV.new(File.open(path_to_csv_doc), {headers: true})
     altmetric_file = AltmetricFile.new(article_csv_doc, ArticleCSVParser)
 
     expect(altmetric_file.read).to eq expected

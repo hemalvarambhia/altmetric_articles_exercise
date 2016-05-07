@@ -5,6 +5,6 @@ class AltmetricFile
   end
 
   def read
-    @parser.parse(@io.read)
+    @parser.parse(@io.read[0])
   end
 end
