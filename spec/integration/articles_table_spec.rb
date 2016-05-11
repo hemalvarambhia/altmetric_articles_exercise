@@ -43,7 +43,7 @@ describe 'ArticlesTable' do
         File.dirname(__FILE__), 'sample_docs', 'one_author.json'
       )
       authors_json_doc = AuthorJSONDoc.new(File.open(path_to_json_doc))
-      authors_table = AuthorsTable.from AltmetricFile.new(authors_json_doc, AuthorJSONParser)
+      AuthorsTable.from AltmetricFile.new(authors_json_doc, AuthorJSONParser)
     end
   end
 end
