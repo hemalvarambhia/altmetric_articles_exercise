@@ -12,10 +12,10 @@ describe 'ArticlesTable' do
 
   describe '#join' do
     it 'merges the author and journal of the article together' do
-      path_to_csv_doc = File.join(@doc_dir, 'one_article.csv')
+      path_to_article_csv = File.join(@doc_dir, 'one_article.csv')
       path_to_journal_csv = File.join(@doc_dir, 'one_journal.csv')
       path_to_json_doc = File.join(@doc_dir, 'one_author.json')
-      merged_row = articles_table(path_to_csv_doc).join(
+      merged_row = articles_table(path_to_article_csv).join(
                            journals_table(path_to_journal_csv),
                            authors_table(path_to_json_doc))
 
