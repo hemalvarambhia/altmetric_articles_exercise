@@ -3,7 +3,7 @@ require 'issn'
 describe 'Journals table' do
   describe '.from' do
     it 'loads the table from a file' do
-      csv_rows = [nil]
+      csv_rows = []
       doc = double(:journal_csv_doc)
       expect(doc).to receive(:read).and_return(csv_rows)
 
