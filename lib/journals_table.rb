@@ -3,7 +3,7 @@ class JournalsTable
     new document.read
   end
 
-  def initialize(*rows)
+  def initialize(rows)
     @journals = Hash[rows]
   end
 
