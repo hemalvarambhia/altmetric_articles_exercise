@@ -2,20 +2,9 @@ require 'rspec'
 require 'ostruct'
 require 'doi_helper'
 require 'issn_helper'
+require 'combined'
 describe 'Combiner' do
   include CreateDOI, CreateISSN
-
-  class Combined
-    def initialize(articles, journals, authors)
-      @articles = articles
-      @journals = journals
-      @authors = authors
-    end
-
-    def output_to document
-       document << OpenStruct.new(@articles.join(@journals, @authors))
-    end
-  end
 
   it 'publishes article merged with its journal and author to a document' do
     articles_table = double(:articles_table)
