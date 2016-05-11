@@ -1,6 +1,6 @@
 class ArticlesTable
   def self.from(file)
-    new(file.read)
+    new(file.read[0])
   end
 
   def initialize(row)
