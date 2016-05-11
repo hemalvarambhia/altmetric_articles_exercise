@@ -20,13 +20,13 @@ describe 'ArticlesTable' do
                            authors_table(path_to_json_doc))
 
       expect(merged_row).to(
-        eq( { 
+        eq( [{ 
           doi: DOI.new('10.1234/altmetric0'), 
           title: 'Small Wooden Chair',
           issn: ISSN.new('1337-8688'),
           journal: 'Bartell-Collins',
           authors: ['Author 1']
-        })
+        }])
       ) 
     end
 

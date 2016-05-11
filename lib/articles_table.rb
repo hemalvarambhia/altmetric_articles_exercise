@@ -1,19 +1,21 @@
 class ArticlesTable
   def self.from(file)
-    new(file.read[0])
+    new(file.read)
   end
 
-  def initialize(row)
-    @row = row
+  def initialize(rows)
+    @rows = rows
   end
 
   def join(journal_table, author_table)
-    @row.merge(
-        {
-            journal: journal_table.find(@row[:issn]),
-            authors: author_table.find(@row[:doi])
-        }
-    )
+    @rows.collect do |row| 
+       row.merge(
+         {
+           journal: journal_table.find(row[:issn]),
+           authors: author_table.find(row[:doi])
+         }
+       )
+    end
   end
 end
 

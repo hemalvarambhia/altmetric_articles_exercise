@@ -19,9 +19,11 @@ describe 'Articles Table' do
       row = {issn: an_issn, doi: a_doi}
       authors_table = double(:authors_table).as_null_object
       journals_table = double(:journals_table).as_null_object
-      articles_table = ArticlesTable.new(row)
+      articles_table = ArticlesTable.new([row])
 
-      expect(articles_table.join(journals_table, authors_table)).to include(row)
+      joined_table = articles_table.join(journals_table, authors_table).first
+
+      expect(joined_table).to include(row)
     end
 
     describe 'merging with a journals table' do
@@ -29,11 +31,11 @@ describe 'Articles Table' do
         row = {issn: an_issn}
         authors_table = double(:authors_table).as_null_object
         journals_table = double(:journals_table)
-        articles_table = ArticlesTable.new(row)
+        articles_table = ArticlesTable.new([row])
         expect(journals_table).to(
           receive(:find).with(row[:issn]).and_return('Science'))
 
-        joined_table = articles_table.join(journals_table, authors_table)
+        joined_table = articles_table.join(journals_table, authors_table).first
 
         expect(joined_table).to include(journal: 'Science')
       end
@@ -43,10 +45,10 @@ describe 'Articles Table' do
           row = {issn: an_issn}
           authors_table = double(:authors_table).as_null_object
           journals_table = double(:journals_table)
-          articles_table = ArticlesTable.new(row)
+          articles_table = ArticlesTable.new([row])
           expect(journals_table).to receive(:find).with(row[:issn]).and_return nil
 
-          joined_table = articles_table.join(journals_table, authors_table)
+          joined_table = articles_table.join(journals_table, authors_table).first
 
           expect(joined_table).to include(journal: nil)
         end
@@ -59,9 +61,9 @@ describe 'Articles Table' do
         authors_table = double(:authors_table)
         expect(authors_table).to receive(:find).with(row[:doi]).and_return ['Physicist']
         journals_table = double(:journals_table).as_null_object
-        articles_table = ArticlesTable.new(row)
+        articles_table = ArticlesTable.new([row])
 
-        joined_table = articles_table.join(journals_table, authors_table)
+        joined_table = articles_table.join(journals_table, authors_table).first
 
         expect(joined_table).to(include(authors: ['Physicist']))
       end
@@ -72,9 +74,9 @@ describe 'Articles Table' do
           authors_table = double(:authors_table)
           expect(authors_table).to receive(:find).with(row[:doi]).and_return []
           journals_table = double(:journals_table).as_null_object
-          articles_table = ArticlesTable.new(row)
+          articles_table = ArticlesTable.new([row])
 
-          joined_table = articles_table.join(journals_table, authors_table)
+          joined_table = articles_table.join(journals_table, authors_table).first
 
           expect(joined_table).to(include(authors: []))
         end
