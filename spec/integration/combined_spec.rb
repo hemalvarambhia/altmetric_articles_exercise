@@ -17,7 +17,7 @@ describe 'Combined' do
       )
     end
     
-    it 'publishes the article to a JSON document' do
+    it 'publishes the merged data to a JSON document' do
       path_to_articles_csv = File.join(@sample_docs_dir, 'one_article.csv')
       articles_table = articles_table_from path_to_articles_csv
       path_to_journals_csv = File.join(@sample_docs_dir, 'one_journal.csv')
