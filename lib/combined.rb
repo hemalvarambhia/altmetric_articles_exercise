@@ -1,3 +1,4 @@
+require 'article'
 class Combined
   def initialize(articles, journals, authors)
     @articles = articles
@@ -6,6 +7,8 @@ class Combined
   end
 
   def output_to document
-     document << OpenStruct.new(@articles.join(@journals, @authors))
+    @articles.join(@journals, @authors).each do |merged_row|
+      document << Article.new(merged_row)
+    end
   end
 end

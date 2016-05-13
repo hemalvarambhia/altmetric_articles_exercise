@@ -13,16 +13,12 @@ describe 'Combiner' do
     document = double(:document)
     line = a_line
     expect(articles_table).to(
-        receive(:join).with(journals_table, authors_table).and_return line
+        receive(:join).with(journals_table, authors_table).and_return [line]
     )
-    expect(document).to receive(:<<).with(an_article(line))
+    expect(document).to receive(:<<).with(duck_type(:as_json, :as_csv))
     combined = Combined.new(articles_table, journals_table, authors_table)
 
     combined.output_to(document)
-  end
-
-  def an_article(line)
-    OpenStruct.new line
   end
 
   def a_line
