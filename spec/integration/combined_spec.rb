@@ -9,25 +9,28 @@ require 'author_json_parser'
 require 'authors_table'
 require 'combined'
 require 'json_document'
+require 'csv_document'
 describe 'Combined' do
   describe '#output_to' do
     before(:each) do
-      @sample_docs_dir = File.join(
-        File.dirname(__FILE__), 'sample_docs'
-      )
+      docs_dir = File.join(File.dirname(__FILE__), 'sample_docs')
+
+      articles_csv = File.join(docs_dir, 'one_article.csv')
+      articles_table = articles_table_from articles_csv
+
+      journals_csv = File.join(docs_dir, 'one_journal.csv')
+      journals_table = journals_table_from journals_csv
+
+      authors_json = File.join(docs_dir, 'one_author.json')
+      authors_table = authors_table_from authors_json
+
+      @combiner = Combined.new(articles_table, journals_table, authors_table)
     end
     
     it 'publishes the merged data to a JSON document' do
-      path_to_articles_csv = File.join(@sample_docs_dir, 'one_article.csv')
-      articles_table = articles_table_from path_to_articles_csv
-      path_to_journals_csv = File.join(@sample_docs_dir, 'one_journal.csv')
-      journals_table = journals_table_from path_to_journals_csv
-      path_to_authors_json = File.join(@sample_docs_dir, 'one_author.json')
-      authors_table = authors_table_from path_to_authors_json
-      combiner = Combined.new(articles_table, journals_table, authors_table)
       json_document = JSONDocument.new
         
-      combiner.output_to json_document
+      @combiner.output_to json_document
       
       expect(json_document.content).to(
         include(
@@ -38,6 +41,24 @@ describe 'Combined' do
             'journal' => 'Bartell-Collins',
             'issn' => ISSN.new('1337-8688')
           }
+        )
+      )
+    end
+
+    it 'publishes the merged data to a CSV document' do
+      csv_document = CSVDocument.new
+        
+      @combiner.output_to csv_document
+      
+      expect(csv_document.content).to(
+        include(
+          [
+            DOI.new('10.1234/altmetric0'),
+            'Small Wooden Chair',
+            'Author 1',
+            'Bartell-Collins',
+            ISSN.new('1337-8688')
+          ]
         )
       )
     end
