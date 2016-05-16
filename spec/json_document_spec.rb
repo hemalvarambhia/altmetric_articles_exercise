@@ -84,7 +84,10 @@ describe 'JSON document' do
           { doi: DOI.new('10.5555/altmetric555'), title: 'Article 3',
             author: 'Author 3', journal: 'Nanotech', issn: ISSN.new('9326-3111') }
       ]
-      expect(@doc.content).to eq expected
+      actual_content = @doc.content
+      expected.each_with_index do |expected_json, index|
+        expect(actual_content[index]).to eq expected_json
+      end
     end
   end
 end
