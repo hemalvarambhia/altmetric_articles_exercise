@@ -28,7 +28,7 @@ describe 'JSON document' do
 
     context 'when an article has multiple authors' do
       it 'stores the authors as a comma-separated list' do
-        merged_row = {
+        article = {
             doi: a_doi,
             title: 'R-Matrix Method',
             author: ['Author 1', 'Co-Author 1', 'Co-Author 2' ],
@@ -36,7 +36,7 @@ describe 'JSON document' do
             issn: an_issn
 
         }
-        json_doc = JSONDocument.new [ merged_row ]
+        json_doc = JSONDocument.new [ article ]
 
         expect(json_doc.content[0][:author]).to eq 'Author 1, Co-Author 1, Co-Author 2'
         expect(json_doc).not_to be_empty
