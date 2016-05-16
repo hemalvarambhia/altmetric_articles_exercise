@@ -65,7 +65,7 @@ describe 'Articles Table' do
 
         joined_table = articles_table.join(journals_table, authors_table).first
 
-        expect(joined_table).to(include(authors: ['Physicist']))
+        expect(joined_table).to(include(author: ['Physicist']))
       end
 
       context 'when the article has no authors' do
@@ -78,7 +78,7 @@ describe 'Articles Table' do
 
           joined_table = articles_table.join(journals_table, authors_table).first
 
-          expect(joined_table).to(include(authors: []))
+          expect(joined_table).to(include(author: []))
         end
       end
     end
