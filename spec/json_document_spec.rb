@@ -12,15 +12,35 @@ describe 'JSON document' do
 
   describe '#content' do
     it "holds the document's content" do
-      expected = { 
-        doi: a_doi,
-        title: 'Physics Article',
-        issn: an_issn
+      article = {
+        doi: DOI.new('10.1234/altmetric658'), title: 'Physics Article',
+        author: [ 'Author' ], journal: 'Science', issn: ISSN.new('6985-9743'),
       }
-      json_doc = JSONDocument.new [ expected ]
-      
-      expect(json_doc.content).to eq [ expected ]
+      json_doc = JSONDocument.new [ article ]
+
+      expected = {
+          doi: DOI.new('10.1234/altmetric658'), title: 'Physics Article',
+          author: 'Author', journal: 'Science', issn: ISSN.new('6985-9743')
+      }
+      expect(json_doc.content).to(include(expected))
       expect(json_doc).not_to be_empty
+    end
+
+    context 'when an article has multiple authors' do
+      it 'stores the authors as a comma-separated list' do
+        merged_row = {
+            doi: a_doi,
+            title: 'R-Matrix Method',
+            author: ['Author 1', 'Co-Author 1', 'Co-Author 2' ],
+            journal: 'Journal of Physics VB',
+            issn: an_issn
+
+        }
+        json_doc = JSONDocument.new [ merged_row ]
+
+        expect(json_doc.content[0][:author]).to eq 'Author 1, Co-Author 1, Co-Author 2'
+        expect(json_doc).not_to be_empty
+      end
     end
   end
 
@@ -30,24 +50,41 @@ describe 'JSON document' do
     end
 
     it 'adds an article' do
-      expected = { doi: a_doi, title: 'Chemistry', issn: an_issn }
+      article = {
+          doi: DOI.new('10.6456/altmetric003'), title: 'Chemistry',
+          author: [ 'Author' ], journal: 'Science', issn: ISSN.new('9685-2421')
+      }
 
-      @doc << expected
-  
+      @doc << article
+
+      expected = {
+          doi: DOI.new('10.6456/altmetric003'), title: 'Chemistry',
+          author: 'Author', journal: 'Science', issn: ISSN.new('9685-2421')
+      }
       expect(@doc.content).to include expected
     end
 
     it 'adds articles in insertion order' do
-      first = { doi: a_doi, title: 'Article 1', issn: an_issn, author: ['Author 1'] }
-      second = { doi: a_doi, title: 'Article 2', issn: an_issn, author: ['Author 2'] }
-      last = { doi: a_doi, title: 'Article 3', issn: an_issn, author: ['Author 3'] }
-      [ first, second, last ].each do |element|
-        @doc << element
-      end
+      content = [
+          { doi: DOI.new('10.3459/altmetric001'), title: 'Article 1',
+            author: ['Author 1'], journal: 'Biology Journal', issn: ISSN.new('5094-2131') },
+          { doi: DOI.new('10.5345/altmetric333'), title: 'Article 2',
+            author: ['Author 2'], journal: 'Engineering', issn: ISSN.new('2453-3258') },
+          { doi: DOI.new('10.5555/altmetric555'), title: 'Article 3',
+            author: ['Author 3'], journal: 'Journal of Nanotech', issn: ISSN.new('9326-3111') }
+      ]
+      expected = [
+          { doi: DOI.new('10.3459/altmetric001'), title: 'Article 1',
+            author: 'Author 1', journal: 'Biology Journal', issn: ISSN.new('5094-2131') },
+          { doi: DOI.new('10.5345/altmetric333'), title: 'Article 2',
+            author: 'Author 2', journal: 'Engineering', issn: ISSN.new('2453-3258')  },
+          { doi: DOI.new('10.5555/altmetric555'), title: 'Article 3',
+            author: 'Author 3', journal: 'Journal of Nanotech', issn: ISSN.new('9326-3111') }
+      ]
 
-      expect(@doc.content[0]).to eq first
-      expect(@doc.content[1]).to eq second
-      expect(@doc.content[2]).to eq last
+      content.each { |element| @doc << element }
+
+      expect(@doc.content).to eq expected
     end
   end
 end

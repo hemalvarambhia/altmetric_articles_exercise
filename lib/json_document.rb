@@ -8,6 +8,18 @@ class JSONDocument
     @content = articles
   end
 
+  def content
+    @content.collect do |article|
+      {
+          doi: article[:doi],
+          title: article[:title],
+          author: article.fetch(:author, []).join(', '),
+          journal: article[:journal],
+          issn: article[:issn]
+      }
+    end
+  end
+
   def to_s
     JSON.pretty_generate content
   end
