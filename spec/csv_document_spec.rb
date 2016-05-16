@@ -12,7 +12,7 @@ describe 'CSV Document' do
 
   describe '#content' do
     it 'stores the content' do
-      expected = { 'doi' => a_doi, 'title' => 'R-Matrix Method', 'issn'=> an_issn }
+      expected = { doi: a_doi, title: 'R-Matrix Method', issn: an_issn }
       csv_doc = CSVDocument.new expected
 
       expect(csv_doc.content).to include expected.values
@@ -24,7 +24,7 @@ describe 'CSV Document' do
     before(:each) { @doc = CSVDocument.new }
 
     it 'appends to the current content' do
-      expected = { 'doi' => a_doi, 'title' => 'Quantum Mechanics', 'issn' => an_issn }
+      expected = { doi: a_doi, title: 'Quantum Mechanics', issn: an_issn }
 
       @doc << expected
 
@@ -32,9 +32,9 @@ describe 'CSV Document' do
     end
 
     it 'appends in insertion order' do
-      first = { 'doi' => a_doi, 'title' => 'Article 1', 'issn' =>an_issn }
-      second =  { 'doi' => a_doi, 'title' => 'Article 2', 'issn' =>an_issn }
-      last =  { 'doi' => a_doi, 'title' => 'Article 3', 'issn' =>an_issn }
+      first = { doi: a_doi, title: 'Article 1', issn: an_issn }
+      second =  { doi: a_doi, title: 'Article 2', issn: an_issn }
+      last =  { doi: a_doi, title: 'Article 3', issn: an_issn }
       [first, second, last].each do |article|
          @doc << article
       end
