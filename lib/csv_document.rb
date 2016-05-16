@@ -2,13 +2,14 @@ require 'csv'
 class CSVDocument
   extend Forwardable
   def_delegators :@content, :<<, :empty?
+  attr_reader :content
 
   def initialize(object = nil)
     @content = [ object ].compact
   end
 
   def content
-    @content.collect { |object| object.as_csv }
+    @content.collect { |object| object.values }
   end
 
   def to_s

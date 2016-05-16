@@ -12,11 +12,10 @@ describe 'CSV Document' do
 
   describe '#content' do
     it 'stores the content' do
-      expected = [ a_doi, 'R-Matrix Method', an_issn ]
-      article = double(:article, as_csv: expected)
-      csv_doc = CSVDocument.new article
+      expected = { 'doi' => a_doi, 'title' => 'R-Matrix Method', 'issn'=> an_issn }
+      csv_doc = CSVDocument.new expected
 
-      expect(csv_doc.content).to eq [ expected ]
+      expect(csv_doc.content).to include expected.values
       expect(csv_doc).not_to be_empty
     end
   end
@@ -25,26 +24,24 @@ describe 'CSV Document' do
     before(:each) { @doc = CSVDocument.new }
 
     it 'appends to the current content' do
-      expected = [ a_doi, 'Quantum Mechanics', an_issn ]
-      article = double(:article, as_csv: expected)
+      expected = { 'doi' => a_doi, 'title' => 'Quantum Mechanics', 'issn' => an_issn }
 
-      @doc << article
+      @doc << expected
 
-      expect(@doc.content).to eq [ expected ]
+      expect(@doc.content).to include expected.values
     end
 
     it 'appends in insertion order' do
-      first = [ a_doi, 'Article 1', an_issn ]
-      second = [ a_doi, 'Article 2', an_issn ]
-      last = [ a_doi, 'Article 3', an_issn ]
-      [first, second, last].each do |expected_row|
-         article = double(:article, as_csv: expected_row)
+      first = { 'doi' => a_doi, 'title' => 'Article 1', 'issn' =>an_issn }
+      second =  { 'doi' => a_doi, 'title' => 'Article 2', 'issn' =>an_issn }
+      last =  { 'doi' => a_doi, 'title' => 'Article 3', 'issn' =>an_issn }
+      [first, second, last].each do |article|
          @doc << article
       end
 
-      expect(@doc.content[0]).to eq first
-      expect(@doc.content[1]).to eq second
-      expect(@doc.content[2]).to eq last
+      expect(@doc.content[0]).to eq first.values
+      expect(@doc.content[1]).to eq second.values
+      expect(@doc.content[2]).to eq last.values
     end
   end
 end
