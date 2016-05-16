@@ -67,23 +67,23 @@ describe 'JSON document' do
     it 'adds articles in insertion order' do
       content = [
           { doi: DOI.new('10.3459/altmetric001'), title: 'Article 1',
-            author: ['Author 1'], journal: 'Biology Journal', issn: ISSN.new('5094-2131') },
+            author: ['Author 1'], journal: 'Biology', issn: ISSN.new('5094-2131') },
           { doi: DOI.new('10.5345/altmetric333'), title: 'Article 2',
-            author: ['Author 2'], journal: 'Engineering', issn: ISSN.new('2453-3258') },
+            author: ['Author 2'], journal: 'Maths', issn: ISSN.new('2453-3258') },
           { doi: DOI.new('10.5555/altmetric555'), title: 'Article 3',
-            author: ['Author 3'], journal: 'Journal of Nanotech', issn: ISSN.new('9326-3111') }
-      ]
-      expected = [
-          { doi: DOI.new('10.3459/altmetric001'), title: 'Article 1',
-            author: 'Author 1', journal: 'Biology Journal', issn: ISSN.new('5094-2131') },
-          { doi: DOI.new('10.5345/altmetric333'), title: 'Article 2',
-            author: 'Author 2', journal: 'Engineering', issn: ISSN.new('2453-3258')  },
-          { doi: DOI.new('10.5555/altmetric555'), title: 'Article 3',
-            author: 'Author 3', journal: 'Journal of Nanotech', issn: ISSN.new('9326-3111') }
+            author: ['Author 3'], journal: 'Nanotech', issn: ISSN.new('9326-3111') }
       ]
 
       content.each { |element| @doc << element }
 
+      expected = [
+          { doi: DOI.new('10.3459/altmetric001'), title: 'Article 1',
+            author: 'Author 1', journal: 'Biology', issn: ISSN.new('5094-2131') },
+          { doi: DOI.new('10.5345/altmetric333'), title: 'Article 2',
+            author: 'Author 2', journal: 'Maths', issn: ISSN.new('2453-3258')  },
+          { doi: DOI.new('10.5555/altmetric555'), title: 'Article 3',
+            author: 'Author 3', journal: 'Nanotech', issn: ISSN.new('9326-3111') }
+      ]
       expect(@doc.content).to eq expected
     end
   end
