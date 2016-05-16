@@ -13,9 +13,9 @@ describe 'JSON document' do
   describe '#content' do
     it "holds the document's content" do
       expected = { 
-        'doi' => a_doi, 
-        'title' => 'Physics Article',
-        'issn' => an_issn
+        doi: a_doi,
+        title: 'Physics Article',
+        issn: an_issn
       }
       json_doc = JSONDocument.new [ expected ]
       
@@ -30,7 +30,7 @@ describe 'JSON document' do
     end
 
     it 'adds an article' do
-      expected = { 'doi' => a_doi, 'title' => 'Chemistry', 'issn' => an_issn}
+      expected = { doi: a_doi, title: 'Chemistry', issn: an_issn }
 
       @doc << expected
   
@@ -38,9 +38,9 @@ describe 'JSON document' do
     end
 
     it 'adds articles in insertion order' do
-      first = { 'doi' => a_doi, 'title' => 'Article 1', 'issn' => an_issn, 'author' => ['Author 1'] }
-      second = { 'doi' => a_doi, 'title' => 'Article 2', 'issn' => an_issn, 'author' => ['Author 2'] }
-      last = { 'doi' => a_doi, 'title' => 'Article 3', 'issn' => an_issn, 'author' => ['Author 3'] }
+      first = { doi: a_doi, title: 'Article 1', issn: an_issn, author: ['Author 1'] }
+      second = { doi: a_doi, title: 'Article 2', issn: an_issn, author: ['Author 2'] }
+      last = { doi: a_doi, title: 'Article 3', issn: an_issn, author: ['Author 3'] }
       [ first, second, last ].each do |element|
         @doc << element
       end
