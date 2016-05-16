@@ -4,12 +4,14 @@ class CSVDocument
   extend Forwardable
   def_delegators :@content, :<<, :empty?
 
-  def initialize(object = nil)
-    @content = [ object ].compact
+  def initialize(rows = [])
+    @content = rows
   end
 
   def content
-    @content.collect { |object| object.values }
+    @content.collect do |object|
+      [object[:doi], object[:title], object.fetch(:author, []).join(', '), object[:journal], object[:issn] ]
+    end
   end
 
   def to_s
