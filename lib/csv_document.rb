@@ -1,4 +1,5 @@
 require 'csv'
+require 'forwardable'
 class CSVDocument
   extend Forwardable
   def_delegators :@content, :<<, :empty?

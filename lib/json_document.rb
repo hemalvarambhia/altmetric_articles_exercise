@@ -1,4 +1,5 @@
 require 'json'
+require 'forwardable'
 class JSONDocument
   extend Forwardable
   def_delegators :@content, :<<, :empty?
