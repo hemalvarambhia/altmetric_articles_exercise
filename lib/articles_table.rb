@@ -1,6 +1,6 @@
 class ArticlesTable
-  def self.from(file)
-    new(file.read)
+  def self.from document
+    new document.read
   end
 
   def initialize(rows)
