@@ -2,7 +2,6 @@ require 'csv'
 class CSVDocument
   extend Forwardable
   def_delegators :@content, :<<, :empty?
-  attr_reader :content
 
   def initialize(object = nil)
     @content = [ object ].compact
