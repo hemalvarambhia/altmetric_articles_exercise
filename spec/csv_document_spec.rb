@@ -31,7 +31,7 @@ describe 'CSV Document' do
             doi: a_doi,
             title: 'R-Matrix Method',
             author: ['Author 1', 'Co-Author 1', 'Co-Author 2' ],
-            journal: 'Journal of Physics VB',
+            journal: 'Journal of Physics B',
             issn: an_issn
 
         }
