@@ -14,6 +14,19 @@ describe 'Articles Table' do
     end
   end
 
+  describe 'articles with duplicate DOIs' do
+    it 'only retains the first one with that DOI' do
+      row = { issn: an_issn, doi: DOI.new('10.1234/altmetric999') }
+      duplicate = { issn: an_issn, doi: DOI.new('10.1234/altmetric999') }
+      another = { issn: an_issn, doi: DOI.new('10.1234/altmetric999') }
+
+      articles_table = ArticlesTable.new([row, duplicate, another])
+
+      expect(articles_table).to include row
+      expect(articles_table).not_to include duplicate, another
+    end
+  end
+
   describe '#join' do
     it 'includes the DOI and ISSN' do
       row = {issn: an_issn, doi: a_doi}

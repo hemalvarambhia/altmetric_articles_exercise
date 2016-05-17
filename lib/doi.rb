@@ -20,6 +20,10 @@ class DOI
     serial_code == other.serial_code
   end
 
+  def eql?(other)
+    serial_code.eql?(other.serial_code)
+  end
+
   def to_s
     serial_code
   end
