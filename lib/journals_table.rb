@@ -4,7 +4,7 @@ class JournalsTable
   end
 
   def initialize(rows)
-    @journals = Hash[rows]
+    @journals = Hash[rows.uniq { |issn, title| issn }]
   end
 
   def find(issn)

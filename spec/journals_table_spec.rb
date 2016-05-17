@@ -11,6 +11,20 @@ describe 'Journals table' do
     end
   end
 
+  describe 'duplicate journals' do
+    it 'retains the first journal with the given ISSN' do
+      issn = ISSN.new '8635-5984'
+      journals_table = JournalsTable.new(
+          [
+              [ issn, 'Journal of Physics A' ],
+              [ issn, 'Chemistry Journal' ],
+              [ issn, 'Journal of Nanotechnology' ]
+          ]
+      )
+      expect(journals_table.find(issn)).to eq 'Journal of Physics A'
+    end
+  end
+
   describe '#find' do
     context 'when the table does not have a journal with the ISSN' do
       it 'returns no title' do
