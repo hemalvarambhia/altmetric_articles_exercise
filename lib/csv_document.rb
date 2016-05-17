@@ -10,7 +10,13 @@ class CSVDocument
 
   def content
     @content.collect do |object|
-      [object[:doi], object[:title], object.fetch(:author, []).join(', '), object[:journal], object[:issn] ]
+      [
+          object[:doi],
+          object[:title],
+          object.fetch(:author, []).join(', '),
+          object[:journal],
+          object[:issn]
+      ]
     end
   end
 
