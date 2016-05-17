@@ -13,7 +13,7 @@ class CSVDocument
       [
           object[:doi],
           object[:title],
-          object.fetch(:author, []).join(', '),
+          object[:author].join(', '),
           object[:journal],
           object[:issn]
       ]

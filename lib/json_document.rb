@@ -13,7 +13,7 @@ class JSONDocument
       {
           doi: article[:doi],
           title: article[:title],
-          author: article.fetch(:author, []).join(', '),
+          author: article[:author].join(', '),
           journal: article[:journal],
           issn: article[:issn]
       }
