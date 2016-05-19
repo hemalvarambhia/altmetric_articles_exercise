@@ -8,7 +8,9 @@ describe 'Article CSV Parser' do
       issn: ISSN.new('1232-1983')
     }
 
-    expect(ArticleCSVParser.parse(line)).to eq expected
+    parsed_row = ArticleCSVParser.parse(line)
+
+    expect(parsed_row).to eq expected
   end
 
   it 'reads off the DOI, title and ISSN from any line' do
@@ -19,6 +21,8 @@ describe 'Article CSV Parser' do
       issn: ISSN.new('1912-2223')
     }
 
-    expect(ArticleCSVParser.parse(line)).to eq expected
+    parsed_row = ArticleCSVParser.parse(line)
+
+    expect(parsed_row).to eq expected
   end
 end
