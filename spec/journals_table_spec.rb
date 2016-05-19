@@ -1,39 +1,40 @@
 require 'journals_table'
 require 'issn_helper'
-require 'issn'
+
 describe 'Journals table' do
   include CreateISSN
+  
   describe '#find' do
     context 'when the table does not have a journal with the ISSN' do
       it 'returns no title' do
-        required_issn = an_issn
+        required = an_issn
         journals_table = JournalsTable.new(
           [
-            [ an_issn, 'Journal of Physics A' ],
-            [ an_issn, 'Journal of Physics B' ]
+            a_journal_with(issn: an_issn, title: 'Journal of Physics A'),
+            a_journal_with(issn: an_issn, title: 'Journal of Physics B')
           ]
         )
         
-        title = journals_table.find(required_issn)
+        title = journals_table.find(required)
 
-        non_existent_title = nil
-        expect(title).to eq non_existent_title
+        non_such_title = nil
+        expect(title).to eq non_such_title
       end
     end
 
     context 'when the table has a journal with the given ISSN' do
       it 'returns the title' do
-        required_issn = an_issn
+        required = an_issn
         journals_table = JournalsTable.new(
           [
-            [ required_issn, 'Chemical Physics Letters' ],
-            [ an_issn, 'Nature' ]
+            a_journal_with(issn: required, title: 'Physical Review'),
+            a_journal_with(issn: an_issn, title: 'Nature')
           ]
         )
 
-        title = journals_table.find(required_issn)
+        title = journals_table.find(required)
         
-        expect(title).to(eq 'Chemical Physics Letters')
+        expect(title).to(eq 'Physical Review')
       end
     end
   end
@@ -53,9 +54,9 @@ describe 'Journals table' do
       issn = an_issn
       journals_table = JournalsTable.new(
         [
-          [ issn, 'Journal of Physics A' ],
-          [ issn, 'Chemistry Journal' ],
-          [ issn, 'Journal of Nanotechnology' ]
+          a_journal_with(issn: issn, title: 'Journal of Physics A'),
+          a_journal_with(issn: issn, title: 'Chemistry Journal'),
+          a_journal_with(issn: issn, title: 'Journal of Nanotechnology')
         ]
       )
 
@@ -63,5 +64,9 @@ describe 'Journals table' do
       
       expect(title).to eq 'Journal of Physics A'
     end
+  end
+
+  def a_journal_with(args)
+    [ args[:issn], args[:title] ]
   end
 end
