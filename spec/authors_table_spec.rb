@@ -20,10 +20,7 @@ describe 'Authors table' do
       it 'returns no authors' do
         required = a_doi
         authors_table = AuthorsTable.new(
-          [
-            ArticleAuthor.new(name: 'No Match 1', publications: [a_doi]),
-            ArticleAuthor.new(name: 'No Match 2', publications: [a_doi])
-          ]
+          [ an_author_of(a_doi), an_author_of(a_doi) ]
         )
 
         author_of_article = authors_table.find(required)
@@ -39,7 +36,7 @@ describe 'Authors table' do
         authors_table = AuthorsTable.new(
           [
             ArticleAuthor.new(name: 'Author', publications: [ required ]),
-            ArticleAuthor.new(name: 'No Matching', publications: [a_doi])
+            an_author_of(a_doi)
           ]
         )
 
@@ -54,7 +51,7 @@ describe 'Authors table' do
         required = a_doi
         authors_table = AuthorsTable.new(
           [
-            ArticleAuthor.new(name: 'Not Author', publications: [a_doi, a_doi]),
+            an_author_of(a_doi, a_doi),
             ArticleAuthor.new(name: 'Main Author', publications: [ required ]),
             ArticleAuthor.new(name: 'Co-Author 1', publications: [ required ]),
             ArticleAuthor.new(name: 'Co-Author 2', publications: [ required, a_doi ])
@@ -67,5 +64,9 @@ describe 'Authors table' do
         expect(authors).to eq expected
       end
     end
+  end
+
+  def an_author_of(*publications)
+    ArticleAuthor.new(name: nil, publications: publications)
   end
 end
