@@ -40,43 +40,51 @@ describe 'Articles Table' do
     end
 
     describe 'merging with a journals table' do
+      before(:each) do
+        @row = {issn: an_issn}
+        @authors_table = double(:authors_table).as_null_object
+        @journals_table = double(:journals_table)
+        @articles_table = ArticlesTable.new([@row])
+      end
+      
       it 'includes the title of the journal in the row' do
-        row = {issn: an_issn}
-        authors_table = double(:authors_table).as_null_object
-        journals_table = double(:journals_table)
-        articles_table = ArticlesTable.new([row])
-        expect(journals_table).to(
-          receive(:find).with(row[:issn]).and_return('Science'))
+        expect(@journals_table).to(
+          receive(:find).with(@row[:issn]).and_return('Science'))
 
-        joined_table = articles_table.join(journals_table, authors_table).first
+        joined_table =
+          @articles_table.join(@journals_table, @authors_table).first
 
         expect(joined_table).to include(journal: 'Science')
       end
 
       context 'when the journal does not exist' do
         it 'assigns a blank journal in the row' do
-          row = {issn: an_issn}
-          authors_table = double(:authors_table).as_null_object
-          journals_table = double(:journals_table)
-          articles_table = ArticlesTable.new([row])
-          expect(journals_table).to receive(:find).with(row[:issn]).and_return nil
+          no_such_journal = nil
+          expect(@journals_table).to(
+            receive(:find).with(@row[:issn]).and_return no_such_journal)
 
-          joined_table = articles_table.join(journals_table, authors_table).first
+          joined_table =
+            @articles_table.join(@journals_table, @authors_table).first
 
-          expect(joined_table).to include(journal: nil)
+          expect(joined_table).to include(journal: no_such_journal)
         end
       end
     end
 
     describe 'merging with an authors table' do
+      before(:each) do
+        @row = {doi: a_doi}
+        @authors_table = double(:authors_table)
+        @journals_table = double(:journals_table).as_null_object
+        @articles_table = ArticlesTable.new([@row])
+      end
+      
       it 'includes the author in the row' do
-        row = {doi: a_doi}
-        authors_table = double(:authors_table)
-        expect(authors_table).to receive(:find).with(row[:doi]).and_return ['Physicist']
-        journals_table = double(:journals_table).as_null_object
-        articles_table = ArticlesTable.new([row])
-
-        joined_table = articles_table.join(journals_table, authors_table).first
+        expect(@authors_table).to(
+          receive(:find).with(@row[:doi]).and_return ['Physicist'])
+ 
+        joined_table =
+          @articles_table.join(@journals_table, @authors_table).first
 
         expect(joined_table).to(include(author: ['Physicist']))
       end
@@ -85,13 +93,13 @@ describe 'Articles Table' do
         it 'lists no authors in the row' do
           row = {doi: a_doi}
           authors_table = double(:authors_table)
-          expect(authors_table).to receive(:find).with(row[:doi]).and_return []
-          journals_table = double(:journals_table).as_null_object
-          articles_table = ArticlesTable.new([row])
+          no_authors = []
+          expect(@authors_table).to(
+            receive(:find).with(@row[:doi]).and_return no_authors)
 
-          joined_table = articles_table.join(journals_table, authors_table).first
-
-          expect(joined_table).to(include(author: []))
+          joined_table =
+            @articles_table.join(@journals_table, @authors_table).first
+          expect(joined_table).to include(author: no_authors)
         end
       end
     end
