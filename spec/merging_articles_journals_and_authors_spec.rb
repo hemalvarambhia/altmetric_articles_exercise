@@ -11,23 +11,24 @@ describe 'Combiner' do
     journals_table = double(:journals_table)
     authors_table = double(:authors_table)
     document = double(:document)
-    line = a_line
+    row = merged_row
     expect(articles_table).to(
-        receive(:join).with(journals_table, authors_table).and_return [line]
+      receive(:join).with(journals_table, authors_table)
+      .and_return [row]
     )
-    expect(document).to receive(:<<).with(line)
+    expect(document).to receive(:<<).with(row)
     combined = Combined.new(articles_table, journals_table, authors_table)
 
     combined.output_to(document)
   end
 
-  def a_line
+  def merged_row
     {
-        'doi' => a_doi,
-        'title' => 'Physics',
-        'issn' => an_issn,
-        'journal' => 'Journal of Physics A',
-        'authors' => ['Author 1']
+      doi: a_doi,
+      title: 'Quantum Mechanics',
+      issn: an_issn,
+      journal: 'Nature',
+      authors: ['Physicist']
     }
   end
 end
