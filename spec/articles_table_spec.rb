@@ -4,29 +4,6 @@ require 'doi_helper'
 describe 'Articles Table' do
   include CreateDOI, CreateISSN
 
-  describe '.from' do
-    it 'loads the table from a file' do
-      csv_rows = []
-      file = double(:article_csv_file)
-      expect(file).to receive(:read).and_return csv_rows
-
-      ArticlesTable.from file
-    end
-  end
-
-  describe 'articles with duplicate DOIs' do
-    it 'only retains the first one with that DOI' do
-      row = { issn: an_issn, doi: DOI.new('10.1234/altmetric999') }
-      duplicate = { issn: an_issn, doi: DOI.new('10.1234/altmetric999') }
-      another = { issn: an_issn, doi: DOI.new('10.1234/altmetric999') }
-
-      articles_table = ArticlesTable.new([row, duplicate, another])
-
-      expect(articles_table).to include row
-      expect(articles_table).not_to include duplicate, another
-    end
-  end
-
   describe '#join' do
     it 'includes the DOI and ISSN' do
       row = {issn: an_issn, doi: a_doi}
@@ -91,8 +68,6 @@ describe 'Articles Table' do
 
       context 'when the article has no authors' do
         it 'lists no authors in the row' do
-          row = {doi: a_doi}
-          authors_table = double(:authors_table)
           no_authors = []
           expect(@authors_table).to(
             receive(:find).with(@row[:doi]).and_return no_authors)
@@ -102,6 +77,30 @@ describe 'Articles Table' do
           expect(joined_table).to include(author: no_authors)
         end
       end
+    end
+  end
+
+  describe '.from' do
+    it 'loads the table from a file' do
+      csv_rows = []
+      file = double(:article_csv_file)
+      expect(file).to receive(:read).and_return csv_rows
+
+      ArticlesTable.from file
+    end
+  end
+
+  describe 'articles with duplicate DOIs' do
+    it 'only retains the first one with that DOI' do
+      duplicated = a_doi
+      row = { issn: an_issn, doi: duplicated }
+      duplicate = { issn: an_issn, doi: duplicated }
+      triplicate = { issn: an_issn, doi: duplicated }
+
+      articles_table = ArticlesTable.new([row, duplicate, triplicate])
+
+      expect(articles_table).to include row
+      expect(articles_table).not_to include duplicate, triplicate
     end
   end
 end
