@@ -13,8 +13,7 @@ describe 'Combiner' do
     document = double(:document)
     row = merged_row
     expect(articles_table).to(
-      receive(:join).with(journals_table, authors_table)
-      .and_return [row]
+      receive(:join).with(journals_table, authors_table).and_return [row]
     )
     expect(document).to receive(:<<).with(row)
     combined = Combined.new(articles_table, journals_table, authors_table)
