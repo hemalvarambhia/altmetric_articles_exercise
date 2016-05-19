@@ -1,8 +1,9 @@
 require 'journals_table'
+require 'journal_helper'
 require 'issn_helper'
 
 describe 'Journals table' do
-  include CreateISSN
+  include CreateISSN, CreateJournal
   
   describe '#find' do
     context 'when the table does not have a journal with the ISSN' do
@@ -64,9 +65,5 @@ describe 'Journals table' do
       
       expect(title).to eq 'Journal of Physics A'
     end
-  end
-
-  def a_journal_with(args)
-    [ args[:issn], args[:title] ]
   end
 end

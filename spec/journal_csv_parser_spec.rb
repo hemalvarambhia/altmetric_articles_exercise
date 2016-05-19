@@ -1,6 +1,9 @@
+require 'journal_helper'
 require 'issn'
 require 'journal_csv_parser'
 describe 'Parsing a line from the journal CSV file' do
+  include CreateJournal
+  
   it 'reads off the ISSN and title from a line' do
     line = ['Journal of Mathematics', '1975-3545']
 
@@ -21,9 +24,5 @@ describe 'Parsing a line from the journal CSV file' do
            issn: ISSN.new('2016-1623'), title: 'Astrophysical Journal')
         )
     )
-  end
-
-  def a_journal_with(args)
-    [ args[:issn], args[:title] ]
   end
 end
