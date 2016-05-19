@@ -1,21 +1,14 @@
 require 'csv'
-require 'forwardable'
-class CSVDocument
-  extend Forwardable
-  def_delegators :@content, :<<, :empty?
-
-  def initialize(rows = [])
-    @content = rows
-  end
-
+require 'document'
+class CSVDocument < Document
   def content
-    @content.collect do |object|
+    @content.collect do |article|
       [
-          object[:doi],
-          object[:title],
-          object[:author].join(', '),
-          object[:journal],
-          object[:issn]
+          article[:doi],
+          article[:title],
+          article[:author].join(', '),
+          article[:journal],
+          article[:issn]
       ]
     end
   end

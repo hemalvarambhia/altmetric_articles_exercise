@@ -1,13 +1,6 @@
 require 'json'
-require 'forwardable'
-class JSONDocument
-  extend Forwardable
-  def_delegators :@content, :<<, :empty?
-
-  def initialize(articles = [])
-    @content = articles
-  end
-
+require 'document'
+class JSONDocument < Document
   def content
     @content.collect do |article|
       {
