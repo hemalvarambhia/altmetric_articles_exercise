@@ -1,9 +1,9 @@
 require 'authors_table'
-require 'article_author'
+require 'article_author_helper'
 require 'doi_helper'
 
 describe 'Authors table' do
-  include CreateDOI
+  include CreateDOI, CreateAuthor
   
   describe '#find' do
     context 'when there are no authors of an article' do
@@ -54,10 +54,6 @@ describe 'Authors table' do
         expect(authors).to eq expected
       end
     end
-  end
-
-  def an_author(args)
-    ArticleAuthor.new args
   end
 
   def an_author_of(*publications)
