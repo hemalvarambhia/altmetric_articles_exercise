@@ -4,16 +4,6 @@ require 'doi_helper'
 
 describe 'Authors table' do
   include CreateDOI
-
-  describe '.from' do
-    it 'loads the table from a file' do
-      authors_json = []
-      doc = double(:author_json_doc)
-      expect(doc).to receive(:read).and_return authors_json
-
-      AuthorsTable.from doc
-    end
-  end
   
   describe '#find' do
     context 'when there are no authors of an article' do
@@ -35,7 +25,7 @@ describe 'Authors table' do
         required = a_doi
         authors_table = AuthorsTable.new(
           [
-            ArticleAuthor.new(name: 'Author', publications: [ required ]),
+            an_author(name: 'Author', publications: [ required ]),
             an_author_of(a_doi)
           ]
         )
@@ -52,9 +42,9 @@ describe 'Authors table' do
         authors_table = AuthorsTable.new(
           [
             an_author_of(a_doi, a_doi),
-            ArticleAuthor.new(name: 'Main Author', publications: [ required ]),
-            ArticleAuthor.new(name: 'Co-Author 1', publications: [ required ]),
-            ArticleAuthor.new(name: 'Co-Author 2', publications: [ required, a_doi ])
+            an_author(name: 'Main Author', publications: [ required ]),
+            an_author(name: 'Co-Author 1', publications: [ required ]),
+            an_author(name: 'Co-Author 2', publications: [ required, a_doi ])
           ]
         )
 
@@ -66,7 +56,11 @@ describe 'Authors table' do
     end
   end
 
+  def an_author(args)
+    ArticleAuthor.new args
+  end
+
   def an_author_of(*publications)
-    ArticleAuthor.new(name: nil, publications: publications)
+    an_author(name: nil, publications: publications)
   end
 end
