@@ -12,17 +12,18 @@ require 'json_document'
 require 'csv_document'
 describe 'Combined' do
   describe '#output_to' do
+    before :each do
+      @docs_dir = File.join(File.dirname(__FILE__), 'sample_docs')
+    end
     context 'when there is one article' do
       before(:each) do
-        docs_dir = File.join(File.dirname(__FILE__), 'sample_docs')
-
-        articles_csv = File.join(docs_dir, 'one_article.csv')
+        articles_csv = File.join(@docs_dir, 'one_article.csv')
         articles_table = articles_table_from articles_csv
 
-        journals_csv = File.join(docs_dir, 'one_journal.csv')
+        journals_csv = File.join(@docs_dir, 'one_journal.csv')
         journals_table = journals_table_from journals_csv
 
-        authors_json = File.join(docs_dir, 'one_author.json')
+        authors_json = File.join(@docs_dir, 'one_author.json')
         authors_table = authors_table_from authors_json
 
         @combiner = Combined.new(articles_table, journals_table, authors_table)
@@ -42,6 +43,37 @@ describe 'Combined' do
         @combiner.output_to csv_document
 
         expect(csv_document.content).not_to be_empty
+      end
+    end
+
+    context 'when there is more than 1 article' do
+      before(:each) do
+        articles_csv = File.join(@docs_dir, 'three_articles.csv')
+        articles_table = articles_table_from articles_csv
+
+        journals_csv = File.join(@docs_dir, 'three_journals.csv')
+        journals_table = journals_table_from journals_csv
+
+        authors_json = File.join(@docs_dir, 'three_authors.json')
+        authors_table = authors_table_from authors_json
+
+        @combiner = Combined.new(articles_table, journals_table, authors_table)
+      end
+
+      it 'publishes the merged data to a JSON document' do
+        json_document = JSONDocument.new
+
+        @combiner.output_to json_document
+
+        expect(json_document.content.size).to eq 3
+      end
+
+      it 'publishes the merged data to a CSV document' do
+        csv_document = CSVDocument.new
+
+        @combiner.output_to csv_document
+
+        expect(csv_document.content.size).to eq 3
       end
     end
 
