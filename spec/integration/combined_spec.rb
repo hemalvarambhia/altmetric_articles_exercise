@@ -13,7 +13,7 @@ require 'csv_document'
 describe 'Combined' do
   describe '#output_to' do
     before :each do
-      @docs_dir = File.join(File.dirname(__FILE__), 'sample_docs')
+      @docs_dir = File.join(File.dirname(__FILE__), 'fixtures')
     end
     context 'when there is one article' do
       before(:each) do

@@ -8,7 +8,7 @@ require 'author_json_doc'
 require 'author_json_parser'
 require 'authors_table'
 describe 'ArticlesTable' do
-  before(:each) { @doc_dir = File.join(File.dirname(__FILE__),'sample_docs') }
+  before(:each) { @doc_dir = File.join(File.dirname(__FILE__),'fixtures') }
 
   describe '#join' do
     it 'merges the author and journal of the article together' do

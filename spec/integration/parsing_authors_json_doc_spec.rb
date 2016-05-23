@@ -10,7 +10,7 @@ describe 'Parsing an author JSON document' do
       )
     ]
     path_to_author_json_doc = File.join(
-      File.dirname(__FILE__), 'sample_docs', 'one_author.json'
+      File.dirname(__FILE__), 'fixtures', 'one_author.json'
     )
     author_json_doc = AuthorJSONDoc.new(
       File.open(path_to_author_json_doc)
