@@ -11,12 +11,12 @@ describe 'Articles Table' do
       journals_table = double(:journals_table).as_null_object
       articles_table = ArticlesTable.new([row])
 
-      joined_table = articles_table.join(journals_table, authors_table).first
+      joined_row = articles_table.join(journals_table, authors_table).first
 
-      expect(joined_table).to include(row)
+      expect(joined_row).to include(row)
     end
 
-    describe 'merging with a journals table' do
+    describe 'merging in the journal' do
       before(:each) do
         @row = {issn: an_issn}
         @authors_table = double(:authors_table).as_null_object
@@ -28,10 +28,10 @@ describe 'Articles Table' do
         expect(@journals_table).to(
           receive(:find).with(@row[:issn]).and_return('Science'))
 
-        joined_table =
+        merged_row =
           @articles_table.join(@journals_table, @authors_table).first
 
-        expect(joined_table).to include(journal: 'Science')
+        expect(merged_row).to include(journal: 'Science')
       end
 
       context 'when the journal does not exist' do
@@ -48,7 +48,7 @@ describe 'Articles Table' do
       end
     end
 
-    describe 'merging with an authors table' do
+    describe 'merging in the authors' do
       before(:each) do
         @row = {doi: a_doi}
         @authors_table = double(:authors_table)
@@ -60,10 +60,10 @@ describe 'Articles Table' do
         expect(@authors_table).to(
           receive(:find).with(@row[:doi]).and_return ['Physicist'])
  
-        joined_table =
+        merged_row =
           @articles_table.join(@journals_table, @authors_table).first
 
-        expect(joined_table).to(include(author: ['Physicist']))
+        expect(merged_row).to(include(author: ['Physicist']))
       end
 
       context 'when the article has no authors' do
@@ -72,9 +72,10 @@ describe 'Articles Table' do
           expect(@authors_table).to(
             receive(:find).with(@row[:doi]).and_return no_authors)
 
-          joined_table =
+          merged_row =
             @articles_table.join(@journals_table, @authors_table).first
-          expect(joined_table).to include(author: no_authors)
+
+          expect(merged_row).to include(author: no_authors)
         end
       end
     end
