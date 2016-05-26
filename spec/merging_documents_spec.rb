@@ -24,19 +24,20 @@ describe 'merging documents and outputting the result to JSON' do
     journal_csv_doc = double(:journals_csv)
     author_json_doc = double(:authors_json)
     format = 'json'
-    expect(article_csv_doc).to(
+    allow(article_csv_doc).to(
         receive(:each).and_yield(
             { doi: '10.1234/altmetric0', title: 'About Physics', issn: '8456-2422' }
         ))
-    expect(author_json_doc).to(
+    allow(author_json_doc).to(
         receive(:find).with('10.1234/altmetric0').and_return [ 'Author' ])
-    expect(journal_csv_doc).to receive(:find).with('8456-2422').and_return 'Nature'
+    allow(journal_csv_doc).to receive(:find).with('8456-2422').and_return 'Nature'
 
     merged_row = merge(article_csv_doc, author_json_doc, journal_csv_doc, format)
 
-    expect(merged_row).to(
-        include({doi: '10.1234/altmetric0', title: 'About Physics', author: 'Author',
-           journal: 'Nature', issn: '8456-2422'})
-    )
+    expected = {
+        doi: '10.1234/altmetric0', title: 'About Physics', author: 'Author',
+        journal: 'Nature', issn: '8456-2422'
+    }
+    expect(merged_row).to(include(expected))
   end
 end
