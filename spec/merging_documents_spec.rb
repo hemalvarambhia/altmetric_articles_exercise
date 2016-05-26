@@ -1,17 +1,19 @@
 describe 'merging documents and outputting the result to JSON' do
   def merge(article_csv_doc, author_json_doc, journal_csv_doc, format)
-    merged_row = {}
+    rows = []
     if format == 'json'
       article_csv_doc.each do |article|
+        merged_row = {}
         merged_row[:doi] = article[:doi]
         merged_row[:title] = article[:title]
         merged_row[:author] = author_json_doc.find(article[:doi]).join
         merged_row[:journal] = journal_csv_doc.find(article[:issn])
         merged_row[:issn] = article[:issn]
+        rows << merged_row
       end
     end
 
-    merged_row
+    rows
   end
 
   it 'merges an article with its authors and the journal it was published in' do
@@ -30,8 +32,8 @@ describe 'merging documents and outputting the result to JSON' do
     merged_row = merge(article_csv_doc, author_json_doc, journal_csv_doc, format)
 
     expect(merged_row).to(
-        eq(doi: '10.1234/altmetric0', title: 'About Physics', author: 'Author',
-           journal: 'Nature', issn: '8456-2422')
+        include({doi: '10.1234/altmetric0', title: 'About Physics', author: 'Author',
+           journal: 'Nature', issn: '8456-2422'})
     )
   end
 end
