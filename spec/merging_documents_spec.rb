@@ -3,13 +3,16 @@ describe 'merging documents and outputting the result to JSON' do
     rows = []
     if format == 'json'
       article_csv_doc.each do |article|
-        rows = {
-            doi: article[:doi],
-            title: article[:title],
-            author: author_json_doc.find(article[:doi]).join,
-            journal: journal_csv_doc.find(article[:issn]),
-            issn: article[:issn]
-        }
+        rows = [
+            {
+                doi: article[:doi],
+                title: article[:title],
+                author: author_json_doc.find(article[:doi]).join,
+                journal: journal_csv_doc.find(article[:issn]),
+                issn: article[:issn]
+
+            }
+        ]
       end
     end
 
