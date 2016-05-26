@@ -14,7 +14,7 @@ describe 'merging documents and outputting the result to JSON' do
     merged_row
   end
 
-  it 'merges articles with authors and journals' do
+  it 'merges an article with its authors and the journal it was published in' do
     article_csv_doc = double(:articles_csv)
     journal_csv_doc = double(:journals_csv)
     author_json_doc = double(:authors_json)
