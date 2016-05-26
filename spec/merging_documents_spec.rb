@@ -42,7 +42,7 @@ describe 'merging documents and outputting the result to JSON' do
     expect(merged_row).to(include(expected))
   end
 
-  it 'merges any article with its authors and the journal it was published in' do
+  it 'merges all articles with their authors and the journal it was published in' do
     rows = [
         {doi: '10.1234/altmetric1', title: 'About Chemistry', issn: '6844-2395'},
         {doi: '10.1234/altmetric2', title: 'About Biology', issn: '5679-2344'}
