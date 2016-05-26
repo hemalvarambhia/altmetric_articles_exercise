@@ -10,7 +10,6 @@ describe 'merging documents and outputting the result to JSON' do
                 author: author_json_doc.find(article[:doi]).join,
                 journal: journal_csv_doc.find(article[:issn]),
                 issn: article[:issn]
-
             }
         ]
       end
