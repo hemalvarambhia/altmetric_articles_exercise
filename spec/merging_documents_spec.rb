@@ -49,20 +49,20 @@ describe 'merging documents' do
     @article_csv_doc = double(:articles_csv)
     @journal_csv_doc = double(:journals_csv)
     @author_json_doc = double(:authors_json)
+    @row = {
+        doi: '10.1234/altmetric0',
+        title: 'About Physics',
+        issn: '8456-2422'
+    }
+    allow(@article_csv_doc).to(yield_rows(@row))
   end
 
   context 'when the journal and author(s) are present in the docs' do
     before :each do
-      row = {
-          doi: '10.1234/altmetric0',
-          title: 'About Physics',
-          issn: '8456-2422'
-      }
-      allow(@article_csv_doc).to(yield_rows(row))
       allow(@author_json_doc)
-          .to receive(:find).with(row[:doi]).and_return ['Author']
+          .to receive(:find).with(@row[:doi]).and_return ['Author']
       allow(@journal_csv_doc)
-          .to receive(:find).with(row[:issn]).and_return 'Nature'
+          .to receive(:find).with(@row[:issn]).and_return 'Nature'
     end
 
     describe 'JSON format' do
