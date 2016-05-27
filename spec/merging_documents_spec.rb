@@ -42,8 +42,9 @@ describe 'merging documents' do
       }
       allow(@article_csv_doc).to(yield_rows(row))
       allow(@author_json_doc).to(
-          receive(:find).with(DOI.new('10.1234/altmetric0')).and_return [ 'Author' ])
-      allow(@journal_csv_doc).to receive(:find).with(ISSN.new('8456-2422')).and_return 'Nature'
+          receive(:find).with(row[:doi]).and_return ['Author'])
+      allow(@journal_csv_doc).to(
+          receive(:find).with(row[:issn]).and_return 'Nature')
     end
 
     describe 'JSON format' do
@@ -55,8 +56,8 @@ describe 'merging documents' do
         merged_row = merge_documents
 
         expected = {
-            doi: DOI.new('10.1234/altmetric0'), title: 'About Physics', author: 'Author',
-            journal: 'Nature', issn: ISSN.new('8456-2422')
+            doi: DOI.new('10.1234/altmetric0'), title: 'About Physics',
+            author: 'Author', journal: 'Nature', issn: ISSN.new('8456-2422')
         }
         expect(merged_row).to(include(expected))
       end
