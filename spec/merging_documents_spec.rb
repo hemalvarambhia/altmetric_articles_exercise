@@ -2,9 +2,9 @@ describe 'merging documents' do
 
   #REFACTOR - the merge method has two responsibilities - merging and rendering
   def merge(article_csv_doc, author_json_doc, journal_csv_doc, format)
-    rows = []
+    merged_rows = []
     article_csv_doc.each do |article|
-      rows << {
+      merged_rows << {
           doi: article[:doi],
           title: article[:title],
           author: author_json_doc.find(article[:doi]).join,
@@ -13,7 +13,7 @@ describe 'merging documents' do
       }
     end
 
-    render_in(format, rows)
+    render_in(format, merged_rows)
   end
 
   def render_in(format, rows)
