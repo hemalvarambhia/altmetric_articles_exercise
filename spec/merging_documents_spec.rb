@@ -45,10 +45,11 @@ describe 'merging documents and outputting the result to JSON' do
   it 'merges all articles with their authors and the journal it was published in' do
     rows = [
         {doi: '10.1234/altmetric1', title: 'About Chemistry', issn: '6844-2395'},
-        {doi: '10.1234/altmetric2', title: 'About Biology', issn: '5679-2344'}
+        {doi: '10.1234/altmetric2', title: 'About Biology', issn: '5679-2344'},
+        {doi: '10.1234/altmetric3', title: 'About Biology', issn: '3141-5916'},
     ]
     allow(@article_csv_doc).to(
-        receive(:each).and_yield(rows.first).and_yield(rows.last))
+        receive(:each).and_yield(rows[0]).and_yield(rows[1]).and_yield(rows[2]))
     allow(@author_json_doc).to receive(:find).with(any_args).and_return an_author
     allow(@journal_csv_doc).to receive(:find).with(any_args).and_return a_journal
 
