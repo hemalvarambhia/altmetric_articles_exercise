@@ -71,7 +71,6 @@ describe 'merging documents' do
     end
   end
 
-
   describe 'merging multiple articles' do
     before :each do
       @format = 'json'
