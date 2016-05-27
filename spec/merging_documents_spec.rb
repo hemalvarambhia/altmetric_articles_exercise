@@ -49,8 +49,7 @@ describe 'merging documents and outputting the result to JSON' do
     ]
     allow(@article_csv_doc).to(
         receive(:each).and_yield(rows.first).and_yield(rows.last))
-    allow(@author_json_doc).to(
-        receive(:find).with(any_args).and_return an_author)
+    allow(@author_json_doc).to receive(:find).with(any_args).and_return an_author
     allow(@journal_csv_doc).to receive(:find).with(any_args).and_return a_journal
 
     merged_rows = merge(@article_csv_doc, @author_json_doc, @journal_csv_doc, @format)
