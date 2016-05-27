@@ -39,7 +39,7 @@ describe 'merging documents' do
       allow(@journal_csv_doc).to receive(:find).with('8456-2422').and_return 'Nature'
     end
 
-    describe 'JSON output' do
+    describe 'JSON format' do
       before :each do
         @format = 'json'
       end
@@ -56,7 +56,7 @@ describe 'merging documents' do
       end
     end
 
-    describe 'CSV' do
+    describe 'CSV format' do
       before :each do
         @format = 'csv'
       end
