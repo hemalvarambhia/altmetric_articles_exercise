@@ -1,5 +1,6 @@
 describe 'merging documents' do
 
+  #REFACTOR - the merge method has two responsibilities - merging and rendering
   def merge(article_csv_doc, author_json_doc, journal_csv_doc, format)
     rows = []
     article_csv_doc.each do |article|
