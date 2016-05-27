@@ -104,23 +104,23 @@ describe 'combining articles, journals and authors documents' do
         expect(merged_row).to(have('Author').in_column(2))
         expect(merged_row).to(have('Nature').in_column(3))
       end
-    end
 
-    RSpec::Matchers.define :have do |expected|
-      match do |actual|
-       actual[@index] == expected
-      end
+      RSpec::Matchers.define :have do |expected|
+        match do |actual|
+          actual[@index] == expected
+        end
 
-      chain :in_column do |offset|
-        @index = offset
-      end
+        chain :in_column do |offset|
+          @index = offset
+        end
 
-      chain :last do
-        @index = -1
-      end
+        chain :last do
+          @index = -1
+        end
 
-      failure_message do |actual|
-        "Expected #{actual.inspect} to have #{expected} at position #{@index}"
+        failure_message do |actual|
+          "Expected #{actual.inspect} to have #{expected} at position #{@index}"
+        end
       end
     end
   end
