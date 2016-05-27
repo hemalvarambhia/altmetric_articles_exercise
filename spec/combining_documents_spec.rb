@@ -96,9 +96,9 @@ describe 'combining articles, journals and authors documents' do
       it 'includes the DOI, title and ISSN' do
         merged_row = combine_documents.first
 
-        expect(merged_row).to(have(doi('10.1234/altmetric0')).in_column(0))
-        expect(merged_row).to(have('About Physics').in_column(1))
-        expect(merged_row).to(have(issn('8456-2422')).last)
+        expect(merged_row).to have(doi('10.1234/altmetric0')).in_column(0)
+        expect(merged_row).to have('About Physics').in_column(1)
+        expect(merged_row).to have(issn('8456-2422')).last
       end
 
       it 'includes the author and journal title' do
