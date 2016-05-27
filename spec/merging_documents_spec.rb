@@ -41,10 +41,10 @@ describe 'merging documents' do
           issn: ISSN.new('8456-2422')
       }
       allow(@article_csv_doc).to(yield_rows(row))
-      allow(@author_json_doc).to(
-          receive(:find).with(row[:doi]).and_return ['Author'])
-      allow(@journal_csv_doc).to(
-          receive(:find).with(row[:issn]).and_return 'Nature')
+      allow(@author_json_doc)
+          .to receive(:find).with(row[:doi]).and_return ['Author']
+      allow(@journal_csv_doc)
+          .to receive(:find).with(row[:issn]).and_return 'Nature'
     end
 
     describe 'JSON format' do
@@ -89,8 +89,10 @@ describe 'merging documents' do
       rows = Array.new(3) {{ doi: a_doi, title: 'Title', issn: an_issn }}
 
       allow(@article_csv_doc).to(yield_rows(*rows))
-      allow(@author_json_doc).to receive(:find).with(any_args).and_return an_author
-      allow(@journal_csv_doc).to receive(:find).with(any_args).and_return a_journal
+      allow(@author_json_doc)
+          .to receive(:find).with(any_args).and_return an_author
+      allow(@journal_csv_doc)
+          .to receive(:find).with(any_args).and_return a_journal
 
       merged_rows = merge_documents
 
