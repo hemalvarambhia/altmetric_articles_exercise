@@ -80,8 +80,8 @@ describe 'combining articles, journals and authors documents' do
       it 'includes the author and journal title' do
         merged_row = combine_documents.first
 
-        expected = { author: 'Author', journal: 'Nature' }
-        expect(merged_row).to(include(expected))
+        expect(merged_row)
+            .to include(author: 'Author').and include(journal: 'Nature')
       end
     end
 
@@ -101,8 +101,8 @@ describe 'combining articles, journals and authors documents' do
       it 'includes the author and journal title' do
         merged_row = combine_documents.first
 
-        expect(merged_row).to(have('Author').in_column(2))
-        expect(merged_row).to(have('Nature').in_column(3))
+        expect(merged_row)
+            .to have('Author').in_column(2).and(have('Nature').in_column(3))
       end
 
       RSpec::Matchers.define :have do |expected|
