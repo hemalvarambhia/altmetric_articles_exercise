@@ -1,4 +1,7 @@
+require 'doi_helper'
+require 'issn_helper'
 describe 'combining articles, journals and authors documents' do
+  include CreateDOI, CreateISSN
 
   class DocumentCombiner
     def initialize(params)
@@ -50,9 +53,9 @@ describe 'combining articles, journals and authors documents' do
     @journal_csv_doc = double(:journals_csv)
     @author_json_doc = double(:authors_json)
     @row = {
-        doi: '10.1234/altmetric0',
+        doi: doi('10.1234/altmetric0'),
         title: 'About Physics',
-        issn: '8456-2422'
+        issn: issn('8456-2422')
     }
     allow(@article_csv_doc).to(yield_rows(@row))
   end
@@ -93,9 +96,9 @@ describe 'combining articles, journals and authors documents' do
       it 'includes the DOI, title and ISSN' do
         merged_row = combine_documents.first
 
-        expect(merged_row).to(have('10.1234/altmetric0').in_column(0))
+        expect(merged_row).to(have(doi('10.1234/altmetric0')).in_column(0))
         expect(merged_row).to(have('About Physics').in_column(1))
-        expect(merged_row).to(have('8456-2422').last)
+        expect(merged_row).to(have(issn('8456-2422')).last)
       end
 
       it 'includes the author and journal title' do
@@ -192,13 +195,11 @@ describe 'combining articles, journals and authors documents' do
     ['J. Chem. Phys.', 'J. Bio.', 'J. Phys. B'].sample
   end
 
-  def a_doi
-    registrant = Array.new(4) { rand(0..9) }.join
-    "10.#{registrant}/altmetric#{rand(100000000)}"
+  def doi(code)
+    DOI.new(code)
   end
 
-  def an_issn
-    code = Array.new(8) { rand(0..9) }
-    "#{code.join}"
+  def issn(code)
+    ISSN.new(code)
   end
 end
