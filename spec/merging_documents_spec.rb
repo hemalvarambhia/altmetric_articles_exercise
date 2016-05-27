@@ -5,11 +5,10 @@ describe 'merging documents' do
       @article_csv_doc = params[:article_csv_doc]
       @journal_csv_doc = params[:journal_csv_doc]
       @author_json_doc = params[:author_json_doc]
-      @format = params[:format]
     end
 
     #REFACTOR - the merge method has two responsibilities - merging and rendering
-    def merge
+    def merge format
       merged_rows = []
       @article_csv_doc.each do |article|
         merged_rows << {
@@ -21,13 +20,13 @@ describe 'merging documents' do
         }
       end
 
-      render merged_rows
+      render_in format, merged_rows
     end
 
     private
 
-    def render rows
-      renderer = case @format
+    def render_in format, rows
+      renderer = case format
                    when 'json'
                      lambda { |row| as_json row }
                    when 'csv'
@@ -150,8 +149,7 @@ describe 'merging documents' do
         article_csv_doc: @article_csv_doc,
         journal_csv_doc: @journal_csv_doc,
         author_json_doc: @author_json_doc,
-        format: @format
-    ).merge
+    ).merge @format
   end
 
   def yield_rows(*rows)
