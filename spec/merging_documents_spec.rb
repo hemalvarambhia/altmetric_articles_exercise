@@ -1,9 +1,4 @@
 describe 'merging documents' do
-  before :each do
-    @article_csv_doc = double(:articles_csv)
-    @journal_csv_doc = double(:journals_csv)
-    @author_json_doc = double(:authors_json)
-  end
 
   def merge(article_csv_doc, author_json_doc, journal_csv_doc, format)
     rows = []
@@ -29,37 +24,66 @@ describe 'merging documents' do
     row.values
   end
 
-  describe 'outputting the result to JSON' do
+  before :each do
+    @article_csv_doc = double(:articles_csv)
+    @journal_csv_doc = double(:journals_csv)
+    @author_json_doc = double(:authors_json)
+  end
+
+  describe 'merging an article with its author(s) and journal' do
+    before :each do
+      row = {doi: '10.1234/altmetric0', title: 'About Physics', issn: '8456-2422'}
+      allow(@article_csv_doc).to(yield_rows(row))
+      allow(@author_json_doc).to(
+          receive(:find).with('10.1234/altmetric0').and_return [ 'Author' ])
+      allow(@journal_csv_doc).to receive(:find).with('8456-2422').and_return 'Nature'
+    end
+
+    describe 'JSON output' do
+      before :each do
+        @format = 'json'
+      end
+
+      it 'contains the DOI, title, author, journal title and ISSN' do
+        merged_row = merge(@article_csv_doc, @author_json_doc, @journal_csv_doc, @format)
+
+        expected = {
+            doi: '10.1234/altmetric0', title: 'About Physics', author: 'Author',
+            journal: 'Nature', issn: '8456-2422'
+        }
+
+        expect(merged_row).to(include(expected))
+      end
+    end
+
+    describe 'CSV' do
+      before :each do
+        @format = 'csv'
+      end
+
+      it 'contains the DOI, title, author, journal title and ISSN' do
+        merged_row = merge(@article_csv_doc, @author_json_doc, @journal_csv_doc, @format)
+
+        expected = ['10.1234/altmetric0', 'About Physics', 'Author', 'Nature', '8456-2422']
+
+        expect(merged_row).to(include(expected))
+      end
+    end
+  end
+
+
+  describe 'merging multiple articles' do
     before :each do
       @format = 'json'
     end
 
-    it 'merges an article with its authors and the journal it was published in' do
-      allow(@article_csv_doc).to(
-          receive(:each).and_yield(
-              { doi: '10.1234/altmetric0', title: 'About Physics', issn: '8456-2422' }
-          ))
-      allow(@author_json_doc).to(
-          receive(:find).with('10.1234/altmetric0').and_return [ 'Author' ])
-      allow(@journal_csv_doc).to receive(:find).with('8456-2422').and_return 'Nature'
-
-      merged_row = merge(@article_csv_doc, @author_json_doc, @journal_csv_doc, @format)
-
-      expected = {
-          doi: '10.1234/altmetric0', title: 'About Physics', author: 'Author',
-          journal: 'Nature', issn: '8456-2422'
-      }
-      expect(merged_row).to(include(expected))
-    end
-
-    it 'merges all articles with their authors and the journal it was published in' do
+    it 'renders all the rows contained the article CSV document' do
       rows = [
           {doi: '10.1234/altmetric1', title: 'About Chemistry', issn: '6844-2395'},
           {doi: '10.1234/altmetric2', title: 'About Biology', issn: '5679-2344'},
           {doi: '10.1234/altmetric3', title: 'About Biology', issn: '3141-5916'},
       ]
-      allow(@article_csv_doc).to(
-          receive(:each).and_yield(rows[0]).and_yield(rows[1]).and_yield(rows[2]))
+      allow(@article_csv_doc).to(yield_rows(*rows))
       allow(@author_json_doc).to receive(:find).with(any_args).and_return an_author
       allow(@journal_csv_doc).to receive(:find).with(any_args).and_return a_journal
 
@@ -69,26 +93,11 @@ describe 'merging documents' do
     end
   end
 
-  describe 'outputting the result to CSV' do
-    before :each do
-      @format = 'csv'
-    end
+  def yield_rows(*rows)
+    each = receive(:each)
+    rows.each { |row| each.and_yield row }
 
-    it 'merges the article with its author and the journal it was published' do
-      allow(@article_csv_doc).to(
-          receive(:each).and_yield(
-              { doi: '10.1234/altmetric0', title: 'About Physics', issn: '8456-2422' }
-          ))
-      allow(@author_json_doc).to(
-          receive(:find).with('10.1234/altmetric0').and_return [ 'Author' ])
-      allow(@journal_csv_doc).to receive(:find).with('8456-2422').and_return 'Nature'
-
-      merged_row = merge(@article_csv_doc, @author_json_doc, @journal_csv_doc, @format)
-
-      expected = ['10.1234/altmetric0', 'About Physics', 'Author', 'Nature', '8456-2422']
-
-      expect(merged_row).to(include(expected))
-    end
+    each
   end
 
   def an_author
