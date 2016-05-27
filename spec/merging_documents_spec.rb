@@ -45,7 +45,7 @@ describe 'merging documents' do
       end
 
       it 'contains the DOI, title, author, journal title and ISSN' do
-        merged_row = merge(@article_csv_doc, @author_json_doc, @journal_csv_doc, @format)
+        merged_row = merge_documents
 
         expected = {
             doi: '10.1234/altmetric0', title: 'About Physics', author: 'Author',
@@ -62,7 +62,7 @@ describe 'merging documents' do
       end
 
       it 'contains the DOI, title, author, journal title and ISSN' do
-        merged_row = merge(@article_csv_doc, @author_json_doc, @journal_csv_doc, @format)
+        merged_row = merge_documents
 
         expected = ['10.1234/altmetric0', 'About Physics', 'Author', 'Nature', '8456-2422']
 
@@ -87,10 +87,14 @@ describe 'merging documents' do
       allow(@author_json_doc).to receive(:find).with(any_args).and_return an_author
       allow(@journal_csv_doc).to receive(:find).with(any_args).and_return a_journal
 
-      merged_rows = merge(@article_csv_doc, @author_json_doc, @journal_csv_doc, @format)
+      merged_rows = merge_documents
 
       expect(merged_rows.size).to eq rows.size
     end
+  end
+
+  def merge_documents
+    merge(@article_csv_doc, @author_json_doc, @journal_csv_doc, @format)
   end
 
   def yield_rows(*rows)
