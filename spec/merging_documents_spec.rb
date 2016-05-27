@@ -46,41 +46,6 @@ describe 'merging documents' do
     end
   end
 
-  #REFACTOR - the merge method has two responsibilities - merging and rendering
-  def merge(article_csv_doc, author_json_doc, journal_csv_doc, format)
-    merged_rows = []
-    article_csv_doc.each do |article|
-      merged_rows << {
-          doi: article[:doi],
-          title: article[:title],
-          author: author_json_doc.find(article[:doi]).join,
-          journal: journal_csv_doc.find(article[:issn]),
-          issn: article[:issn]
-      }
-    end
-
-    render(format, merged_rows)
-  end
-
-  def render(format, rows)
-    renderer = case format
-                 when 'json'
-                   lambda { |row| as_json row }
-                 when 'csv'
-                   lambda { |row| as_csv row }
-               end
-
-    rows.collect &renderer
-  end
-
-  def as_json(row)
-    row
-  end
-
-  def as_csv(row)
-    row.values
-  end
-
   before :each do
     @article_csv_doc = double(:articles_csv)
     @journal_csv_doc = double(:journals_csv)
@@ -181,7 +146,6 @@ describe 'merging documents' do
   end
 
   def merge_documents
-    merge(@article_csv_doc, @author_json_doc, @journal_csv_doc, @format)
     DocumentMerger.new(
         article_csv_doc: @article_csv_doc,
         journal_csv_doc: @journal_csv_doc,
