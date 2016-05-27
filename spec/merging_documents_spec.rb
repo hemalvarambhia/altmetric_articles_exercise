@@ -13,6 +13,10 @@ describe 'merging documents' do
       }
     end
 
+    render_in(format, rows)
+  end
+
+  def render_in(format, rows)
     renderer = case format
                  when 'json'
                    lambda { |row| as_json row }
