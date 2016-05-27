@@ -49,9 +49,9 @@ describe 'combining articles, journals and authors documents' do
   end
 
   before :each do
-    @article_csv_doc = double(:articles_csv)
-    @journal_csv_doc = double(:journals_csv)
-    @author_json_doc = double(:authors_json)
+    @article_csv_doc = double(:article_csv_doc)
+    @journal_csv_doc = double(:journal_csv_doc)
+    @author_json_doc = double(:author_json_doc)
     @row = {
         doi: doi('10.1234/altmetric0'),
         title: 'About Physics',
