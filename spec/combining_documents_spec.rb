@@ -74,8 +74,7 @@ describe 'combining articles, journals and authors documents' do
         merged_row = combine_documents.first
 
         expected = {
-            doi: '10.1234/altmetric0', title: 'About Physics',
-            issn: '8456-2422'
+            doi: '10.1234/altmetric0', title: 'About Physics', issn: '8456-2422'
         }
         expect(merged_row).to(include(expected))
       end
@@ -120,6 +119,30 @@ describe 'combining articles, journals and authors documents' do
 
       chain :last do
         @index = -1
+      end
+    end
+  end
+
+  context 'when the journal or authors(s) are not present in the docs' do
+    before :each do
+      no_author = []
+      allow(@author_json_doc)
+          .to receive(:find).with(@row[:doi]).and_return no_author
+      no_such_journal = ''
+      allow(@journal_csv_doc)
+          .to receive(:find).with(@row[:issn]).and_return no_such_journal
+    end
+
+    describe 'JSON format' do
+      before :each do
+        @format = 'json'
+      end
+
+      it 'present a blank author and journal title' do
+        merged_row = combine_documents.first
+
+        expect(merged_row[:journal]).to be_empty
+        expect(merged_row[:author]).to be_empty
       end
     end
   end
