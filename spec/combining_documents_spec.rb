@@ -73,10 +73,8 @@ describe 'combining articles, journals and authors documents' do
       it 'includes the DOI, title and ISSN' do
         merged_row = combine_documents.first
 
-        expected = {
-            doi: '10.1234/altmetric0', title: 'About Physics', issn: '8456-2422'
-        }
-        expect(merged_row).to(include(expected))
+        expected = @row.values_at(:doi, :title, :issn)
+        expect(merged_row.values_at(:doi, :title, :issn)).to eq expected
       end
 
       it 'includes the author and journal title' do
