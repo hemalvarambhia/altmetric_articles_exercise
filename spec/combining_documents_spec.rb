@@ -1,6 +1,6 @@
-describe 'merging documents' do
+describe 'combining articles, journals and authors documents' do
 
-  class DocumentMerger
+  class DocumentCombiner
     def initialize(params)
       @article_csv_doc = params[:article_csv_doc]
       @journal_csv_doc = params[:journal_csv_doc]
@@ -8,7 +8,7 @@ describe 'merging documents' do
     end
 
     #REFACTOR - the merge method has two responsibilities - merging and rendering
-    def merge format
+    def combine format
       merged_rows = []
       @article_csv_doc.each do |article|
         merged_rows << {
@@ -71,7 +71,7 @@ describe 'merging documents' do
       end
 
       it 'includes the DOI, title and ISSN' do
-        merged_row = merge_documents.first
+        merged_row = combine_documents.first
 
         expected = {
             doi: '10.1234/altmetric0', title: 'About Physics',
@@ -81,7 +81,7 @@ describe 'merging documents' do
       end
 
       it 'includes the author and journal title' do
-        merged_row = merge_documents.first
+        merged_row = combine_documents.first
 
         expected = { author: 'Author', journal: 'Nature' }
         expect(merged_row).to(include(expected))
@@ -94,7 +94,7 @@ describe 'merging documents' do
       end
 
       it 'includes the DOI, title and ISSN' do
-        merged_row = merge_documents.first
+        merged_row = combine_documents.first
 
         expect(merged_row).to(have('10.1234/altmetric0').in_column(0))
         expect(merged_row).to(have('About Physics').in_column(1))
@@ -102,7 +102,7 @@ describe 'merging documents' do
       end
 
       it 'includes the author and journal title' do
-        merged_row = merge_documents.first
+        merged_row = combine_documents.first
 
         expect(merged_row).to(have('Author').in_column(2))
         expect(merged_row).to(have('Nature').in_column(3))
@@ -138,18 +138,18 @@ describe 'merging documents' do
       allow(@journal_csv_doc)
           .to receive(:find).with(any_args).and_return a_journal
 
-      merged_rows = merge_documents
+      merged_rows = combine_documents
 
       expect(merged_rows.size).to eq rows.size
     end
   end
 
-  def merge_documents
-    DocumentMerger.new(
+  def combine_documents
+    DocumentCombiner.new(
         article_csv_doc: @article_csv_doc,
         journal_csv_doc: @journal_csv_doc,
         author_json_doc: @author_json_doc,
-    ).merge @format
+    ).combine @format
   end
 
   def yield_rows(*rows)
