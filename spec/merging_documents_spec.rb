@@ -12,8 +12,14 @@ describe 'merging documents' do
       }
     end
 
-    return rows.collect { |row| as_json row } if format == 'json'
-    return rows.collect { |row| as_csv row } if format == 'csv'
+    renderer = case format
+                 when 'json'
+                   lambda { |row| as_json row }
+                 when 'csv'
+                   lambda { |row| as_csv row }
+               end
+
+    rows.collect &renderer
   end
 
   def as_json(row)
