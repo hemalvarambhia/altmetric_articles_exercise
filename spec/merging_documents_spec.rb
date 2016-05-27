@@ -1,5 +1,51 @@
 describe 'merging documents' do
 
+  class DocumentMerger
+    def initialize(params)
+      @article_csv_doc = params[:article_csv_doc]
+      @journal_csv_doc = params[:journal_csv_doc]
+      @author_json_doc = params[:author_json_doc]
+      @format = params[:format]
+    end
+
+    #REFACTOR - the merge method has two responsibilities - merging and rendering
+    def merge
+      merged_rows = []
+      @article_csv_doc.each do |article|
+        merged_rows << {
+            doi: article[:doi],
+            title: article[:title],
+            author: @author_json_doc.find(article[:doi]).join,
+            journal: @journal_csv_doc.find(article[:issn]),
+            issn: article[:issn]
+        }
+      end
+
+      render merged_rows
+    end
+
+    private
+
+    def render rows
+      renderer = case @format
+                   when 'json'
+                     lambda { |row| as_json row }
+                   when 'csv'
+                     lambda { |row| as_csv row }
+                 end
+
+      rows.collect &renderer
+    end
+
+    def as_json(row)
+      row
+    end
+
+    def as_csv(row)
+      row.values
+    end
+  end
+
   #REFACTOR - the merge method has two responsibilities - merging and rendering
   def merge(article_csv_doc, author_json_doc, journal_csv_doc, format)
     merged_rows = []
@@ -13,10 +59,10 @@ describe 'merging documents' do
       }
     end
 
-    render_in(format, merged_rows)
+    render(format, merged_rows)
   end
 
-  def render_in(format, rows)
+  def render(format, rows)
     renderer = case format
                  when 'json'
                    lambda { |row| as_json row }
@@ -136,6 +182,12 @@ describe 'merging documents' do
 
   def merge_documents
     merge(@article_csv_doc, @author_json_doc, @journal_csv_doc, @format)
+    DocumentMerger.new(
+        article_csv_doc: @article_csv_doc,
+        journal_csv_doc: @journal_csv_doc,
+        author_json_doc: @author_json_doc,
+        format: @format
+    ).merge
   end
 
   def yield_rows(*rows)
