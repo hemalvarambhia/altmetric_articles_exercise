@@ -51,7 +51,7 @@ describe 'merging documents' do
     @author_json_doc = double(:authors_json)
   end
 
-  describe 'merging an article with its author(s) and journal' do
+  context 'when the journal and author(s) are present in the docs' do
     before :each do
       row = {
           doi: '10.1234/altmetric0',
