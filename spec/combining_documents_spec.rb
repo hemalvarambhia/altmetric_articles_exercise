@@ -120,6 +120,10 @@ describe 'combining articles, journals and authors documents' do
       chain :last do
         @index = -1
       end
+
+      failure_message do |actual|
+        "Expected #{actual.inspect} to have #{expected} at position #{@index}"
+      end
     end
   end
 
