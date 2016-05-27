@@ -1,11 +1,3 @@
-def some_authors
-  ['Biologist', 'Chemist', 'Physicist', 'Engineer']
-end
-
-def some_journals
-  ['J. Chem. Phys.', 'J. Bio.', 'J. Phys. B']
-end
-
 describe 'merging documents and outputting the result to JSON' do
   def merge(article_csv_doc, author_json_doc, journal_csv_doc, format)
     rows = []
@@ -57,14 +49,20 @@ describe 'merging documents and outputting the result to JSON' do
     ]
     allow(@article_csv_doc).to(
         receive(:each).and_yield(rows.first).and_yield(rows.last))
-    authors = some_authors
     allow(@author_json_doc).to(
-        receive(:find).with(any_args).and_return authors.sample(1))
-    journals = some_journals
-    allow(@journal_csv_doc).to receive(:find).with(any_args).and_return journals.sample
+        receive(:find).with(any_args).and_return an_author)
+    allow(@journal_csv_doc).to receive(:find).with(any_args).and_return a_journal
 
     merged_rows = merge(@article_csv_doc, @author_json_doc, @journal_csv_doc, @format)
 
     expect(merged_rows.size).to eq rows.size
+  end
+
+  def an_author
+    ['Biologist', 'Chemist', 'Physicist', 'Engineer'].sample(1)
+  end
+
+  def a_journal
+    ['J. Chem. Phys.', 'J. Bio.', 'J. Phys. B'].sample
   end
 end
