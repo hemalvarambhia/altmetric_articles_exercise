@@ -1,7 +1,4 @@
-require 'doi_helper'
-require 'issn_helper'
 describe 'merging documents' do
-  include CreateDOI, CreateISSN
 
   def merge(article_csv_doc, author_json_doc, journal_csv_doc, format)
     rows = []
@@ -36,9 +33,9 @@ describe 'merging documents' do
   describe 'merging an article with its author(s) and journal' do
     before :each do
       row = {
-          doi: DOI.new('10.1234/altmetric0'),
+          doi: '10.1234/altmetric0',
           title: 'About Physics',
-          issn: ISSN.new('8456-2422')
+          issn: '8456-2422'
       }
       allow(@article_csv_doc).to(yield_rows(row))
       allow(@author_json_doc)
@@ -52,13 +49,20 @@ describe 'merging documents' do
         @format = 'json'
       end
 
-      it 'contains the DOI, title, author, journal title and ISSN' do
-        merged_row = merge_documents
+      it 'includes the DOI, title and ISSN' do
+        merged_row = merge_documents.first
 
         expected = {
-            doi: DOI.new('10.1234/altmetric0'), title: 'About Physics',
-            author: 'Author', journal: 'Nature', issn: ISSN.new('8456-2422')
+            doi: '10.1234/altmetric0', title: 'About Physics',
+            issn: '8456-2422'
         }
+        expect(merged_row).to(include(expected))
+      end
+
+      it 'includes the author and journal title' do
+        merged_row = merge_documents.first
+
+        expected = { author: 'Author', journal: 'Nature' }
         expect(merged_row).to(include(expected))
       end
     end
@@ -68,14 +72,20 @@ describe 'merging documents' do
         @format = 'csv'
       end
 
-      it 'contains the DOI, title, author, journal title and ISSN' do
-        merged_row = merge_documents
+      it 'includes the DOI, title and ISSN' do
+        merged_row = merge_documents.first
 
         expected = [
-            DOI.new('10.1234/altmetric0'), 'About Physics', 'Author',
-            'Nature', ISSN.new('8456-2422')
+            '10.1234/altmetric0', 'About Physics', '8456-2422'
         ]
-        expect(merged_row).to(include(expected))
+        expect(merged_row).to(include(*expected))
+      end
+
+      it 'includes the author and journal title' do
+        merged_row = merge_documents.first
+
+        expected = [ 'Author', 'Nature' ]
+        expect(merged_row).to(include(*expected))
       end
     end
   end
@@ -117,5 +127,15 @@ describe 'merging documents' do
 
   def a_journal
     ['J. Chem. Phys.', 'J. Bio.', 'J. Phys. B'].sample
+  end
+
+  def a_doi
+    registrant = Array.new(4) { rand(0..9) }.join
+    "10.#{registrant}/altmetric#{rand(100000000)}"
+  end
+
+  def an_issn
+    code = Array.new(8) { rand(0..9) }
+    "#{code.join}"
   end
 end
