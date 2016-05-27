@@ -75,17 +75,30 @@ describe 'merging documents' do
       it 'includes the DOI, title and ISSN' do
         merged_row = merge_documents.first
 
-        expected = [
-            '10.1234/altmetric0', 'About Physics', '8456-2422'
-        ]
-        expect(merged_row).to(include(*expected))
+        expect(merged_row).to(have('10.1234/altmetric0').in_column(0))
+        expect(merged_row).to(have('About Physics').in_column(1))
+        expect(merged_row).to(have('8456-2422').last)
       end
 
       it 'includes the author and journal title' do
         merged_row = merge_documents.first
 
-        expected = [ 'Author', 'Nature' ]
-        expect(merged_row).to(include(*expected))
+        expect(merged_row).to(have('Author').in_column(2))
+        expect(merged_row).to(have('Nature').in_column(3))
+      end
+    end
+
+    RSpec::Matchers.define :have do |expected|
+      match do |actual|
+       actual[@index] == expected
+      end
+
+      chain :in_column do |offset|
+        @index = offset
+      end
+
+      chain :last do
+        @index = -1
       end
     end
   end
