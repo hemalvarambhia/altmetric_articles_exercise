@@ -41,7 +41,7 @@ describe 'combining articles, journals and authors documents' do
     end
 
     def as_csv(row)
-      row.values
+      row.values_at(:doi, :title, :author, :journal, :issn)
     end
   end
 
