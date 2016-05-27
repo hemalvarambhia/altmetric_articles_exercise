@@ -20,12 +20,12 @@ describe 'combining articles, journals and authors documents' do
         }
       end
 
-      render_in format, merged_rows
+      output_in format, merged_rows
     end
 
     private
 
-    def render_in format, rows
+    def output_in format, rows
       renderer = case format
                    when 'json'
                      lambda { |row| as_json row }
