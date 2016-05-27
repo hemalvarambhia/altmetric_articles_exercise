@@ -105,9 +105,9 @@ describe 'combining articles, journals and authors documents' do
             .to have('Author').in_column(2).and(have('Nature').in_column(3))
       end
 
-      RSpec::Matchers.define :have do |expected|
-        match do |actual|
-          actual[@index] == expected
+      RSpec::Matchers.define :have do |expected_field|
+        match do |csv_row|
+          csv_row[@index] == expected_field
         end
 
         chain :in_column do |offset|
@@ -118,8 +118,8 @@ describe 'combining articles, journals and authors documents' do
           @index = -1
         end
 
-        failure_message do |actual|
-          "Expected #{actual.inspect} to have #{expected} at position #{@index}"
+        failure_message do |csv_row|
+          "Expected #{csv_row.inspect} to have #{expected_field} at position #{@index}"
         end
       end
     end
