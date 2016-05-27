@@ -194,12 +194,4 @@ describe 'combining articles, journals and authors documents' do
   def a_journal
     ['J. Chem. Phys.', 'J. Bio.', 'J. Phys. B'].sample
   end
-
-  def doi(code)
-    DOI.new(code)
-  end
-
-  def issn(code)
-    ISSN.new(code)
-  end
 end
