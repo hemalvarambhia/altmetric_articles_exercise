@@ -1,4 +1,7 @@
+require 'doi_helper'
+require 'issn_helper'
 describe 'merging documents' do
+  include CreateDOI, CreateISSN
 
   def merge(article_csv_doc, author_json_doc, journal_csv_doc, format)
     rows = []
@@ -32,11 +35,15 @@ describe 'merging documents' do
 
   describe 'merging an article with its author(s) and journal' do
     before :each do
-      row = {doi: '10.1234/altmetric0', title: 'About Physics', issn: '8456-2422'}
+      row = {
+          doi: DOI.new('10.1234/altmetric0'),
+          title: 'About Physics',
+          issn: ISSN.new('8456-2422')
+      }
       allow(@article_csv_doc).to(yield_rows(row))
       allow(@author_json_doc).to(
-          receive(:find).with('10.1234/altmetric0').and_return [ 'Author' ])
-      allow(@journal_csv_doc).to receive(:find).with('8456-2422').and_return 'Nature'
+          receive(:find).with(DOI.new('10.1234/altmetric0')).and_return [ 'Author' ])
+      allow(@journal_csv_doc).to receive(:find).with(ISSN.new('8456-2422')).and_return 'Nature'
     end
 
     describe 'JSON format' do
@@ -48,8 +55,8 @@ describe 'merging documents' do
         merged_row = merge_documents
 
         expected = {
-            doi: '10.1234/altmetric0', title: 'About Physics', author: 'Author',
-            journal: 'Nature', issn: '8456-2422'
+            doi: DOI.new('10.1234/altmetric0'), title: 'About Physics', author: 'Author',
+            journal: 'Nature', issn: ISSN.new('8456-2422')
         }
         expect(merged_row).to(include(expected))
       end
@@ -63,7 +70,10 @@ describe 'merging documents' do
       it 'contains the DOI, title, author, journal title and ISSN' do
         merged_row = merge_documents
 
-        expected = ['10.1234/altmetric0', 'About Physics', 'Author', 'Nature', '8456-2422']
+        expected = [
+            DOI.new('10.1234/altmetric0'), 'About Physics', 'Author',
+            'Nature', ISSN.new('8456-2422')
+        ]
         expect(merged_row).to(include(expected))
       end
     end
@@ -76,9 +86,9 @@ describe 'merging documents' do
 
     it 'renders all the rows contained the article CSV document' do
       rows = [
-          {doi: '10.1234/altmetric1', title: 'About Chemistry', issn: '6844-2395'},
-          {doi: '10.1234/altmetric2', title: 'About Biology', issn: '5679-2344'},
-          {doi: '10.1234/altmetric3', title: 'About Biology', issn: '3141-5916'},
+          { doi: a_doi, title: 'About Chemistry', issn: an_issn },
+          { doi: a_doi, title: 'About Biology', issn: an_issn },
+          { doi: a_doi, title: 'About Biology', issn: an_issn },
       ]
       allow(@article_csv_doc).to(yield_rows(*rows))
       allow(@author_json_doc).to receive(:find).with(any_args).and_return an_author
