@@ -51,7 +51,6 @@ describe 'merging documents' do
             doi: '10.1234/altmetric0', title: 'About Physics', author: 'Author',
             journal: 'Nature', issn: '8456-2422'
         }
-
         expect(merged_row).to(include(expected))
       end
     end
@@ -65,7 +64,6 @@ describe 'merging documents' do
         merged_row = merge_documents
 
         expected = ['10.1234/altmetric0', 'About Physics', 'Author', 'Nature', '8456-2422']
-
         expect(merged_row).to(include(expected))
       end
     end
