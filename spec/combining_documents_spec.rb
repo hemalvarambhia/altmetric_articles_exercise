@@ -65,7 +65,7 @@ describe 'combining articles, journals and authors documents' do
           .to receive(:find).with(@row[:issn]).and_return 'Nature'
     end
 
-    describe 'JSON format' do
+    describe 'JSON formatted output' do
       before :each do
         @format = 'json'
       end
@@ -80,12 +80,12 @@ describe 'combining articles, journals and authors documents' do
       it 'includes the author and journal title' do
         merged_row = combine_documents.first
 
-        expect(merged_row)
-            .to include(author: 'Author').and include(journal: 'Nature')
+        expect(merged_row[:author]).to eq 'Author'
+        expect(merged_row[:journal]).to eq 'Nature'
       end
     end
 
-    describe 'CSV format' do
+    describe 'CSV formatted output' do
       before :each do
         @format = 'csv'
       end
