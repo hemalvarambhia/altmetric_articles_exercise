@@ -85,11 +85,8 @@ describe 'merging documents' do
     end
 
     it 'renders all the rows contained the article CSV document' do
-      rows = [
-          { doi: a_doi, title: 'About Chemistry', issn: an_issn },
-          { doi: a_doi, title: 'About Biology', issn: an_issn },
-          { doi: a_doi, title: 'About Biology', issn: an_issn },
-      ]
+      rows = Array.new(3) {{ doi: a_doi, title: 'Title', issn: an_issn }}
+
       allow(@article_csv_doc).to(yield_rows(*rows))
       allow(@author_json_doc).to receive(:find).with(any_args).and_return an_author
       allow(@journal_csv_doc).to receive(:find).with(any_args).and_return a_journal
