@@ -1,12 +1,11 @@
+require 'forwardable'
 describe 'An article CSV doc' do
-  ArticleCSVDoc = Class.new
   class ArticleCSVDoc
-    def initialize rows = {}
+    extend Forwardable
+    def_delegator :@rows, :each
+       
+    def initialize rows = []
       @rows = rows
-    end
-    
-    def each
-      yield @rows
     end
   end
   
@@ -15,7 +14,7 @@ describe 'An article CSV doc' do
       expected_row = {
         doi: '10.1234/altmetric1', title: 'About Physics', issn: '5463-4695'
       }
-      article_csv_doc = ArticleCSVDoc.new expected_row
+      article_csv_doc = ArticleCSVDoc.new [expected_row]
 
       expect { |b| article_csv_doc.each(&b) }
         .to yield_successive_args expected_row
@@ -25,7 +24,7 @@ describe 'An article CSV doc' do
       expected_row = {
         doi: '10.1234/altmetric2', title: 'About Chemistry', issn: '1234-5678'
       }
-      article_csv_doc = ArticleCSVDoc.new expected_row
+      article_csv_doc = ArticleCSVDoc.new [expected_row]
       
       expect { |b| article_csv_doc.each(&b) }
         .to yield_successive_args expected_row
