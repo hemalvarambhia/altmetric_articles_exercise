@@ -1,11 +1,19 @@
 describe 'Outputting combined documents' do
   class InFormat
     def output_in format, document
-      return as_json(document.read) if format == 'json'
-      document.read.values_at(:doi, :title)
+      row = document.read
+      if format == 'json'
+        as_json row
+      else
+        as_csv row
+      end
     end
 
     private
+
+    def as_csv row
+      row.values_at(:doi, :title) + [ comma_separated(row[:author]) ]
+    end
 
     def as_json row
       {
@@ -129,6 +137,7 @@ describe 'Outputting combined documents' do
 
   describe 'CSV format' do
     before(:each) { @format = 'csv' }
+    
     it 'publishes the DOI in column 1' do
       a_row = a_row_with(doi: '10.1234/altmetric1')
       allow(@documents_combined).to receive(:read).and_return a_row
@@ -146,6 +155,31 @@ describe 'Outputting combined documents' do
 
       expect(csv_output).to have('R-Matrix Method').in_column 1
     end
+
+    describe 'publishing authors' do
+      context 'given the article has only a single author' do
+        it 'publishes the author in column 3' do
+          a_row = a_row_with(author: [ 'Paul Dirac' ])
+          allow(@documents_combined).to receive(:read).and_return a_row
+      
+          csv_output = @formatter.output_in @format, @documents_combined
+      
+          expect(csv_output).to have('Paul Dirac').in_column 2
+        end
+      end
+
+      context 'given the article has multiple authors' do
+        it 'publishes their names comma-separated in column 3' do
+          a_row = a_row_with(author: ['Paul Dirac', 'Max Born'])
+          allow(@documents_combined).to receive(:read).and_return a_row
+          
+          csv_output = @formatter.output_in @format, @documents_combined
+          
+          expect(csv_output).to have('Paul Dirac,Max Born').in_column 2
+        end
+      end
+    end
+    
 
     RSpec::Matchers.define :have do |expected_field|
       match do |csv_row|
