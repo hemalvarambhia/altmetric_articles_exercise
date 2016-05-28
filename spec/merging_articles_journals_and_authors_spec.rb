@@ -11,11 +11,11 @@ describe 'Combiner' do
     journals_table = double(:journals_table)
     authors_table = double(:authors_table)
     document = double(:document)
-    row = merged_row
+    expected_row = merged_row
     expect(articles_table).to(
-      receive(:join).with(journals_table, authors_table).and_return [row]
+      receive(:join).with(journals_table, authors_table).and_return [expected_row]
     )
-    expect(document).to receive(:<<).with(row)
+    expect(document).to receive(:<<).with(expected_row)
     combined = Combined.new(articles_table, journals_table, authors_table)
 
     combined.output_to(document)

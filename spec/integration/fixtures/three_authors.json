@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Chair Maker",
+    "articles": ["10.1234/altmetric0"]
+  },
+
+  {
+    "name": "Paul Dirac",
+    "articles": ["10.1234/altmetric1", "10.1234/altmetric2"]
+  },
+
+  {
+    "name": "Albert Einstein",
+    "articles": ["10.1234/altmetric2"]
+  }
+]

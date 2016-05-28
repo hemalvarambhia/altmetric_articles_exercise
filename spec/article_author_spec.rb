@@ -4,6 +4,22 @@ require 'doi_helper'
 describe 'Author' do
   include CreateDOI
 
+  describe '#author_of?' do
+    it 'confirms that an author published an article' do
+      doi_1, doi_2 = a_doi, a_doi
+      author = ArticleAuthor.new(name: nil, publications: [doi_1, doi_2])
+
+      expect(author).to be_author_of doi_1
+    end
+
+    it 'confirms that an author did not publish an article' do
+      doi_1, doi_2, doi_3 = a_doi, a_doi, a_doi
+      author = ArticleAuthor.new(name: nil, publications: [doi_1, doi_2])
+
+      expect(author).not_to be_author_of doi_3
+    end
+  end
+
   it 'stores their name' do
     author = ArticleAuthor.new(name: 'Author')
     expect(author.name).to eq 'Author'
@@ -21,22 +37,6 @@ describe 'Author' do
     author = ArticleAuthor.new(name: nil, publications: [doi_1, doi_1, doi_2])
 
     expect(author.publications).to eq [doi_1, doi_2]
-  end
-
-  describe '#author_of?' do
-    it 'confirms that an author published an article' do
-      doi_1, doi_2 = a_doi, a_doi
-      author = ArticleAuthor.new(name: nil, publications: [doi_1, doi_2])
-
-      expect(author).to be_author_of doi_1
-    end
-
-    it 'confirms that an author did not publish an article' do
-      doi_1, doi_2, doi_3 = a_doi, a_doi, a_doi
-      author = ArticleAuthor.new(name: nil, publications: [doi_1, doi_2])
-
-      expect(author).not_to be_author_of doi_3
-    end
   end
 
   describe '#==' do

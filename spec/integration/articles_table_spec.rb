@@ -8,7 +8,7 @@ require 'author_json_doc'
 require 'author_json_parser'
 require 'authors_table'
 describe 'ArticlesTable' do
-  before(:each) { @doc_dir = File.join(File.dirname(__FILE__),'sample_docs') }
+  before(:each) { @doc_dir = File.join(File.dirname(__FILE__),'fixtures') }
 
   describe '#join' do
     it 'merges the author and journal of the article together' do
@@ -20,15 +20,6 @@ describe 'ArticlesTable' do
                            authors_table(path_to_json_doc))
 
       expect(merged_row[0].keys).to include(:doi, :title, :issn, :journal, :author)
-=begin
-          doi: DOI.new('10.1234/altmetric0'), 
-          title: 'Small Wooden Chair',
-          issn: ISSN.new('1337-8688'),
-          journal: 'Bartell-Collins',
-          authors: ['Author 1']
-        }])
-      )
-=end
     end
 
     def articles_table(path)

@@ -5,7 +5,7 @@ require 'journals_table'
 describe JournalsTable do
   it 'searches for journals by ISSN' do
     path_to_journal_csv = File.join(
-      File.dirname(__FILE__), 'sample_docs', 'one_journal.csv'
+      File.dirname(__FILE__), 'fixtures', 'one_journal.csv'
     )
     journals_csv_doc = AltmetricFile.new(
       CSV.new(File.open(path_to_journal_csv), {headers: true}),

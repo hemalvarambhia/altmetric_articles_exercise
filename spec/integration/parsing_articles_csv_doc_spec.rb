@@ -14,7 +14,7 @@ describe 'Parsing an Articles CSV Doc' do
       }
     ]
     path_to_csv_doc = File.join(
-      File.dirname(__FILE__),'sample_docs','one_article.csv')
+      File.dirname(__FILE__),'fixtures','one_article.csv')
     article_csv_doc = CSV.new(File.open(path_to_csv_doc), {headers: true})
     altmetric_file = AltmetricFile.new(article_csv_doc, ArticleCSVParser)
 

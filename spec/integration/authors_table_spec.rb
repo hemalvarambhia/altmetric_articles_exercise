@@ -5,7 +5,7 @@ require 'authors_table'
 describe 'AuthorsTable' do
   it 'reads off the authors of an article correctly' do
     path_to_json_doc = File.join(
-      File.dirname(__FILE__), 'sample_docs', 'one_author.json'
+      File.dirname(__FILE__), 'fixtures', 'one_author.json'
     )
     authors_json_doc = AuthorJSONDoc.new(File.open(path_to_json_doc))
     authors_table = AuthorsTable.from AltmetricFile.new(authors_json_doc, AuthorJSONParser)
