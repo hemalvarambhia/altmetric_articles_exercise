@@ -5,6 +5,7 @@ describe 'Outputting combined documents' do
         'doi' => document.read[:doi],
         'title' => document.read[:title],
         'author' => comma_separated(document.read[:author]),
+        'journal' => document.read[:journal].to_s,
         'issn' => document.read[:issn]
       }
     end
@@ -78,6 +79,30 @@ describe 'Outputting combined documents' do
           
           expect(json_output['author'])
             .to eq 'Main Author,Co-Author 1,Co-Author 2'
+        end
+      end
+    end
+
+    describe 'publishing the journal title' do
+      context 'when it is known' do
+        it 'publishes the title of the journal' do
+          a_row = { journal: 'J. Phys. B', author: [] }
+          allow(@documents_combined).to receive(:read).and_return a_row
+
+          json_output = @formatter.output_in @format, @documents_combined
+      
+          expect(json_output['journal']).to eq 'J. Phys. B'
+        end
+      end
+
+      context 'when it is known' do
+        it 'is left blank' do
+          a_row = { journal: nil, author: [] }
+          allow(@documents_combined).to receive(:read).and_return a_row
+          
+          json_output = @formatter.output_in @format, @documents_combined
+          
+          expect(json_output['journal']).to be_empty
         end
       end
     end
