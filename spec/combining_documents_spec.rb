@@ -1,5 +1,25 @@
 describe 'combining articles, journals and authors documents' do
+  class Formatter
+    def output_in format, rows
+      renderer = case format
+                   when 'json'
+                     lambda { |row| as_json row }
+                   when 'csv'
+                     lambda { |row| as_csv row }
+                 end
 
+      rows.collect &renderer
+    end
+
+    def as_json(row)
+      row
+    end
+
+    def as_csv(row)
+      row.values_at(:doi, :title, :author, :journal, :issn)
+    end
+  end
+  
   class DocumentCombiner
     def initialize(params)
       @article_csv_doc = params[:article_csv_doc]
@@ -20,28 +40,7 @@ describe 'combining articles, journals and authors documents' do
         }
       end
 
-      output_in format, merged_rows
-    end
-
-    private
-
-    def output_in format, rows
-      renderer = case format
-                   when 'json'
-                     lambda { |row| as_json row }
-                   when 'csv'
-                     lambda { |row| as_csv row }
-                 end
-
-      rows.collect &renderer
-    end
-
-    def as_json(row)
-      row
-    end
-
-    def as_csv(row)
-      row.values_at(:doi, :title, :author, :journal, :issn)
+      Formatter.new.output_in format, merged_rows
     end
   end
 
