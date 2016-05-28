@@ -2,7 +2,7 @@ describe 'Outputting combined documents' do
   class InFormat
     def output_in format, document
       return as_json(document.read) if format == 'json'
-      [ document.read[:doi], document.read[:title] ]
+      document.read.values_at(:doi, :title)
     end
 
     private
