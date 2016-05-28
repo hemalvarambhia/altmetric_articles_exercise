@@ -1,28 +1,11 @@
 require 'article_csv_parser'
 describe 'Article CSV Parser' do
-  it 'reads off the DOI, title and ISSN from a line' do
-    line = [ '10.4937/altmetric001', 'Physics', '1232-1983' ]
-    expected = { 
-      doi: DOI.new('10.4937/altmetric001'),
-      title: 'Physics',
-      issn: ISSN.new('1232-1983')
-    }
-
-    parsed_row = ArticleCSVParser.parse(line)
-
-    expect(parsed_row).to eq expected
-  end
-
-  it 'reads off the DOI, title and ISSN from any line' do
-    line = [ '10.7503/altmetric123', 'Astrophysics', '1912-2223' ]
-    expected = {
-      doi: DOI.new('10.7503/altmetric123'),
-      title: 'Astrophysics',
-      issn: ISSN.new('1912-2223')
-    }
-
-    parsed_row = ArticleCSVParser.parse(line)
-
-    expect(parsed_row).to eq expected
+  describe 'when the ISSN is missing a dash' do
+    it 'adds it in' do
+      row = { doi: nil, title: nil, issn: '12345678' }
+      
+      expected_row = { doi: nil, title: nil, issn: '1234-5678' }
+      expect(ArticleCSVParser.parse row).to eq expected_row 
+    end
   end
 end
