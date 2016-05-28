@@ -2,7 +2,7 @@ describe 'Outputting combined documents' do
   class InFormat
     def output_in format, document
       return as_json(document.read) if format == 'json'
-      [ document.read[:doi] ]
+      [ document.read[:doi], document.read[:title] ]
     end
 
     private
@@ -22,12 +22,14 @@ describe 'Outputting combined documents' do
     end
   end
 
-  before(:each) { @formatter = InFormat.new }
+  before(:each) do
+    @formatter = InFormat.new
+    @documents_combined = double(:documents_combined)
+  end
 
   describe 'JSON format' do
     before :each do
       @format = 'json'
-      @documents_combined = double(:documents_combined)
     end
     
     it 'publishes the DOI' do
@@ -126,14 +128,23 @@ describe 'Outputting combined documents' do
   end
 
   describe 'CSV format' do
+    before(:each) { @format = 'csv' }
     it 'publishes the DOI in column 1' do
       a_row = a_row_with(doi: '10.1234/altmetric1')
-      documents_combined = double(:documents_combined)
-      allow(documents_combined).to receive(:read).and_return a_row
+      allow(@documents_combined).to receive(:read).and_return a_row
       
-      csv_output = @formatter.output_in 'csv', documents_combined
+      csv_output = @formatter.output_in @format, @documents_combined
       
       expect(csv_output).to have('10.1234/altmetric1').in_column 0
+    end
+
+    it 'publishes the title in column 2' do
+      a_row = a_row_with(title: 'R-Matrix Method')
+      allow(@documents_combined).to receive(:read).and_return a_row
+      
+      csv_output = @formatter.output_in @format, @documents_combined
+
+      expect(csv_output).to have('R-Matrix Method').in_column 1
     end
 
     RSpec::Matchers.define :have do |expected_field|
