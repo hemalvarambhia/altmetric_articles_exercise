@@ -170,12 +170,13 @@ describe 'Outputting combined documents' do
 
       context 'given the article has multiple authors' do
         it 'publishes their names comma-separated in column 3' do
-          a_row = a_row_with(author: ['Paul Dirac', 'Max Born'])
+          a_row = a_row_with(author: ['P Dirac', 'M Born', 'W Heisenberg'])
           allow(@documents_combined).to receive(:read).and_return a_row
           
           csv_output = @formatter.output_in @format, @documents_combined
           
-          expect(csv_output).to have('Paul Dirac,Max Born').in_column 2
+          expect(csv_output)
+            .to have('P Dirac,M Born,W Heisenberg').in_column 2
         end
       end
     end
