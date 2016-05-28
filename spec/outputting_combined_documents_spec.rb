@@ -40,7 +40,7 @@ describe 'Outputting combined documents' do
     end
 
     it 'publishes the title' do
-      a_row = { title: 'The R-matrix Method', author: [] }
+      a_row = a_row_with(title: 'The R-matrix Method')
       allow(@documents_combined).to(receive(:read).and_return a_row)
       
       output = @formatter.output_in(@required_format, @documents_combined)
@@ -52,7 +52,7 @@ describe 'Outputting combined documents' do
       context 'when there is none' do
         it 'publishes a blank' do
           no_author = []
-          a_row = { author: no_author }
+          a_row = a_row_with(author: no_author)
           allow(@documents_combined).to(receive(:read).and_return a_row)
           
           json_output = @formatter.output_in @format, @documents_combined
@@ -63,7 +63,7 @@ describe 'Outputting combined documents' do
 
       context 'when there is a single author' do
         it 'publishes their name' do
-          a_row = { author: [ 'Physicist' ] }
+          a_row = a_row_with(author: [ 'Physicist' ])
           allow(@documents_combined)
             .to(receive(:read).and_return a_row) 
           
@@ -75,7 +75,8 @@ describe 'Outputting combined documents' do
 
       context 'when there is more than 1 author' do
         it 'publishes their names separated by a comma' do
-          a_row = { author: ['Main Author', 'Co-Author 1', 'Co-Author 2']}
+          a_row = a_row_with(
+            author: ['Main Author', 'Co-Author 1', 'Co-Author 2'])
           allow(@documents_combined)
             .to(receive(:read).and_return a_row)
 
@@ -90,7 +91,7 @@ describe 'Outputting combined documents' do
     describe 'publishing the journal title' do
       context 'when it is known' do
         it 'publishes the title of the journal' do
-          a_row = { journal: 'J. Phys. B', author: [] }
+          a_row = a_row_with(journal: 'J. Phys. B')
           allow(@documents_combined).to receive(:read).and_return a_row
 
           json_output = @formatter.output_in @format, @documents_combined
@@ -101,7 +102,7 @@ describe 'Outputting combined documents' do
 
       context 'when it is known' do
         it 'is left blank' do
-          a_row = { journal: nil, author: [] }
+          a_row = a_row_with(journal: nil)
           allow(@documents_combined).to receive(:read).and_return a_row
           
           json_output = @formatter.output_in @format, @documents_combined
@@ -112,7 +113,7 @@ describe 'Outputting combined documents' do
     end
 
     it 'publishes the ISSN' do
-      a_row = { issn: '1234-5678', author: [] }
+      a_row = a_row_with(issn: '1234-5678')
       allow(@documents_combined)
         .to receive(:read).and_return a_row
       
