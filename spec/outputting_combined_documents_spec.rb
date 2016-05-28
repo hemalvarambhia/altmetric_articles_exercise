@@ -113,7 +113,7 @@ describe 'Outputting combined documents' do
         end
       end
 
-      context 'when it is known' do
+      context 'when it is not known' do
         it 'is left blank' do
           a_row = a_row_with(journal: nil)
           allow(@documents_combined).to receive(:read).and_return a_row
