@@ -1,7 +1,8 @@
 describe 'Outputting combined documents' do
   class InFormat
     def output_in format, document
-      as_json document.read
+      return as_json(document.read) if format == 'json'
+      [ document.read[:doi] ]
     end
 
     private
@@ -21,11 +22,12 @@ describe 'Outputting combined documents' do
     end
   end
 
+  before(:each) { @formatter = InFormat.new }
+
   describe 'JSON format' do
     before :each do
-      @required_format = 'json'
+      @format = 'json'
       @documents_combined = double(:documents_combined)
-      @formatter = InFormat.new
     end
     
     it 'publishes the DOI' do
@@ -34,7 +36,7 @@ describe 'Outputting combined documents' do
         .to receive(:read).and_return a_row
       formatter = InFormat.new
       
-      output = @formatter.output_in(@required_format, @documents_combined)
+      output = @formatter.output_in(@format, @documents_combined)
 
       expect(output['doi']).to eq '10.1234/altmetric0'
     end
@@ -43,7 +45,7 @@ describe 'Outputting combined documents' do
       a_row = a_row_with(title: 'The R-matrix Method')
       allow(@documents_combined).to(receive(:read).and_return a_row)
       
-      output = @formatter.output_in(@required_format, @documents_combined)
+      output = @formatter.output_in(@format, @documents_combined)
 
       expect(output['title']).to eq 'The R-matrix Method'
     end
@@ -117,9 +119,42 @@ describe 'Outputting combined documents' do
       allow(@documents_combined)
         .to receive(:read).and_return a_row
       
-      output = @formatter.output_in(@required_format, @documents_combined)
+      output = @formatter.output_in(@format, @documents_combined)
 
       expect(output['issn']).to eq '1234-5678'
+    end
+  end
+
+  describe 'CSV format' do
+    it 'publishes the DOI in column 1' do
+      a_row = a_row_with(doi: '10.1234/altmetric1')
+      documents_combined = double(:documents_combined)
+      allow(documents_combined).to receive(:read).and_return a_row
+      
+      csv_output = @formatter.output_in 'csv', documents_combined
+      
+      expect(csv_output).to have('10.1234/altmetric1').in_column 0
+    end
+
+    RSpec::Matchers.define :have do |expected_field|
+      match do |csv_row|
+        csv_row[@index] == expected_field
+      end
+
+      chain :in_column do |offset|
+        @index = offset
+      end
+
+      chain :last do
+        @index = -1
+      end
+
+      failure_message do |csv_row|
+        message = "Expected #{csv_row.inspect} to have #{expected_field} "
+        message << "at position #{@index}"
+
+        message
+      end
     end
   end
 
