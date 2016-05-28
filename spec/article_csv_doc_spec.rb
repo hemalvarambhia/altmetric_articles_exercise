@@ -2,12 +2,7 @@ describe 'An article CSV doc' do
   ArticleCSVDoc = Class.new
   class ArticleCSVDoc
     def initialize rows = {}
-      @rows = rows ||
-      {
-        doi: '10.1234/altmetric1',
-        title: 'About Physics',
-        issn: '5463-4695'
-      }
+      @rows = rows
     end
     
     def each
