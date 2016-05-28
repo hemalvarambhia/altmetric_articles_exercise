@@ -1,16 +1,20 @@
 describe 'Outputting combined documents' do
   class InFormat
     def output_in format, document
-      {
-        'doi' => document.read[:doi],
-        'title' => document.read[:title],
-        'author' => comma_separated(document.read[:author]),
-        'journal' => document.read[:journal].to_s,
-        'issn' => document.read[:issn]
-      }
+      as_json document.read
     end
 
     private
+
+    def as_json row
+      {
+        'doi' => row[:doi],
+        'title' => row[:title],
+        'author' => comma_separated(row[:author]),
+        'journal' => row[:journal].to_s,
+        'issn' => row[:issn]
+      }
+    end
 
     def comma_separated authors
       authors.join(',')
