@@ -1,14 +1,18 @@
 describe 'combining articles, journals and authors documents' do
-  class Formatter
-    def output_in format, rows
-      renderer = case format
+  class InFormat
+    def initialize format
+      @format = format
+    end
+    
+    def output rows
+      required_format = case @format
                    when 'json'
                      lambda { |row| as_json row }
                    when 'csv'
                      lambda { |row| as_csv row }
                  end
 
-      rows.collect &renderer
+      rows.collect &required_format
     end
 
     def as_json(row)
@@ -30,6 +34,7 @@ describe 'combining articles, journals and authors documents' do
     #REFACTOR - the merge method has two responsibilities: merging and rendering
     def combine format
       merged_rows = []
+      in_format = InFormat.new format
       @article_csv_doc.each do |article|
         merged_rows << {
             doi: article[:doi],
@@ -40,7 +45,7 @@ describe 'combining articles, journals and authors documents' do
         }
       end
 
-      Formatter.new.output_in format, merged_rows
+      in_format.output merged_rows
     end
   end
 
