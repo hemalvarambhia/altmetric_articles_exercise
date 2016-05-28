@@ -1,11 +1,31 @@
 describe 'combining articles, journals and authors documents' do
-  class InFormat
-    def initialize format
-      @format = format
+  class DocumentCombiner
+    def initialize(params)
+      @article_csv_doc = params[:article_csv_doc]
+      @journal_csv_doc = params[:journal_csv_doc]
+      @author_json_doc = params[:author_json_doc]
     end
-    
-    def output rows
-      required_format = case @format
+
+    #REFACTOR - the merge method has two responsibilities: merging and rendering
+    def combine format
+      merged_rows = []
+      @article_csv_doc.each do |article|
+        merged_rows << {
+            doi: article[:doi],
+            title: article[:title],
+            author: @author_json_doc.find(article[:doi]).join,
+            journal: @journal_csv_doc.find(article[:issn]),
+            issn: article[:issn]
+        }
+      end
+
+      output_in format, merged_rows
+    end
+
+    private
+
+     def output_in format, rows
+      required_format = case format
                    when 'json'
                      lambda { |row| as_json row }
                    when 'csv'
@@ -21,31 +41,6 @@ describe 'combining articles, journals and authors documents' do
 
     def as_csv(row)
       row.values_at(:doi, :title, :author, :journal, :issn)
-    end
-  end
-  
-  class DocumentCombiner
-    def initialize(params)
-      @article_csv_doc = params[:article_csv_doc]
-      @journal_csv_doc = params[:journal_csv_doc]
-      @author_json_doc = params[:author_json_doc]
-    end
-
-    #REFACTOR - the merge method has two responsibilities: merging and rendering
-    def combine format
-      merged_rows = []
-      in_format = InFormat.new format
-      @article_csv_doc.each do |article|
-        merged_rows << {
-            doi: article[:doi],
-            title: article[:title],
-            author: @author_json_doc.find(article[:doi]).join,
-            journal: @journal_csv_doc.find(article[:issn]),
-            issn: article[:issn]
-        }
-      end
-
-      in_format.output merged_rows
     end
   end
 
