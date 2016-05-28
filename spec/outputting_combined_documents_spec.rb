@@ -12,7 +12,8 @@ describe 'Outputting combined documents' do
     private
 
     def as_csv row
-      row.values_at(:doi, :title) + [ comma_separated(row[:author]) ]
+      row.values_at(:doi, :title) +
+        [ comma_separated(row[:author]) ] + [ row[:journal] ]
     end
 
     def as_json row
@@ -180,8 +181,16 @@ describe 'Outputting combined documents' do
         end
       end
     end
-    
 
+    it 'publishes the journal title in column 4' do
+      a_row = a_row_with(journal: 'Nature')
+      allow(@documents_combined).to receive(:read).and_return a_row
+          
+      csv_output = @formatter.output_in @format, @documents_combined
+          
+      expect(csv_output).to have('Nature').in_column 3
+    end
+    
     RSpec::Matchers.define :have do |expected_field|
       match do |csv_row|
         csv_row[@index] == expected_field
