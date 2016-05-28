@@ -25,7 +25,7 @@ describe 'Outputting combined documents' do
     end
     
     it 'publishes the DOI' do
-      a_row = { doi: '10.1234/altmetric0', author: [] }
+      a_row = a_row_with({ doi: '10.1234/altmetric0' })
       allow(@documents_combined)
         .to receive(:read).and_return a_row
       formatter = InFormat.new
@@ -116,5 +116,14 @@ describe 'Outputting combined documents' do
 
       expect(output['issn']).to eq '1234-5678'
     end
+  end
+
+  def a_row_with(params)
+    row = {
+      doi: '10.1234/altmetric0', title: 'General Relativity',
+      author: ['Albert Einstein'], journal: 'Nature',
+      issn: '5432-8765'
+    }
+    row.merge params
   end
 end
