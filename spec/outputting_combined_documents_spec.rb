@@ -45,20 +45,19 @@ describe 'Outputting combined documents' do
       a_row = a_row_with({ doi: '10.1234/altmetric0' })
       allow(@documents_combined)
         .to receive(:read).and_return a_row
-      formatter = InFormat.new
       
-      output = @formatter.output_in(@format, @documents_combined)
+      json_output = @formatter.output_in(@format, @documents_combined)
 
-      expect(output['doi']).to eq '10.1234/altmetric0'
+      expect(json_output['doi']).to eq '10.1234/altmetric0'
     end
 
     it 'publishes the title' do
       a_row = a_row_with(title: 'The R-matrix Method')
       allow(@documents_combined).to(receive(:read).and_return a_row)
       
-      output = @formatter.output_in(@format, @documents_combined)
+      json_output = @formatter.output_in(@format, @documents_combined)
 
-      expect(output['title']).to eq 'The R-matrix Method'
+      expect(json_output['title']).to eq 'The R-matrix Method'
     end
 
     describe 'publishing the author' do
