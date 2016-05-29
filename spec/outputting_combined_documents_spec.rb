@@ -16,7 +16,7 @@ describe 'Outputting combined documents' do
     def as_csv row
       csv_row = [
         row[:doi], row[:title], comma_separated(row[:author]),
-        row[:journal].to_s, row[:issn]
+        row[:journal], row[:issn]
       ]
 
       csv_row
@@ -27,7 +27,7 @@ describe 'Outputting combined documents' do
         'doi' => row[:doi],
         'title' => row[:title],
         'author' => comma_separated(row[:author]),
-        'journal' => row[:journal].to_s,
+        'journal' => row[:journal],
         'issn' => row[:issn]
       }
     end
@@ -112,7 +112,7 @@ describe 'Outputting combined documents' do
 
       context 'when it is not known' do
         it 'is left blank' do
-          no_known_title = nil
+          no_known_title = ''
           given_documents_combined_have a_row_with(journal: no_known_title)
           
           json_output = generate_output
@@ -188,7 +188,7 @@ describe 'Outputting combined documents' do
 
       context 'when it is not known' do
          it 'publishes a blank title in column 4' do
-           no_known_title =  nil
+           no_known_title =  ''
            given_documents_combined_have a_row_with(journal: no_known_title)
           
            csv_output = generate_output
