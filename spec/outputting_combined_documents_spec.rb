@@ -48,9 +48,7 @@ describe 'Outputting combined documents' do
     end
     
     it 'publishes the DOI' do
-      a_row = a_row_with({ doi: '10.1234/altmetric0' })
-      allow(@documents_combined)
-        .to receive(:read).and_return a_row
+      given_documents_combined_have a_row_with(doi: '10.1234/altmetric0')
       
       json_output = generate_output
 
@@ -58,8 +56,7 @@ describe 'Outputting combined documents' do
     end
 
     it 'publishes the title' do
-      a_row = a_row_with(title: 'The R-matrix Method')
-      allow(@documents_combined).to(receive(:read).and_return a_row)
+      given_documents_combined_have a_row_with(title: 'The R-matrix Method')
       
       json_output = generate_output
 
@@ -70,8 +67,7 @@ describe 'Outputting combined documents' do
       context 'when there is none' do
         it 'publishes a blank' do
           no_author = []
-          a_row = a_row_with(author: no_author)
-          allow(@documents_combined).to(receive(:read).and_return a_row)
+          given_documents_combined_have a_row_with(author: no_author)
           
           json_output = generate_output
 
@@ -81,8 +77,7 @@ describe 'Outputting combined documents' do
 
       context 'when there is a single author' do
         it 'publishes their name' do
-          a_row = a_row_with(author: [ 'Physicist' ])
-          allow(@documents_combined).to(receive(:read).and_return a_row) 
+          given_documents_combined_have a_row_with(author: ['Physicist'])
           
           json_output = generate_output
           
@@ -92,9 +87,9 @@ describe 'Outputting combined documents' do
 
       context 'when there is more than 1 author' do
         it 'publishes their names separated by a comma' do
-          a_row = a_row_with(
-            author: ['Main Author', 'Co-Author 1', 'Co-Author 2'])
-          allow(@documents_combined).to(receive(:read).and_return a_row)
+          given_documents_combined_have(
+            a_row_with(author: ['Main Author', 'Co-Author 1', 'Co-Author 2'])
+          )
 
           json_output = generate_output
 
@@ -107,9 +102,8 @@ describe 'Outputting combined documents' do
     describe 'publishing the journal title' do
       context 'when it is known' do
         it 'publishes the title of the journal' do
-          a_row = a_row_with(journal: 'J. Phys. B')
-          allow(@documents_combined).to receive(:read).and_return a_row
-
+          given_documents_combined_have a_row_with(journal: 'J. Phys. B')
+          
           json_output = generate_output
 
           expect(json_output['journal']).to eq 'J. Phys. B'
@@ -118,8 +112,8 @@ describe 'Outputting combined documents' do
 
       context 'when it is not known' do
         it 'is left blank' do
-          a_row = a_row_with(journal: nil)
-          allow(@documents_combined).to receive(:read).and_return a_row
+          no_known_title = nil
+          given_documents_combined_have a_row_with(journal: no_known_title)
           
           json_output = generate_output
           
@@ -129,9 +123,7 @@ describe 'Outputting combined documents' do
     end
 
     it 'publishes the ISSN' do
-      a_row = a_row_with(issn: '1234-5678')
-      allow(@documents_combined)
-        .to receive(:read).and_return a_row
+      given_documents_combined_have a_row_with(issn: '1234-5678')
       
       json_output = generate_output
 
@@ -248,6 +240,10 @@ describe 'Outputting combined documents' do
     csv_output = @formatter.output_in format, @documents_combined
 
     expect(csv_output.size).to eq content.size
+  end
+
+  def given_documents_combined_have(*rows)
+    allow(@documents_combined).to receive(:read).and_return *rows
   end
   
   def generate_output
