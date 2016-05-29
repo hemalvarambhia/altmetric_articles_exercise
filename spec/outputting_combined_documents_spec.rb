@@ -240,8 +240,34 @@ describe 'Outputting combined documents' do
     end
   end
 
+  it 'formats all rows from the combined documents' do
+    content = Array.new(3) { a_row }
+    format = ['json','csv'].sample
+    allow(@documents_combined).to receive(:read).and_return content
+
+    csv_output = @formatter.output_in format, @documents_combined
+
+    expect(csv_output.size).to eq content.size
+  end
+  
+
   def generate_output
     @formatter.output_in(@format, @documents_combined).first
+  end
+
+  def a_row
+    {
+      doi: generate_doi, title: 'Academic Publication',
+      author: authors, journal: 'An Academic Journal',
+      issn: generate_issn
+    }
+  end
+
+  def authors
+    [
+      'A Einstein', 'P A M Dirac', 'W Heisenberg', 'E Schrodinger',
+      'M Born', 'W Pauli', 'M Planck'
+    ].sample(rand(0..4))
   end
 
   def a_row_with(params)
@@ -252,4 +278,14 @@ describe 'Outputting combined documents' do
     }
     [ row.merge(params) ]
   end
+
+  def generate_doi
+    registrant = Array.new(4) { rand(0..9) }.join
+    "10.#{registrant}/altmetric#{rand(100000000)}"
+  end
+
+  def generate_issn
+    digits = Array.new(8) { rand(0..9) }
+    "#{digits[0..3].join}-#{digits[4..-1].join}"
+  end  
 end
