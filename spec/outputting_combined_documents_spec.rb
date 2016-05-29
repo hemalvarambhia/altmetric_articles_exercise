@@ -135,8 +135,7 @@ describe 'Outputting combined documents' do
     before(:each) { @format = 'csv' }
     
     it 'publishes the DOI in column 1' do
-      a_row = a_row_with(doi: '10.1234/altmetric1')
-      allow(@documents_combined).to receive(:read).and_return a_row
+      given_documents_combined_have a_row_with(doi: '10.1234/altmetric1')
       
       csv_output = generate_output
       
@@ -144,19 +143,17 @@ describe 'Outputting combined documents' do
     end
 
     it 'publishes the title in column 2' do
-      a_row = a_row_with(title: 'R-Matrix Method')
-      allow(@documents_combined).to receive(:read).and_return a_row
+      given_documents_combined_have a_row_with(title: 'Scattering Theory')
       
       csv_output = generate_output
 
-      expect(csv_output).to have('R-Matrix Method').in_column 1
+      expect(csv_output).to have('Scattering Theory').in_column 1
     end
 
     describe 'publishing authors' do
       context 'given the article has only a single author' do
         it 'publishes the author in column 3' do
-          a_row = a_row_with(author: [ 'Paul Dirac' ])
-          allow(@documents_combined).to receive(:read).and_return a_row
+          given_documents_combined_have(a_row_with(author: ['Paul Dirac']))
       
           csv_output = generate_output
           
@@ -166,8 +163,9 @@ describe 'Outputting combined documents' do
 
       context 'given the article has multiple authors' do
         it 'publishes their names comma-separated in column 3' do
-          a_row = a_row_with(author: ['P Dirac', 'M Born', 'W Heisenberg'])
-          allow(@documents_combined).to receive(:read).and_return a_row
+          given_documents_combined_have(
+            a_row_with(author: [ 'P Dirac', 'M Born', 'W Heisenberg' ])
+          )
           
           csv_output = generate_output
           
@@ -180,8 +178,7 @@ describe 'Outputting combined documents' do
     describe 'publishing the journal title' do
       context 'when it is known' do
          it 'publishes the journal title in column 4' do
-           a_row = a_row_with(journal: 'Nature')
-           allow(@documents_combined).to receive(:read).and_return a_row
+           given_documents_combined_have a_row_with(journal: 'Nature')
           
            csv_output = generate_output
           
@@ -191,8 +188,8 @@ describe 'Outputting combined documents' do
 
       context 'when it is not known' do
          it 'publishes a blank title in column 4' do
-           a_row = a_row_with(journal: nil)
-           allow(@documents_combined).to receive(:read).and_return a_row
+           no_known_title =  nil
+           given_documents_combined_have a_row_with(journal: no_known_title)
           
            csv_output = generate_output
           
@@ -202,8 +199,7 @@ describe 'Outputting combined documents' do
     end
 
     it 'publishes the ISSN in column 5' do
-      a_row = a_row_with(issn: '1234-5678')
-      allow(@documents_combined).to receive(:read).and_return a_row
+      given_documents_combined_have a_row_with(issn: '1234-5678')
       
       csv_output = generate_output
       
@@ -235,7 +231,7 @@ describe 'Outputting combined documents' do
   it 'formats all rows from the combined documents' do
     content = Array.new(3) { a_row }
     format = ['json','csv'].sample
-    allow(@documents_combined).to receive(:read).and_return content
+    given_documents_combined_have content
 
     csv_output = @formatter.output_in format, @documents_combined
 
