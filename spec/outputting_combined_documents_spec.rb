@@ -1,12 +1,14 @@
 describe 'Outputting combined documents' do
   class InFormat
     def output_in format, document
-      row = document.read
-      if format == 'json'
-        as_json row
-      else
-        as_csv row
-      end
+      format_required =
+        if format == 'json'
+          lambda { |row| as_json row }
+        else
+          lambda { |row| as_csv row }
+        end
+
+      document.read.collect &format_required
     end
 
     private
@@ -50,7 +52,7 @@ describe 'Outputting combined documents' do
       allow(@documents_combined)
         .to receive(:read).and_return a_row
       
-      json_output = @formatter.output_in(@format, @documents_combined)
+      json_output = generate_output
 
       expect(json_output['doi']).to eq '10.1234/altmetric0'
     end
@@ -59,7 +61,7 @@ describe 'Outputting combined documents' do
       a_row = a_row_with(title: 'The R-matrix Method')
       allow(@documents_combined).to(receive(:read).and_return a_row)
       
-      json_output = @formatter.output_in(@format, @documents_combined)
+      json_output = generate_output
 
       expect(json_output['title']).to eq 'The R-matrix Method'
     end
@@ -71,7 +73,7 @@ describe 'Outputting combined documents' do
           a_row = a_row_with(author: no_author)
           allow(@documents_combined).to(receive(:read).and_return a_row)
           
-          json_output = @formatter.output_in @format, @documents_combined
+          json_output = generate_output
 
           expect(json_output['author']).to be_empty
         end
@@ -80,10 +82,9 @@ describe 'Outputting combined documents' do
       context 'when there is a single author' do
         it 'publishes their name' do
           a_row = a_row_with(author: [ 'Physicist' ])
-          allow(@documents_combined)
-            .to(receive(:read).and_return a_row) 
+          allow(@documents_combined).to(receive(:read).and_return a_row) 
           
-          json_output = @formatter.output_in @format, @documents_combined
+          json_output = generate_output
           
           expect(json_output['author']).to eq 'Physicist'
         end
@@ -93,11 +94,10 @@ describe 'Outputting combined documents' do
         it 'publishes their names separated by a comma' do
           a_row = a_row_with(
             author: ['Main Author', 'Co-Author 1', 'Co-Author 2'])
-          allow(@documents_combined)
-            .to(receive(:read).and_return a_row)
+          allow(@documents_combined).to(receive(:read).and_return a_row)
 
-          json_output = @formatter.output_in @format, @documents_combined
-          
+          json_output = generate_output
+
           expect(json_output['author'])
             .to eq 'Main Author,Co-Author 1,Co-Author 2'
         end
@@ -110,8 +110,8 @@ describe 'Outputting combined documents' do
           a_row = a_row_with(journal: 'J. Phys. B')
           allow(@documents_combined).to receive(:read).and_return a_row
 
-          json_output = @formatter.output_in @format, @documents_combined
-      
+          json_output = generate_output
+
           expect(json_output['journal']).to eq 'J. Phys. B'
         end
       end
@@ -121,7 +121,7 @@ describe 'Outputting combined documents' do
           a_row = a_row_with(journal: nil)
           allow(@documents_combined).to receive(:read).and_return a_row
           
-          json_output = @formatter.output_in @format, @documents_combined
+          json_output = generate_output
           
           expect(json_output['journal']).to be_empty
         end
@@ -133,9 +133,9 @@ describe 'Outputting combined documents' do
       allow(@documents_combined)
         .to receive(:read).and_return a_row
       
-      output = @formatter.output_in(@format, @documents_combined)
+      json_output = generate_output
 
-      expect(output['issn']).to eq '1234-5678'
+      expect(json_output['issn']).to eq '1234-5678'
     end
   end
 
@@ -146,7 +146,7 @@ describe 'Outputting combined documents' do
       a_row = a_row_with(doi: '10.1234/altmetric1')
       allow(@documents_combined).to receive(:read).and_return a_row
       
-      csv_output = @formatter.output_in @format, @documents_combined
+      csv_output = generate_output
       
       expect(csv_output).to have('10.1234/altmetric1').in_column 0
     end
@@ -155,7 +155,7 @@ describe 'Outputting combined documents' do
       a_row = a_row_with(title: 'R-Matrix Method')
       allow(@documents_combined).to receive(:read).and_return a_row
       
-      csv_output = @formatter.output_in @format, @documents_combined
+      csv_output = generate_output
 
       expect(csv_output).to have('R-Matrix Method').in_column 1
     end
@@ -166,8 +166,8 @@ describe 'Outputting combined documents' do
           a_row = a_row_with(author: [ 'Paul Dirac' ])
           allow(@documents_combined).to receive(:read).and_return a_row
       
-          csv_output = @formatter.output_in @format, @documents_combined
-      
+          csv_output = generate_output
+          
           expect(csv_output).to have('Paul Dirac').in_column 2
         end
       end
@@ -177,7 +177,7 @@ describe 'Outputting combined documents' do
           a_row = a_row_with(author: ['P Dirac', 'M Born', 'W Heisenberg'])
           allow(@documents_combined).to receive(:read).and_return a_row
           
-          csv_output = @formatter.output_in @format, @documents_combined
+          csv_output = generate_output
           
           expect(csv_output)
             .to have('P Dirac,M Born,W Heisenberg').in_column 2
@@ -191,7 +191,7 @@ describe 'Outputting combined documents' do
            a_row = a_row_with(journal: 'Nature')
            allow(@documents_combined).to receive(:read).and_return a_row
           
-           csv_output = @formatter.output_in @format, @documents_combined
+           csv_output = generate_output
           
            expect(csv_output).to have('Nature').in_column 3
          end
@@ -202,7 +202,7 @@ describe 'Outputting combined documents' do
            a_row = a_row_with(journal: nil)
            allow(@documents_combined).to receive(:read).and_return a_row
           
-           csv_output = @formatter.output_in @format, @documents_combined
+           csv_output = generate_output
           
            expect(csv_output).to have('').in_column 3
          end
@@ -213,7 +213,8 @@ describe 'Outputting combined documents' do
       a_row = a_row_with(issn: '1234-5678')
       allow(@documents_combined).to receive(:read).and_return a_row
       
-      csv_output = @formatter.output_in @format, @documents_combined
+      csv_output = generate_output
+      
       expect(csv_output).to have('1234-5678').in_column 4
     end
     
@@ -239,12 +240,16 @@ describe 'Outputting combined documents' do
     end
   end
 
+  def generate_output
+    @formatter.output_in(@format, @documents_combined).first
+  end
+
   def a_row_with(params)
     row = {
       doi: '10.1234/altmetric0', title: 'General Relativity',
       author: ['Albert Einstein'], journal: 'Nature',
       issn: '5432-8765'
     }
-    row.merge params
+    [ row.merge(params) ]
   end
 end
