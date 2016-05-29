@@ -12,8 +12,12 @@ describe 'Outputting combined documents' do
     private
 
     def as_csv row
-      row.values_at(:doi, :title) +
-        [ comma_separated(row[:author]) ] + [ row[:journal].to_s  ]
+      csv_row = [
+        row[:doi], row[:title], comma_separated(row[:author]),
+        row[:journal].to_s, row[:issn]
+      ]
+
+      csv_row
     end
 
     def as_json row
@@ -203,6 +207,14 @@ describe 'Outputting combined documents' do
            expect(csv_output).to have('').in_column 3
          end
       end
+    end
+
+    it 'publishes the ISSN in column 5' do
+      a_row = a_row_with(issn: '1234-5678')
+      allow(@documents_combined).to receive(:read).and_return a_row
+      
+      csv_output = @formatter.output_in @format, @documents_combined
+      expect(csv_output).to have('1234-5678').in_column 4
     end
     
     RSpec::Matchers.define :have do |expected_field|
