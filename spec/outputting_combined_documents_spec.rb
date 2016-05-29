@@ -13,7 +13,7 @@ describe 'Outputting combined documents' do
 
     def as_csv row
       row.values_at(:doi, :title) +
-        [ comma_separated(row[:author]) ] + [ row[:journal] ]
+        [ comma_separated(row[:author]) ] + [ row[:journal].to_s  ]
     end
 
     def as_json row
@@ -181,13 +181,28 @@ describe 'Outputting combined documents' do
       end
     end
 
-    it 'publishes the journal title in column 4' do
-      a_row = a_row_with(journal: 'Nature')
-      allow(@documents_combined).to receive(:read).and_return a_row
+    describe 'publishing the journal title' do
+      context 'when it is known' do
+         it 'publishes the journal title in column 4' do
+           a_row = a_row_with(journal: 'Nature')
+           allow(@documents_combined).to receive(:read).and_return a_row
           
-      csv_output = @formatter.output_in @format, @documents_combined
+           csv_output = @formatter.output_in @format, @documents_combined
           
-      expect(csv_output).to have('Nature').in_column 3
+           expect(csv_output).to have('Nature').in_column 3
+         end
+      end
+
+      context 'when it is not known' do
+         it 'publishes a blank title in column 4' do
+           a_row = a_row_with(journal: nil)
+           allow(@documents_combined).to receive(:read).and_return a_row
+          
+           csv_output = @formatter.output_in @format, @documents_combined
+          
+           expect(csv_output).to have('').in_column 3
+         end
+      end
     end
     
     RSpec::Matchers.define :have do |expected_field|
@@ -204,7 +219,7 @@ describe 'Outputting combined documents' do
       end
 
       failure_message do |csv_row|
-        message = "Expected #{csv_row.inspect} to have #{expected_field} "
+        message = "Expected #{csv_row.inspect} to have '#{expected_field}' "
         message << "at position #{@index}"
 
         message
