@@ -250,9 +250,12 @@ describe 'Outputting combined documents' do
     expect(csv_output.size).to eq content.size
   end
   
-
   def generate_output
     @formatter.output_in(@format, @documents_combined).first
+  end
+
+  def a_row_with(params)
+    [ a_row.merge(params) ]
   end
 
   def a_row
@@ -268,15 +271,6 @@ describe 'Outputting combined documents' do
       'A Einstein', 'P A M Dirac', 'W Heisenberg', 'E Schrodinger',
       'M Born', 'W Pauli', 'M Planck'
     ].sample(rand(0..4))
-  end
-
-  def a_row_with(params)
-    row = {
-      doi: '10.1234/altmetric0', title: 'General Relativity',
-      author: ['Albert Einstein'], journal: 'Nature',
-      issn: '5432-8765'
-    }
-    [ row.merge(params) ]
   end
 
   def generate_doi
