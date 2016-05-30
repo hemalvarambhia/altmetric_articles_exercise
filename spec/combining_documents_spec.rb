@@ -98,8 +98,7 @@ describe 'combining articles, journals and authors documents' do
         rows = @documents_combined.read
         
         rows.each do |row|
-          expect(row).to have_key :journal
-          expect(row).to have_key :author
+          expect(row).to have_key(:journal).and have_key(:author)
         end
       end
       
@@ -111,7 +110,11 @@ describe 'combining articles, journals and authors documents' do
 
       def a_journal
         [
-          'J. Phys. B', 'J. Phys. Conf. Series', 'Nature', 'Phys. Rev. Lett.'
+          'J. Phys. B',
+          'J. Phys. Conf. Series',
+          'Nature',
+          'Phys. Rev. Lett.',
+          ''
         ].sample
       end
 
