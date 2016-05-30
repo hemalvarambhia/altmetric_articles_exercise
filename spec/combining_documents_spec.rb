@@ -37,13 +37,8 @@ describe 'combining articles, journals and authors documents' do
 
   describe '#read' do
     before :each do
-      @row = {
-        doi: generate_doi,
-        title: 'About Physics',
-        issn: generate_issn
-      }
-
-     allow(@article_csv_doc).to receive(:each).and_yield(@row)
+      @row = a_row
+      allow(@article_csv_doc).to receive(:each).and_yield(@row)
     end
     
     context 'when the journal and author(s) are present in the docs' do
@@ -101,12 +96,6 @@ describe 'combining articles, journals and authors documents' do
           expect(row).to have_key(:journal).and have_key(:author)
         end
       end
-      
-      def a_row
-        {
-          doi: generate_doi, title: 'Science Article', issn: generate_issn
-        }
-      end
 
       def a_journal
         [
@@ -127,5 +116,13 @@ describe 'combining articles, journals and authors documents' do
         some_authors.sample(rand(0..some_authors.size))
       end
     end
+
+    def a_row
+       {
+         doi: generate_doi,
+         title: 'Science Article',
+         issn: generate_issn
+       }
+     end
   end
 end
