@@ -10,16 +10,14 @@ describe 'combining articles, journals and authors documents' do
     end
 
     def read
-      merged = []
-      @article_csv_doc.each do |row|
-        merged = [
+      merged = @article_csv_doc.read.collect do |row|
         {
           doi: row[:doi],
           title: row[:title],
           issn: row[:issn],
           journal: @journal_csv_doc.find(row[:issn]),
           author: @author_json_doc.find(row[:doi])
-        }]
+        }
       end
 
       merged
@@ -38,7 +36,7 @@ describe 'combining articles, journals and authors documents' do
   describe '#read' do
     before :each do
       @row = a_row
-      allow(@article_csv_doc).to receive(:each).and_yield(@row)
+      allow(@article_csv_doc).to receive(:read).and_return([ @row ])
     end
     
     context 'when the journal and author(s) are present in the docs' do
@@ -51,7 +49,7 @@ describe 'combining articles, journals and authors documents' do
 
       it 'merges the journal title and author in' do
         content = @documents_combined.read
-        
+
         row = content.detect { |row| row[:doi] == @row[:doi] }
         merged_in = {journal: 'Nature', author:  ['Author' ]}
         expect(row).to include merged_in
@@ -60,27 +58,27 @@ describe 'combining articles, journals and authors documents' do
 
     context 'when the journal and author are not in their docs' do
       before(:each) do
-        no_authors = []
+        @no_authors = []
         allow(@author_json_doc)
-          .to receive(:find).with(@row[:doi]).and_return no_authors
-        no_such_journal = ''
+          .to receive(:find).with(@row[:doi]).and_return @no_authors
+        @no_such_journal = ''
         allow(@journal_csv_doc)
-          .to receive(:find).with(@row[:issn]).and_return no_such_journal
+          .to receive(:find).with(@row[:issn]).and_return @no_such_journal
       end
       
       it 'merges in a blank journal title and an empty author list' do
         content = @documents_combined.read
         
         row = content.detect { |row| row[:doi] == @row[:doi] }
-        expect(row).to include(journal: '', author: [])
+        expect(row)
+          .to include(journal: @no_such_journal, author: @no_authors)
       end
     end
     
     describe 'merging all articles' do
       before(:each) do
-        allow(@article_csv_doc).to(
-          receive(:each).and_yield(a_row).and_yield(a_row).and_yield(a_row)
-        )
+        @rows = Array.new(3) { a_row }
+        allow(@article_csv_doc).to receive(:read).and_return @rows
         allow(@journal_csv_doc).to(
           receive(:find).with(any_args).and_return a_journal
         )
@@ -91,7 +89,8 @@ describe 'combining articles, journals and authors documents' do
       
       it 'merges in their journal and author(s)' do
         rows = @documents_combined.read
-        
+
+        expect(rows.size).to eq(@rows.size)
         rows.each do |row|
           expect(row).to have_key(:journal).and have_key(:author)
         end
@@ -118,11 +117,7 @@ describe 'combining articles, journals and authors documents' do
     end
 
     def a_row
-       {
-         doi: generate_doi,
-         title: 'Science Article',
-         issn: generate_issn
-       }
-     end
+      { doi: generate_doi, title: 'Science Article', issn: generate_issn }
+    end
   end
 end
