@@ -1,4 +1,7 @@
+require 'doi_helper'
+require 'issn_helper'
 describe 'Outputting combined documents' do
+  include CreateDOI, CreateISSN
   class InFormat
     def output_in format, document
       format_required =
@@ -264,14 +267,4 @@ describe 'Outputting combined documents' do
       'M Born', 'W Pauli', 'M Planck'
     ].sample(rand(0..4))
   end
-
-  def generate_doi
-    registrant = Array.new(4) { rand(0..9) }.join
-    "10.#{registrant}/altmetric#{rand(100000000)}"
-  end
-
-  def generate_issn
-    digits = Array.new(8) { rand(0..9) }
-    "#{digits[0..3].join}-#{digits[4..-1].join}"
-  end  
 end

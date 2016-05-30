@@ -1,4 +1,7 @@
+require 'doi_helper'
+require 'issn_helper'
 describe 'combining articles, journals and authors documents' do
+  include CreateDOI, CreateISSN
   class DocumentsCombined
     def initialize(article_csv_doc, journal_csv_doc, author_json_doc)
       @article_csv_doc = article_csv_doc
@@ -32,9 +35,9 @@ describe 'combining articles, journals and authors documents' do
   describe '#read' do
     before :each do
       @row = {
-        doi: '10.1234/altmetric0',
+        doi: generate_doi,
         title: 'About Physics',
-        issn: '8456-2422'
+        issn: generate_issn
       }
 
      allow(@article_csv_doc).to receive(:each).and_yield(@row)
