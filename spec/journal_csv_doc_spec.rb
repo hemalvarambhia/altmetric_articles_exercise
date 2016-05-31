@@ -17,13 +17,23 @@ describe 'The journal csv doc' do
 
     context 'when there is a title for the given issn' do
       it 'returns the title' do
-        journal_csv_doc = JournalCSVDoc.new ([['Nature', @issn]])
+        content = [
+            ['Nature', @issn],
+            [a_journal, generate_issn],
+            [a_journal, generate_issn]
+        ]
+        journal_csv_doc = JournalCSVDoc.new (content)
 
         expect(journal_csv_doc.find(@issn)).to eq 'Nature'
       end
 
       it 'returns the title for any given ISSN' do
-        journal_csv_doc = JournalCSVDoc.new ([['J. Phys. B', @issn]])
+        content = [
+            ['J. Phys. B', @issn],
+            [a_journal, generate_issn],
+            [a_journal, generate_issn]
+        ]
+        journal_csv_doc = JournalCSVDoc.new (content)
 
         expect(journal_csv_doc.find(@issn)).to eq 'J. Phys. B'
       end
@@ -31,10 +41,24 @@ describe 'The journal csv doc' do
 
     context 'when there is no title for the given ISSN' do
       it 'returns no title' do
-        journal_csv_doc = JournalCSVDoc.new ([['J. Phys. B', generate_issn]])
+        content = [
+            [a_journal, generate_issn],
+            [a_journal, generate_issn],
+            [a_journal, generate_issn]
+        ]
+        journal_csv_doc = JournalCSVDoc.new (content)
 
         expect(journal_csv_doc.find(@issn)).to eq ''
       end
+    end
+
+    def a_journal
+      [
+          'J. Phys. B',
+          'J. Phys. Conf. Series',
+          'Nature',
+          'Phys. Rev. Lett.',
+      ].sample
     end
   end
 end
