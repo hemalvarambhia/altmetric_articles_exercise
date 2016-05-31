@@ -1,4 +1,6 @@
 module CreateAuthor
+  NO_AUTHORS = []
+
   def authors
     some_authors = [
         'A Einstein', 'P A M Dirac', 'W Heisenberg', 'E Schrodinger',

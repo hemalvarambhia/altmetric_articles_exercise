@@ -1,8 +1,9 @@
 require 'doi_helper'
 require 'issn_helper'
 require 'author_helper'
+require 'journal_helper'
 describe 'combining articles, journals and authors documents' do
-  include CreateAuthor, CreateDOI, CreateISSN
+  include CreateAuthor, JournalHelper, CreateDOI, CreateISSN
   class DocumentsCombined
     def initialize(article_csv_doc, journal_csv_doc, author_json_doc)
       @article_csv_doc = article_csv_doc
@@ -63,17 +64,20 @@ describe 'combining articles, journals and authors documents' do
       before(:each) do
         @no_authors = []
         allow(@author_json_doc)
-          .to receive(:find).with(@row[:doi]).and_return NO_AUTHORS
+          .to receive(:find).with(@row[:doi]).and_return CreateAuthor::NO_AUTHORS
         @no_such_journal = ''
         allow(@journal_csv_doc)
-          .to receive(:find).with(@row[:issn]).and_return NO_SUCH_JOURNAL
+          .to receive(:find).with(@row[:issn]).and_return JournalHelper::NO_SUCH_JOURNAL
       end
       
       it 'merges in a blank journal title and an empty author list' do
         content = @documents_combined.read
         
         row = content.detect { |row| row[:doi] == @row[:doi] }
-        merged_in = {journal: NO_SUCH_JOURNAL, author: NO_AUTHORS}
+        merged_in = {
+            journal: JournalHelper::NO_SUCH_JOURNAL,
+            author: CreateAuthor::NO_AUTHORS
+        }
         expect(row).to include(merged_in)
       end
     end
@@ -99,15 +103,13 @@ describe 'combining articles, journals and authors documents' do
         end
       end
 
-      NO_SUCH_JOURNAL = ''
-      NO_AUTHORS = []
       def a_journal
         [
           'J. Phys. B',
           'J. Phys. Conf. Series',
           'Nature',
           'Phys. Rev. Lett.',
-          NO_SUCH_JOURNAL
+          JournalHelper::NO_SUCH_JOURNAL
         ].sample
       end
     end

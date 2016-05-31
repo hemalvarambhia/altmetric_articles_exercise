@@ -1,8 +1,9 @@
 require 'doi_helper'
 require 'issn_helper'
 require 'author_helper'
+require 'journal_helper'
 describe 'Outputting combined documents' do
-  include CreateAuthor, CreateDOI, CreateISSN
+  include CreateAuthor, JournalHelper, CreateDOI, CreateISSN
   class InFormat
     def output_in format, document
       format_required =
@@ -70,7 +71,8 @@ describe 'Outputting combined documents' do
     describe 'publishing the author' do
       context 'when there is none' do
         it 'publishes a blank' do
-          given_documents_combined_have a_row_with(author: NO_AUTHORS)
+          given_documents_combined_have(
+              a_row_with(author: CreateAuthor::NO_AUTHORS))
           
           json_output = generate_output
 
@@ -115,7 +117,8 @@ describe 'Outputting combined documents' do
 
       context 'when it is not known' do
         it 'is left blank' do
-          given_documents_combined_have a_row_with(journal: NO_SUCH_JOURNAL)
+          given_documents_combined_have(
+              a_row_with(journal: JournalHelper::NO_SUCH_JOURNAL))
           
           json_output = generate_output
           
@@ -190,7 +193,7 @@ describe 'Outputting combined documents' do
 
       context 'when it is not known' do
          it 'publishes a blank title in column 4' do
-           given_documents_combined_have a_row_with(journal: NO_SUCH_JOURNAL)
+           given_documents_combined_have a_row_with(journal: JournalHelper::NO_SUCH_JOURNAL)
           
            csv_output = generate_output
           
@@ -238,9 +241,6 @@ describe 'Outputting combined documents' do
 
     expect(csv_output.size).to eq content.size
   end
-
-  NO_AUTHORS = []
-  NO_SUCH_JOURNAL = ''
 
   def given_documents_combined_have(*rows)
     allow(@documents_combined).to receive(:read).and_return *rows
