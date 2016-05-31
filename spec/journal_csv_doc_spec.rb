@@ -68,11 +68,7 @@ describe 'The journal csv doc' do
   end
 
   def some_content
-    [
-        [a_journal, generate_issn],
-        [a_journal, generate_issn],
-        [a_journal, generate_issn]
-    ]
+    Array.new(3) { [a_journal, generate_issn] }
   end
 
   def a_journal
