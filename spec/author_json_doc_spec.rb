@@ -12,7 +12,7 @@ describe 'An author JSON doc' do
     end
   end
 
-  describe '#read' do
+  describe '#find' do
     before(:each) { @doi = generate_doi }
 
     context 'when the author published only the given article' do
