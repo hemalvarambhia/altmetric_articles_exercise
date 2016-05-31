@@ -1,4 +1,3 @@
-require 'doi'
 module CreateDOI
   def generate_doi
     registrant = Array.new(4) { rand(0..9) }.join
