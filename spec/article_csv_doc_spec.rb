@@ -1,10 +1,12 @@
 require 'doi_helper'
 require 'issn_helper'
+require 'issn'
 require 'forwardable'
 describe 'An article CSV doc' do
   include CreateDOI, CreateISSN
   class ArticleCSVDoc
     extend Forwardable
+    include ISSN
     def_delegator :@rows, :empty?
 
     def initialize content = []
@@ -15,15 +17,6 @@ describe 'An article CSV doc' do
 
     def read
       @rows
-    end
-
-    private
-
-    def correct_issn(issn)
-      dash_absent = issn.scan(/-/).none?
-      corrected =  dash_absent ? issn.insert(4, '-') : issn
-
-      corrected
     end
   end
 

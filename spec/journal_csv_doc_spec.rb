@@ -1,10 +1,12 @@
 require 'issn_helper'
+require 'issn'
 require 'forwardable'
 describe 'The journal csv doc' do
   include CreateISSN
 
   class JournalCSVDoc
     extend Forwardable
+    include ISSN
     def_delegator :@journals, :empty?
 
     def initialize(content = [])
@@ -19,15 +21,6 @@ describe 'The journal csv doc' do
 
     def has_issn?(issn)
       @journals.has_key? issn
-    end
-
-    private
-
-    def correct_issn(issn)
-      dash_absent = issn.scan(/-/).none?
-      corrected = dash_absent ? issn.insert(4, '-') : issn
-
-      corrected
     end
   end
 
