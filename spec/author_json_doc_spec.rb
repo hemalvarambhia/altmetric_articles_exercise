@@ -10,6 +10,7 @@ describe 'An author JSON doc' do
       [ 'P A M Dirac' ]
     end
   end
+
   describe '#read' do
     context 'when the author is in the document' do
        it 'returns their name' do
