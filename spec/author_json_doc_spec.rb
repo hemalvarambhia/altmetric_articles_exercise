@@ -33,7 +33,7 @@ describe 'An author JSON doc' do
         content = [
             {
                 'name' => 'W Heisenberg',
-                'articles' => some_publications_including(@doi),
+                'articles' => publications_including(@doi),
             }
         ]
         author_json_doc = AuthorJSONDoc.new content
@@ -44,7 +44,7 @@ describe 'An author JSON doc' do
     end
   end
 
-  def some_publications_including(doi)
+  def publications_including(doi)
     Array.new(3) { generate_doi } + [ doi ]
   end
 end
