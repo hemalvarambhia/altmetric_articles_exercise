@@ -262,9 +262,11 @@ describe 'Outputting combined documents' do
   end
 
   def authors
-    [
-      'A Einstein', 'P A M Dirac', 'W Heisenberg', 'E Schrodinger',
-      'M Born', 'W Pauli', 'M Planck'
-    ].sample(rand(0..4))
+    some_authors = [
+        'A Einstein', 'P A M Dirac', 'W Heisenberg', 'E Schrodinger',
+        'M Born', 'W Pauli', 'M Planck'
+    ]
+
+    some_authors.sample(rand(0..some_authors.size))
   end
 end
