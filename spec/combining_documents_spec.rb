@@ -41,17 +41,19 @@ describe 'combining articles, journals and authors documents' do
     
     context 'when the journal and author(s) are present in the docs' do
       before :each do
+        @author = ['Author']
         allow(@author_json_doc)
-          .to receive(:find).with(@row[:doi]).and_return ['Author']
+          .to receive(:find).with(@row[:doi]).and_return @author
+        @journal = 'Nature'
         allow(@journal_csv_doc)
-          .to receive(:find).with(@row[:issn]).and_return 'Nature'
+            .to receive(:find).with(@row[:issn]).and_return @journal
       end
 
       it 'merges the journal title and author in' do
         content = @documents_combined.read
 
         row = content.detect { |row| row[:doi] == @row[:doi] }
-        merged_in = {journal: 'Nature', author:  ['Author' ]}
+        merged_in = {journal: @journal, author: @author}
         expect(row).to include merged_in
       end
     end
@@ -60,18 +62,18 @@ describe 'combining articles, journals and authors documents' do
       before(:each) do
         @no_authors = []
         allow(@author_json_doc)
-          .to receive(:find).with(@row[:doi]).and_return @no_authors
+          .to receive(:find).with(@row[:doi]).and_return NO_AUTHORS
         @no_such_journal = ''
         allow(@journal_csv_doc)
-          .to receive(:find).with(@row[:issn]).and_return @no_such_journal
+          .to receive(:find).with(@row[:issn]).and_return NO_SUCH_JOURNAL
       end
       
       it 'merges in a blank journal title and an empty author list' do
         content = @documents_combined.read
         
         row = content.detect { |row| row[:doi] == @row[:doi] }
-        expect(row)
-          .to include(journal: @no_such_journal, author: @no_authors)
+        merged_in = {journal: NO_SUCH_JOURNAL, author: NO_AUTHORS}
+        expect(row).to include(merged_in)
       end
     end
     
@@ -96,13 +98,15 @@ describe 'combining articles, journals and authors documents' do
         end
       end
 
+      NO_SUCH_JOURNAL = ''
+      NO_AUTHORS = []
       def a_journal
         [
           'J. Phys. B',
           'J. Phys. Conf. Series',
           'Nature',
           'Phys. Rev. Lett.',
-          ''
+          NO_SUCH_JOURNAL
         ].sample
       end
 
