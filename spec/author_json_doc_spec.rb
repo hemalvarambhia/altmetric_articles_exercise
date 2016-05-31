@@ -7,8 +7,14 @@ describe 'An author JSON doc' do
     end
 
     def find doi
-      matching_author = @content.select { |author| author['articles'].include?(doi) }
+      matching_author = @content.select { |author| published_by?(author, doi) }
       matching_author.collect { |author| author['name'] }
+    end
+
+    private
+
+    def published_by?(author, doi)
+      author['articles'].include?(doi)
     end
   end
 
