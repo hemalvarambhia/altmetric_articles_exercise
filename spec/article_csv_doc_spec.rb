@@ -1,8 +1,12 @@
 require 'doi_helper'
 require 'issn_helper'
+require 'forwardable'
 describe 'An article CSV doc' do
   include CreateDOI, CreateISSN
   class ArticleCSVDoc
+    extend Forwardable
+    def_delegator :@rows, :empty?
+
     def initialize rows = []
       @rows = rows.collect do |row|
         { doi: row[:doi], title: row[:title], issn: correct_issn(row[:issn]) }
@@ -21,6 +25,12 @@ describe 'An article CSV doc' do
 
       corrected
     end
+  end
+
+  it 'is empty by default' do
+    article_csv_doc = ArticleCSVDoc.new
+
+    expect(article_csv_doc).to be_empty
   end
   
   describe '#read' do
