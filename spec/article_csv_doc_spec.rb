@@ -20,7 +20,7 @@ describe 'An article CSV doc' do
     private
 
     def correct_issn(issn)
-      dash_absent = issn.index('-').nil?
+      dash_absent = issn.scan(/-/).none?
       corrected =  dash_absent ? issn.insert(4, '-') : issn
 
       corrected
