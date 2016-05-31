@@ -1,45 +1,34 @@
-require 'article_csv_parser'
+require 'doi_helper'
+require 'issn_helper'
 describe 'An article CSV doc' do
+  include CreateDOI, CreateISSN
   class ArticleCSVDoc
-    def initialize rows = {}
+    def initialize rows = []
       @rows = rows
     end
 
-    def each
-      @rows.each { |row| yield ArticleCSVParser.parse(row) }
+    def read
+      @rows
     end
   end
   
-  describe '#each' do
-    it 'yields a row to the block' do
-      expected_row = {
-        doi: '10.1234/altmetric1', title: 'About Physics', issn: '5463-4695'
-      }
-      article_csv_doc = ArticleCSVDoc.new [ expected_row ]
+  describe '#read' do
+    it 'returns the content' do
+      expected_row = [ a_row ]
+      article_csv_doc = ArticleCSVDoc.new expected_row
 
-      expect { |b| article_csv_doc.each(&b) }
-        .to yield_successive_args expected_row
+      expect(article_csv_doc.read).to eq expected_row
     end
 
-    it 'yields any row to the block' do
-      expected_row = {
-        doi: '10.1234/altmetric2', title: 'About Chemistry', issn: '1234-5678'
-      }
-      article_csv_doc = ArticleCSVDoc.new [ expected_row ]
-      
-      expect { |b| article_csv_doc.each(&b) }
-        .to yield_successive_args expected_row
-    end
-
-    it 'yields all rows to the block' do
-      expected_rows = [
-        { doi: '10.1234/altmetric0', title: 'Maths', issn: '8765-4321' },
-        { doi: '10.1234/altmetric1', title: 'Physics', issn: '5764-3242' },
-        { doi: '10.1432/altmetric2', title: 'Chemistry', issn: '5893-1355' }
-      ]
+    it 'returns all of its rows' do
+      expected_rows = Array.new(3) { a_row }
       article_csv_doc = ArticleCSVDoc.new(expected_rows)
-      expect { |b| article_csv_doc.each(&b) }
-        .to yield_successive_args *expected_rows
+
+      expect(article_csv_doc.read).to eq expected_rows
     end
+  end
+
+  def a_row
+    { doi: generate_doi, title: 'Quantum Physics', issn: generate_issn }
   end
 end
