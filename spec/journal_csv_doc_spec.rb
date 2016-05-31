@@ -8,11 +8,26 @@ describe 'The journal csv doc' do
     def_delegator :@journals, :empty?
 
     def initialize(content = [])
-       @journals = Hash[content.collect {|row| row.reverse}]
+       @journals = Hash[
+           content.collect { |title, issn| [correct_issn(issn), title] }
+       ]
     end
 
     def find issn
       @journals.fetch(issn, '')
+    end
+
+    def has_issn?(issn)
+      @journals.has_key? issn
+    end
+
+    private
+
+    def correct_issn(issn)
+      dash_absent = issn.scan(/-/).none?
+      corrected = dash_absent ? issn.insert(4, '-') : issn
+
+      corrected
     end
   end
 
@@ -20,6 +35,14 @@ describe 'The journal csv doc' do
     journal_csv_doc = JournalCSVDoc.new
 
     expect(journal_csv_doc).to be_empty
+  end
+
+  describe 'when the ISSN has no dash in it' do
+    it 'adds it in' do
+      journal_csv_doc = JournalCSVDoc.new some_content_including(['A Journal', '12345678'])
+
+      expect(journal_csv_doc).to have_issn('1234-5678')
+    end
   end
 
   describe '#find' do
@@ -48,26 +71,26 @@ describe 'The journal csv doc' do
         expect(journal_csv_doc.find(@issn)).to eq ''
       end
     end
+  end
 
-    def some_content_including(row)
-      some_content + [ row ]
-    end
+  def some_content_including(row)
+    some_content + [ row ]
+  end
 
-    def some_content
-      [
-          [a_journal, generate_issn],
-          [a_journal, generate_issn],
-          [a_journal, generate_issn]
-      ]
-    end
+  def some_content
+    [
+        [a_journal, generate_issn],
+        [a_journal, generate_issn],
+        [a_journal, generate_issn]
+    ]
+  end
 
-    def a_journal
-      [
-          'J. Phys. B',
-          'J. Phys. Conf. Series',
-          'Nature',
-          'Phys. Rev. Lett.',
-      ].sample
-    end
+  def a_journal
+    [
+        'J. Phys. B',
+        'J. Phys. Conf. Series',
+        'Nature',
+        'Phys. Rev. Lett.',
+    ].sample
   end
 end
