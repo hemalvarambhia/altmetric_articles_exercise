@@ -30,14 +30,6 @@ describe 'The journal csv doc' do
     expect(journal_csv_doc).to be_empty
   end
 
-  describe 'when the ISSN has no dash in it' do
-    it 'adds it in' do
-      journal_csv_doc = JournalCSVDoc.new some_content_including(['A Journal', '12345678'])
-
-      expect(journal_csv_doc).to have_issn('1234-5678')
-    end
-  end
-
   describe '#find' do
     before(:each) { @issn = generate_issn }
 

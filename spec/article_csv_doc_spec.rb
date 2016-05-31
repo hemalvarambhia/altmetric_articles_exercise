@@ -40,18 +40,6 @@ describe 'An article CSV doc' do
 
       expect(article_csv_doc.read).to eq expected_rows
     end
-
-    describe 'when a row has an ISSN without the dash' do
-      it 'adds the dash' do
-        row_with_invalid_issn = a_row_with(issn: '12345678')
-        article_csv_doc = ArticleCSVDoc.new [ row_with_invalid_issn ]
-
-        content = article_csv_doc.read
-
-        row = content.detect { |row| row[:doi] == row_with_invalid_issn[:doi] }
-        expect(row[:issn]).to eq '1234-5678'
-      end
-    end
   end
 
   def a_row_with(params)
