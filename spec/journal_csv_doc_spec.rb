@@ -1,8 +1,12 @@
 require 'issn_helper'
+require 'forwardable'
 describe 'The journal csv doc' do
   include CreateISSN
 
   class JournalCSVDoc
+    extend Forwardable
+    def_delegator :@journals, :empty?
+
     def initialize(content = [])
        @journals = Hash[content.collect {|row| row.reverse}]
     end
@@ -10,6 +14,12 @@ describe 'The journal csv doc' do
     def find issn
       @journals.fetch(issn, '')
     end
+  end
+
+  it 'is empty by default' do
+    journal_csv_doc = JournalCSVDoc.new
+
+    expect(journal_csv_doc).to be_empty
   end
 
   describe '#find' do
