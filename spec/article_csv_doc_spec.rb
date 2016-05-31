@@ -45,7 +45,7 @@ describe 'An article CSV doc' do
 
         content = article_csv_doc.read
 
-        row = content.detect {|row| row[:doi] == row_with_invalid_issn[:doi]}
+        row = content.detect { |row| row[:doi] == row_with_invalid_issn[:doi] }
         expect(row[:issn]).to eq '1234-5678'
       end
     end
