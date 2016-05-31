@@ -1,7 +1,8 @@
 require 'doi_helper'
 require 'issn_helper'
+require 'author_helper'
 describe 'Outputting combined documents' do
-  include CreateDOI, CreateISSN
+  include CreateAuthor, CreateDOI, CreateISSN
   class InFormat
     def output_in format, document
       format_required =
@@ -259,14 +260,5 @@ describe 'Outputting combined documents' do
       author: authors, journal: 'An Academic Journal',
       issn: generate_issn
     }
-  end
-
-  def authors
-    some_authors = [
-        'A Einstein', 'P A M Dirac', 'W Heisenberg', 'E Schrodinger',
-        'M Born', 'W Pauli', 'M Planck'
-    ]
-
-    some_authors.sample(rand(0..some_authors.size))
   end
 end

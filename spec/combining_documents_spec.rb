@@ -1,7 +1,8 @@
 require 'doi_helper'
 require 'issn_helper'
+require 'author_helper'
 describe 'combining articles, journals and authors documents' do
-  include CreateDOI, CreateISSN
+  include CreateAuthor, CreateDOI, CreateISSN
   class DocumentsCombined
     def initialize(article_csv_doc, journal_csv_doc, author_json_doc)
       @article_csv_doc = article_csv_doc
@@ -108,15 +109,6 @@ describe 'combining articles, journals and authors documents' do
           'Phys. Rev. Lett.',
           NO_SUCH_JOURNAL
         ].sample
-      end
-
-      def authors
-        some_authors = [
-          'P A M Dirac', 'A Einstein', 'L Euler', 'E Schrodinger',
-          'W Heisenberg'
-        ]
-
-        some_authors.sample(rand(0..some_authors.size))
       end
     end
 
