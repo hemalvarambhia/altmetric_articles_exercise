@@ -7,8 +7,8 @@ describe 'An article CSV doc' do
     extend Forwardable
     def_delegator :@rows, :empty?
 
-    def initialize rows = []
-      @rows = rows.collect do |row|
+    def initialize content = []
+      @rows = content.collect do |row|
         { doi: row[:doi], title: row[:title], issn: correct_issn(row[:issn]) }
       end
     end
