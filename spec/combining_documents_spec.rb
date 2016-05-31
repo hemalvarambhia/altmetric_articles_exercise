@@ -64,10 +64,12 @@ describe 'combining articles, journals and authors documents' do
       before(:each) do
         @no_authors = []
         allow(@author_json_doc)
-          .to receive(:find).with(@row[:doi]).and_return CreateAuthor::NO_AUTHORS
+          .to receive(:find).with(@row[:doi])
+                  .and_return CreateAuthor::NO_AUTHORS
         @no_such_journal = ''
         allow(@journal_csv_doc)
-          .to receive(:find).with(@row[:issn]).and_return JournalHelper::NO_SUCH_JOURNAL
+          .to receive(:find).with(@row[:issn])
+                  .and_return JournalHelper::NO_SUCH_JOURNAL
       end
       
       it 'merges in a blank journal title and an empty author list' do
