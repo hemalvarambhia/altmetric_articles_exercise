@@ -69,8 +69,7 @@ describe 'Outputting combined documents' do
     describe 'publishing the author' do
       context 'when there is none' do
         it 'publishes a blank' do
-          no_author = []
-          given_documents_combined_have a_row_with(author: no_author)
+          given_documents_combined_have a_row_with(author: NO_AUTHORS)
           
           json_output = generate_output
 
@@ -115,8 +114,7 @@ describe 'Outputting combined documents' do
 
       context 'when it is not known' do
         it 'is left blank' do
-          no_known_title = ''
-          given_documents_combined_have a_row_with(journal: no_known_title)
+          given_documents_combined_have a_row_with(journal: NO_SUCH_JOURNAL)
           
           json_output = generate_output
           
@@ -191,8 +189,7 @@ describe 'Outputting combined documents' do
 
       context 'when it is not known' do
          it 'publishes a blank title in column 4' do
-           no_known_title =  ''
-           given_documents_combined_have a_row_with(journal: no_known_title)
+           given_documents_combined_have a_row_with(journal: NO_SUCH_JOURNAL)
           
            csv_output = generate_output
           
@@ -240,6 +237,9 @@ describe 'Outputting combined documents' do
 
     expect(csv_output.size).to eq content.size
   end
+
+  NO_AUTHORS = []
+  NO_SUCH_JOURNAL = ''
 
   def given_documents_combined_have(*rows)
     allow(@documents_combined).to receive(:read).and_return *rows
