@@ -193,7 +193,8 @@ describe 'Outputting combined documents' do
 
       context 'when it is not known' do
          it 'publishes a blank title in column 4' do
-           given_documents_combined_have a_row_with(journal: JournalHelper::NO_SUCH_JOURNAL)
+           given_documents_combined_have(
+               a_row_with(journal: JournalHelper::NO_SUCH_JOURNAL))
           
            csv_output = generate_output
           
