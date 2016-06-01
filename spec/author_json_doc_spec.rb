@@ -68,7 +68,8 @@ describe 'An author JSON doc' do
         author_json_doc = AuthorJSONDoc.new content
 
         author_of_publication = author_json_doc.find(@doi)
-        expect(author_of_publication).to eq ['W Heisenberg', 'E Schrodinger', 'P A M Dirac']
+        expect(author_of_publication)
+          .to eq ['W Heisenberg', 'E Schrodinger', 'P A M Dirac']
       end
     end
   end
