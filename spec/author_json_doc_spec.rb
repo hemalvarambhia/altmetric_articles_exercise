@@ -99,14 +99,13 @@ describe 'An author JSON doc' do
         expect(authors_of_publication).to be_empty
       end
     end
-    
+  end
+
+  def publications_including(doi)
+    publications + [ doi ]
   end
 
   def publications
     Array.new(3) { generate_doi }
-  end
-
-  def publications_including(doi)
-    Array.new(3) { generate_doi } + [ doi ]
   end
 end
