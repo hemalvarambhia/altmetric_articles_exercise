@@ -45,6 +45,7 @@ describe 'An author JSON doc' do
         author_json_doc = AuthorJSONDoc.new content
 
         author_of_publication = author_json_doc.find(@doi)
+
         expect(author_of_publication).to eq ['W Heisenberg']
       end
     end
@@ -68,10 +69,30 @@ describe 'An author JSON doc' do
         author_json_doc = AuthorJSONDoc.new content
 
         author_of_publication = author_json_doc.find(@doi)
+
         expect(author_of_publication)
           .to eq ['W Heisenberg', 'E Schrodinger', 'P A M Dirac']
       end
     end
+
+    context 'when there is no author of the given publication' do
+      it 'returns no authors' do
+        content = [
+          { 'name' => 'M Born', 'articles' => publications },
+          { 'name' => 'W Pauli', 'articles' => publications }
+        ]
+        author_json_doc = AuthorJSONDoc.new content
+        
+        authors_of_publication = author_json_doc.find @doi
+        
+        expect(authors_of_publication).to be_empty
+      end
+    end
+    
+  end
+
+  def publications
+    Array.new(3) { generate_doi }
   end
 
   def publications_including(doi)
