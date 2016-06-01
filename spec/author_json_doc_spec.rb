@@ -1,7 +1,11 @@
 require 'doi_helper'
+require 'forwardable'
 describe 'An author JSON doc' do
   include CreateDOI
   class AuthorJSONDoc
+    extend Forwardable
+    def_delegator :@content, :empty?
+    
     def initialize content = []
       @content = content
     end
@@ -16,6 +20,12 @@ describe 'An author JSON doc' do
     def published_by?(author, doi)
       author['articles'].include?(doi)
     end
+  end
+
+  it 'is empty by default' do
+    author_json_doc = AuthorJSONDoc.new
+    
+    expect(author_json_doc).to be_empty
   end
 
   describe '#find' do
@@ -79,7 +89,8 @@ describe 'An author JSON doc' do
       it 'returns no authors' do
         content = [
           { 'name' => 'M Born', 'articles' => publications },
-          { 'name' => 'W Pauli', 'articles' => publications }
+          { 'name' => 'W Pauli', 'articles' => publications },
+          { 'name' => 'J von Neumann', 'articles' => publications }
         ]
         author_json_doc = AuthorJSONDoc.new content
         
