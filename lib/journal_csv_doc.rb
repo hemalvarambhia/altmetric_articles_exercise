@@ -1,4 +1,5 @@
 require 'forwardable'
+require 'issn'
 class JournalCSVDoc
   extend Forwardable
   include ISSN

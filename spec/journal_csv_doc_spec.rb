@@ -1,5 +1,4 @@
 require 'issn_helper'
-require 'issn'
 require 'forwardable'
 require 'journal_csv_doc'
 describe 'The journal csv doc' do
