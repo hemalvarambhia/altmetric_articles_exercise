@@ -1,29 +1,9 @@
 require 'issn_helper'
 require 'issn'
 require 'forwardable'
+require 'journal_csv_doc'
 describe 'The journal csv doc' do
   include CreateISSN
-
-  class JournalCSVDoc
-    extend Forwardable
-    include ISSN
-    def_delegator :@journals, :empty?
-
-    def initialize(content = [])
-       @journals = Hash[
-           content.collect { |title, issn| [correct_issn(issn), title] }
-       ]
-    end
-
-    def find issn
-      @journals.fetch(issn, '')
-    end
-
-    def has_issn?(issn)
-      @journals.has_key? issn
-    end
-  end
-
   it 'is empty by default' do
     journal_csv_doc = JournalCSVDoc.new
 
