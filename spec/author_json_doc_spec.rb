@@ -84,12 +84,11 @@ describe 'An author JSON doc' do
 
     context 'when there is no author of the given publication' do
       it 'returns no authors' do
-        content = [
+        author_json_doc = given_an_author_doc_with(
           { 'name' => 'M Born', 'articles' => publications },
           { 'name' => 'W Pauli', 'articles' => publications },
           { 'name' => 'J von Neumann', 'articles' => publications }
-        ]
-        author_json_doc = AuthorJSONDoc.new content
+        )
         
         authors_of_publication = author_json_doc.find @doi
         
