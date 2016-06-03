@@ -5,15 +5,20 @@ require 'journal_helper'
 describe 'Outputting combined documents' do
   include CreateAuthor, JournalHelper, CreateDOI, CreateISSN
   class InFormat
-    def output_in format, document
+    def initialize(format = 'json', document = [])
+      @format = format
+      @document = document
+    end
+    
+    def output_in
       format_required =
-        if format == 'json'
+        if @format == 'json'
           lambda { |row| as_json row }
         else
           lambda { |row| as_csv row }
         end
 
-      document.read.collect &format_required
+      @document.read.collect &format_required
     end
 
     private
@@ -43,7 +48,6 @@ describe 'Outputting combined documents' do
   end
 
   before(:each) do
-    @formatter = InFormat.new
     @documents_combined = double(:documents_combined)
   end
 
@@ -137,7 +141,9 @@ describe 'Outputting combined documents' do
   end
 
   describe 'CSV format' do
-    before(:each) { @format = 'csv' }
+    before(:each) do
+      @format = 'csv'
+    end
     
     it 'publishes the DOI in column 1' do
       given_documents_combined_have a_row_with(doi: '10.1234/altmetric1')
@@ -237,8 +243,9 @@ describe 'Outputting combined documents' do
     content = Array.new(3) { a_row }
     format = ['json','csv'].sample
     given_documents_combined_have content
+    formatter = InFormat.new(format, @documents_combined)
 
-    csv_output = @formatter.output_in format, @documents_combined
+    csv_output = formatter.output_in
 
     expect(csv_output.size).to eq content.size
   end
@@ -248,7 +255,8 @@ describe 'Outputting combined documents' do
   end
   
   def generate_output
-    @formatter.output_in(@format, @documents_combined).first
+    formatter = InFormat.new(@format, @documents_combined)
+    formatter.output_in.first
   end
 
   def a_row_with(params)
