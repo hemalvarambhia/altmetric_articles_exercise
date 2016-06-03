@@ -1,3 +1,5 @@
+require 'json'
+require 'csv'
 class InFormat
   def initialize(format = 'json', document = [])
     @format = format
@@ -5,18 +7,63 @@ class InFormat
   end
 
   def output_in
-    format_required =
-        if @format == 'json'
-          lambda { |row| as_json row }
-        else
-          lambda { |row| as_csv row }
-        end
-
-    @document.read.collect &format_required
+    if @format == 'json'
+      return InJSONFormat.new(@document).output_in
+    else
+      return InCSVFormat.new(@document).output_in
+    end
   end
 
   def to_s
     output_in
+  end
+end
+
+class InJSONFormat
+  def initialize(document)
+    @document = document
+  end
+
+  def output_in
+    @document.read.collect { |row| as_json row }
+  end
+
+  def to_s
+    JSON.pretty_generate(output_in)
+  end
+
+  private
+
+  def as_json row
+    {
+        'doi' => row[:doi],
+        'title' => row[:title],
+        'author' => comma_separated(row[:author]),
+        'journal' => row[:journal],
+        'issn' => row[:issn]
+    }
+  end
+
+  def comma_separated authors
+    authors.join(',')
+  end
+end
+
+class InCSVFormat
+  def initialize(document)
+    @document = document
+  end
+
+  def output_in
+    @document.read.collect { |row| as_csv row }
+  end
+
+  def to_s
+    CSV.generate do |csv|
+      output_in.each do |row|
+        csv << row
+      end
+    end
   end
 
   private
@@ -28,16 +75,6 @@ class InFormat
     ]
 
     csv_row
-  end
-
-  def as_json row
-    {
-        'doi' => row[:doi],
-        'title' => row[:title],
-        'author' => comma_separated(row[:author]),
-        'journal' => row[:journal],
-        'issn' => row[:issn]
-    }
   end
 
   def comma_separated authors
