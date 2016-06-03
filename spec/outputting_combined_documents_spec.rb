@@ -202,7 +202,7 @@ describe 'Outputting combined documents' do
     content = Array.new(3) { a_row }
     format = ['json','csv'].sample
     given_documents_combined_have content
-    formatter = InFormat.new(format, @documents_combined)
+    formatter = InFormat.output(format, @documents_combined)
 
     csv_output = formatter.output_in
 
@@ -214,7 +214,7 @@ describe 'Outputting combined documents' do
   end
   
   def generate_output
-    formatter = InFormat.new(@format, @documents_combined)
+    formatter = InFormat.output(@format, @documents_combined)
     formatter.output_in.first
   end
 

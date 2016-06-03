@@ -1,14 +1,9 @@
 class InFormat
-  def initialize(format = 'json', document = [])
-    @format = format
-    @document = document
-  end
-
-  def output_in
-    if @format == 'json'
-      return InJSONFormat.new(@document).output_in
+  def self.output(format, document)
+    if format == 'json'
+      return InJSONFormat.new(document)
     else
-      return InCSVFormat.new(@document).output_in
+      return InCSVFormat.new(document)
     end
   end
 end
