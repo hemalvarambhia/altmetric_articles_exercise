@@ -1,11 +1,6 @@
 require 'issn_helper'
 require 'issn'
 require 'forwardable'
-
-def given_a_journal_csv_doc_with(content)
-  journal_csv_doc = JournalCSVDoc.new (content)
-end
-
 describe 'The journal csv doc' do
   include CreateISSN
 
@@ -61,6 +56,10 @@ describe 'The journal csv doc' do
         expect(journal_csv_doc.find(@issn)).to eq ''
       end
     end
+  end
+
+  def given_a_journal_csv_doc_with(content)
+    JournalCSVDoc.new(content)
   end
 
   def some_content_including(row)
