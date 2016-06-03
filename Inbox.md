@@ -1,4 +1,6 @@
 TODO
 ======
  - Naming in Object-Oriented programming;
- - Move duplicate loading code (`from` method) to a module
+ - Article CSV doc has articles with duplicate DOIs
+ - Journal CSV doc has journals with duplicate ISSNs
+ - Handling ISSNs with invalid checksum digits
