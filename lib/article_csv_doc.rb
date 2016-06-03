@@ -6,12 +6,12 @@ class ArticleCSVDoc
   def_delegator :@rows, :empty?
 
   def initialize content = []
-    @rows = content.collect do |row|
-      { doi: row[:doi], title: row[:title], issn: correct_issn(row[:issn]) }
-    end
+    @rows = content
   end
 
   def read
-    @rows
+    @rows.collect do |row|
+      { doi: row[:doi], title: row[:title], issn: correct_issn(row[:issn]) }
+    end
   end
 end
