@@ -3,13 +3,13 @@ require 'csv'
 class InFormat
   def self.output(format, document)
     if format == 'json'
-      return JSON.new(document)
+      return JSONFormat.new(document)
     else
-      return CSV.new(document)
+      return CSVFormat.new(document)
     end
   end
 
-  class JSON
+  class JSONFormat
     def initialize(document)
       @document = document
     end
@@ -39,7 +39,7 @@ class InFormat
     end
   end
 
-  class CSV
+  class CSVFormat
     def initialize(document)
       @document = document
     end
