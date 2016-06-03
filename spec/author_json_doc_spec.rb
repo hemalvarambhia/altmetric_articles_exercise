@@ -23,10 +23,9 @@ describe 'An author JSON doc' do
 
     context 'when the author published only the given article' do
        it 'returns their name' do
-         content = [
-             {'name' => 'P A M Dirac', 'articles' => [@doi]}
-         ]
-         author_json_doc = AuthorJSONDoc.new content
+         author_json_doc = given_an_author_doc_with(
+             { 'name' => 'P A M Dirac', 'articles' => [@doi] }
+         )
 
          author_of_publication = author_json_doc.find(@doi)
 
@@ -36,13 +35,12 @@ describe 'An author JSON doc' do
 
     context 'when the matching author has more than one publication' do
       it 'returns their name' do
-        content = [
+        author_json_doc = given_an_author_doc_with(
             {
                 'name' => 'W Heisenberg',
                 'articles' => publications_including(@doi),
             }
-        ]
-        author_json_doc = AuthorJSONDoc.new content
+        )
 
         author_of_publication = author_json_doc.find(@doi)
 
@@ -52,7 +50,7 @@ describe 'An author JSON doc' do
 
     context 'when more than one author published the article' do
       it "returns every author's name" do
-        content = [
+        author_json_doc = given_an_author_doc_with(
             {
                 'name' => 'W Heisenberg',
                 'articles' => publications_including(@doi),
@@ -65,14 +63,17 @@ describe 'An author JSON doc' do
                 'name' => 'P A M Dirac',
                 'articles' => publications_including(@doi),
             }
-        ]
-        author_json_doc = AuthorJSONDoc.new content
+        )
 
         author_of_publication = author_json_doc.find(@doi)
 
         expect(author_of_publication).to eq ['W Heisenberg', 'E Schrodinger', 'P A M Dirac']
       end
     end
+  end
+
+  def given_an_author_doc_with(*content)
+    AuthorJSONDoc.new content
   end
 
   def publications_including(doi)
