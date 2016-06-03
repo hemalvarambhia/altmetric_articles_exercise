@@ -21,6 +21,10 @@ describe 'Outputting combined documents' do
       @document.read.collect &format_required
     end
 
+    def to_s
+      output_in
+    end
+
     private
 
     def as_csv row
