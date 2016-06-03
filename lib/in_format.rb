@@ -1,5 +1,3 @@
-require 'json'
-require 'csv'
 class InFormat
   def initialize(format = 'json', document = [])
     @format = format
@@ -15,6 +13,7 @@ class InFormat
   end
 end
 
+require 'json'
 class InJSONFormat
   def initialize(document)
     @document = document
@@ -45,6 +44,7 @@ class InJSONFormat
   end
 end
 
+require 'csv'
 class InCSVFormat
   def initialize(document)
     @document = document
