@@ -13,10 +13,6 @@ class InFormat
       return InCSVFormat.new(@document).output_in
     end
   end
-
-  def to_s
-    output_in
-  end
 end
 
 class InJSONFormat
