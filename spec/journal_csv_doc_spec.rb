@@ -15,14 +15,14 @@ describe 'The journal csv doc' do
     context 'when there is a title for the given issn' do
       it 'returns the title' do
         journal_csv_doc = given_a_journal_csv_doc_with(
-            some_content_including ['Phys. Rev. A', @issn])
+            some_content_including(title: 'Phys. Rev. A', issn: @issn))
 
         expect(journal_csv_doc.find(@issn)).to eq 'Phys. Rev. A'
       end
 
       it 'returns the title for any given ISSN' do
         journal_csv_doc = given_a_journal_csv_doc_with(
-            some_content_including ['Chem. Phys Lett.', @issn])
+            some_content_including(title: 'Chem. Phys Lett.', issn: @issn))
 
         expect(journal_csv_doc.find(@issn)).to eq 'Chem. Phys Lett.'
       end
@@ -46,7 +46,7 @@ describe 'The journal csv doc' do
   end
 
   def some_content
-    Array.new(3) { [a_journal, generate_issn] }
+    Array.new(3) { {title: a_journal, issn: generate_issn} }
   end
 
   def a_journal

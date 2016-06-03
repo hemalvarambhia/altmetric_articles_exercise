@@ -7,7 +7,7 @@ class JournalCSVDoc
 
   def initialize(content = [])
     @journals = Hash[
-        content.collect { |title, issn| [correct_issn(issn), title] }
+        content.collect { |row| [correct_issn(row[:issn]), row[:title]] }
     ]
   end
 
