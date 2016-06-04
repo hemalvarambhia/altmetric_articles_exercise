@@ -5,3 +5,5 @@ TODO
  - Journal CSV doc has journals with duplicate ISSNs
  - Handling ISSNs with invalid checksum digits
  - Add integration tests
+ - OStruct instead of Hash for DocumentsCombined and ArticleCSVDoc
+ - Points 2 - 4 indicate the need for value objects
