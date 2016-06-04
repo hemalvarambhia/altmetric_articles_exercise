@@ -1,3 +1,4 @@
+require 'ostruct'
 require 'doi_helper'
 require 'issn_helper'
 require 'author_helper'
@@ -97,7 +98,9 @@ describe 'combining articles, journals and authors documents' do
     end
 
     def a_row
-      { doi: generate_doi, title: 'Science Article', issn: generate_issn }
+      OpenStruct.new(
+        doi: generate_doi, title: 'Science Article', issn: generate_issn
+      )
     end
   end
 end
