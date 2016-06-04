@@ -1,3 +1,4 @@
+require 'ostruct'
 require 'doi_helper'
 require 'issn_helper'
 require 'article_csv_doc'
@@ -31,6 +32,8 @@ describe 'An article CSV doc' do
   end
 
   def a_row
-    { doi: generate_doi, title: 'Quantum Physics', issn: generate_issn }
+    OpenStruct.new(
+      doi: generate_doi, title: 'Quantum Physics', issn: generate_issn
+    )
   end
 end
