@@ -8,11 +8,11 @@ class DocumentsCombined
   def read
     merged = @article_csv_doc.read.collect do |article|
       {
-          doi: article[:doi],
-          title: article[:title],
-          issn: article[:issn],
-          journal: @journal_csv_doc.find(article[:issn]),
-          author: @author_json_doc.find(article[:doi])
+          doi: article.doi,
+          title: article.title,
+          issn: article.issn,
+          journal: @journal_csv_doc.find(article.issn),
+          author: @author_json_doc.find(article.doi)
       }
     end
 
