@@ -18,24 +18,24 @@ describe 'combining articles, journals and authors documents' do
 
   describe '#read' do
     before :each do
-      @row = a_row
-      allow(@article_csv_doc).to receive(:read).and_return([ @row ])
+      @article = an_article
+      allow(@article_csv_doc).to receive(:read).and_return([ @article ])
     end
     
     context 'when the journal and author(s) are present in the docs' do
       before :each do
         @author = ['Author']
         allow(@author_json_doc)
-          .to receive(:find).with(@row[:doi]).and_return @author
+          .to receive(:find).with(@article[:doi]).and_return @author
         @journal = 'Nature'
         allow(@journal_csv_doc)
-            .to receive(:find).with(@row[:issn]).and_return @journal
+            .to receive(:find).with(@article[:issn]).and_return @journal
       end
 
       it 'merges the journal title and author in' do
         content = @documents_combined.read
 
-        row = content.detect { |row| row[:doi] == @row[:doi] }
+        row = content.detect { |row| row[:doi] == @article[:doi] }
         merged_in = {journal: @journal, author: @author}
         expect(row).to include merged_in
       end
@@ -45,18 +45,18 @@ describe 'combining articles, journals and authors documents' do
       before(:each) do
         @no_authors = []
         allow(@author_json_doc)
-          .to receive(:find).with(@row[:doi])
+          .to receive(:find).with(@article[:doi])
                   .and_return CreateAuthor::NO_AUTHORS
         @no_such_journal = ''
         allow(@journal_csv_doc)
-          .to receive(:find).with(@row[:issn])
+          .to receive(:find).with(@article[:issn])
                   .and_return JournalHelper::NO_SUCH_JOURNAL
       end
       
       it 'merges in a blank journal title and an empty author list' do
         content = @documents_combined.read
         
-        row = content.detect { |row| row[:doi] == @row[:doi] }
+        row = content.detect { |row| row[:doi] == @article[:doi] }
         merged_in = {
             journal: JournalHelper::NO_SUCH_JOURNAL,
             author: CreateAuthor::NO_AUTHORS
@@ -67,8 +67,8 @@ describe 'combining articles, journals and authors documents' do
     
     describe 'merging all articles' do
       before(:each) do
-        @rows = Array.new(3) { a_row }
-        allow(@article_csv_doc).to receive(:read).and_return @rows
+        @articles = Array.new(3) { an_article }
+        allow(@article_csv_doc).to receive(:read).and_return @articles
         allow(@journal_csv_doc).to(
           receive(:find).with(any_args).and_return a_journal
         )
@@ -80,7 +80,7 @@ describe 'combining articles, journals and authors documents' do
       it 'merges in their journal and author(s)' do
         rows = @documents_combined.read
 
-        expect(rows.size).to eq(@rows.size)
+        expect(rows.size).to eq(@articles.size)
         rows.each do |row|
           expect(row).to have_key(:journal).and have_key(:author)
         end
@@ -97,7 +97,7 @@ describe 'combining articles, journals and authors documents' do
       end
     end
 
-    def a_row
+    def an_article
       OpenStruct.new(
         doi: generate_doi, title: 'Science Article', issn: generate_issn
       )
