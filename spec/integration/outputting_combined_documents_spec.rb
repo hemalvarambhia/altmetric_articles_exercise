@@ -7,7 +7,6 @@ require 'author_json_doc'
 describe 'Outputting combined documents' do
   before :each do
     fixtures_dir = File.join(File.dirname(__FILE__), 'file_fixtures')
-    @a_format = ['csv', 'json'].sample
     article_csv_doc = ArticleCSVDoc.new(
         CSV.new(File.open(File.join(fixtures_dir, 'articles.csv')),
                 headers: true, header_converters: :symbol)
@@ -18,6 +17,7 @@ describe 'Outputting combined documents' do
     )
     author_json_doc = AuthorJSONDoc.new(
         JSON.parse(File.open(File.join(fixtures_dir, 'authors.json')).read))
+
     @combined_documents =
         DocumentsCombined.new(
             article_csv_doc, journal_csv_doc, author_json_doc
@@ -25,7 +25,8 @@ describe 'Outputting combined documents' do
   end
 
   it 'merges articles with their journal and author(s)' do
-    required_format = InFormat.output(@a_format, @combined_documents)
+    a_format = ['csv', 'json'].sample
+    required_format = InFormat.output(a_format, @combined_documents)
 
     formatted_output = required_format.output_in
 
