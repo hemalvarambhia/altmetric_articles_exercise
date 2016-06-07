@@ -17,8 +17,6 @@ describe 'ISSN' do
   end
 
   describe 'an ISSN' do
-    require 'forwardable'
-
     context 'when it is blank' do
       it 'is malformed' do
         expect { issn('') }.to raise_exception ISSN::ISSN::Malformed

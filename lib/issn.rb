@@ -1,3 +1,4 @@
+require 'forwardable'
 module ISSN
   def correct_issn(issn)
     dash_absent = issn.scan(/-/).none?
