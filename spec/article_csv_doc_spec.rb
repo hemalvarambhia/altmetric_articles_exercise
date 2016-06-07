@@ -27,10 +27,6 @@ describe 'An article CSV doc' do
     end
   end
 
-  def a_row_with(params)
-    a_row.merge params
-  end
-
   def a_row
     OpenStruct.new(
       doi: generate_doi, title: 'Quantum Physics', issn: generate_issn
