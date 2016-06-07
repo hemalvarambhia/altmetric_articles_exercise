@@ -19,7 +19,6 @@ describe 'ISSN' do
   describe 'an ISSN' do
     module ISSN
       class ISSN
-
         attr_reader :code
 
         Malformed = Class.new(Exception)
@@ -41,6 +40,10 @@ describe 'ISSN' do
 
         def hash
           code.hash
+        end
+
+        def eql?(other)
+          code.eql?(other.code)
         end
       end
     end
@@ -138,6 +141,15 @@ describe 'ISSN' do
     describe '#hash' do
       it 'takes the value of the underlying code' do
         expect(issn('1230-2384').hash).to eq '1230-2384'.hash
+      end
+    end
+
+    describe '#eql?' do
+      it 'marks two ISSN with the same code as equal' do
+        issn_1 = issn('5633-2222')
+        issn_2 = issn('5633-2222')
+
+        expect(issn_1.eql?(issn_2)).to be_truthy
       end
     end
 
