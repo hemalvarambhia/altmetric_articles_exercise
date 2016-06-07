@@ -33,11 +33,9 @@ describe 'ISSN' do
         end
 
         def ==(other)
-          if other.class == ISSN
-            code == other.code
-          else
-            code == other
-          end
+          return code == other unless other.class == ISSN
+
+          code == other.code
         end
       end
     end
@@ -119,6 +117,12 @@ describe 'ISSN' do
         expect(issn_1).to eq issn_2
         expect(issn_2).to eq issn_3
         expect(issn_3).to eq issn_1
+      end
+
+      context 'when the class of the object is different' do
+        it 'confirms them as being unequal' do
+          expect(issn('5834-3956')).not_to eq({})
+        end
       end
 
       it 'confirms that a String with the same value is equal' do
