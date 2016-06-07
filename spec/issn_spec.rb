@@ -23,8 +23,13 @@ describe 'ISSN' do
 
         Malformed = Class.new(Exception)
         def initialize(code)
-          raise Malformed.new("ISSN '#{code}' is malformed") unless code=~/^\d{4}-\d{4}$/
+          raise Malformed.new("ISSN '#{code}' is malformed") unless code=~/^\d{4}-?\d{4}$/
           @code = code
+          @code = code.insert(4, '-') if dash_missing?(code)
+        end
+
+        def dash_missing?(code)
+          code.scan(/-/).none?
         end
       end
     end
@@ -71,6 +76,16 @@ describe 'ISSN' do
 
     it 'stores the code' do
       expect(ISSN::ISSN.new('6849-2347').code).to eq '6849-2347'
+    end
+
+    context "when the dash is missing" do
+      it 'is still well-formed' do
+        expect { ISSN::ISSN.new('76540442') }.not_to raise_exception
+      end
+
+      it 'adds the dash in the correct place' do
+        expect( ISSN::ISSN.new('86756657').code).to eq '8675-6657'
+      end
     end
   end
 end
