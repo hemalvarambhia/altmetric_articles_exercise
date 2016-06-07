@@ -106,6 +106,16 @@ describe 'ISSN' do
 
         expect(issn_1).to eq issn_2
       end
+
+      it 'is transitive' do
+        issn_1 = issn('5094-1944')
+        issn_2 = issn('5094-1944')
+        issn_3 = issn('5094-1944')
+
+        expect(issn_1).to eq issn_2
+        expect(issn_2).to eq issn_3
+        expect(issn_3).to eq issn_1
+      end
     end
 
     def issn(code)
