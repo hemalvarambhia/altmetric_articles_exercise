@@ -2,7 +2,7 @@ require 'issn_helper'
 require 'forwardable'
 require 'journal_csv_doc'
 describe 'The journal csv doc' do
-  include CreateISSN
+  include CreateISSN, ISSN
   it 'is empty by default' do
     journal_csv_doc = JournalCSVDoc.new
 
@@ -17,14 +17,14 @@ describe 'The journal csv doc' do
         journal_csv_doc = given_a_journal_csv_doc_with(
             some_content_including(title: 'Phys. Rev. A', issn: @issn))
 
-        expect(journal_csv_doc.find(@issn)).to eq 'Phys. Rev. A'
+        expect(journal_csv_doc.find(correct_issn(@issn))).to eq 'Phys. Rev. A'
       end
 
       it 'returns the title for any given ISSN' do
         journal_csv_doc = given_a_journal_csv_doc_with(
             some_content_including(title: 'Chem. Phys Lett.', issn: @issn))
 
-        expect(journal_csv_doc.find(@issn)).to eq 'Chem. Phys Lett.'
+        expect(journal_csv_doc.find(correct_issn(@issn))).to eq 'Chem. Phys Lett.'
       end
     end
 
@@ -32,7 +32,7 @@ describe 'The journal csv doc' do
       it 'returns no title' do
         journal_csv_doc = given_a_journal_csv_doc_with(some_content)
 
-        expect(journal_csv_doc.find(@issn)).to eq ''
+        expect(journal_csv_doc.find(correct_issn(@issn))).to eq ''
       end
     end
   end
