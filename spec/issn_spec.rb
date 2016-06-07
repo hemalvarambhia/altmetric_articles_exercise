@@ -87,5 +87,13 @@ describe 'ISSN' do
         expect( ISSN::ISSN.new('86756657').code).to eq '8675-6657'
       end
     end
+
+    describe '#==' do
+      it 'is reflexive' do
+        issn_1 = ISSN::ISSN.new('5834-4239')
+
+        expect(issn_1).to eq issn_1
+      end
+    end
   end
 end
