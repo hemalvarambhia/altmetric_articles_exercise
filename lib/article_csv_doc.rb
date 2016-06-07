@@ -9,7 +9,7 @@ class ArticleCSVDoc
     @rows = Array.new(
       content.collect do |row|
         OpenStruct.new(
-          doi: row[:doi], title: row[:title], issn: correct_issn(row[:issn])
+          doi: row[:doi], title: row[:title], issn: to_issn(row[:issn])
         )
       end
     )

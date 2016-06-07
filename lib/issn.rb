@@ -1,6 +1,6 @@
 require 'forwardable'
 module ISSN
-  def correct_issn(issn)
+  def to_issn(issn)
     ISSN.new issn
   end
 
