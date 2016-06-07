@@ -138,7 +138,7 @@ describe 'ISSN' do
     describe '#hash' do
       it 'takes the value of the underlying code' do
         expect(issn('1230-2384').hash).to eq '1230-2384'.hash
-end
+      end
     end
 
     def issn(code)
