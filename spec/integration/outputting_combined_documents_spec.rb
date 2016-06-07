@@ -25,7 +25,7 @@ describe 'Outputting combined documents' do
   end
 
   it 'merges articles with their journal and author(s)' do
-    a_format = ['csv', 'json'].sample
+    a_format = %w{csv json}.sample
     required_format = InFormat.output(a_format, @combined_documents)
 
     formatted_output = required_format.output_in
