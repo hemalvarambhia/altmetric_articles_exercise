@@ -22,6 +22,7 @@ describe 'ISSN' do
         Malformed = Class.new(Exception)
         def initialize(code)
           raise Malformed.new("ISSN '#{code}' is malformed") if code.empty?
+          raise Malformed.new("ISSN '#{code}' is malformed") if code.scan(/\d/).count > 8
         end
       end
     end
@@ -35,6 +36,13 @@ describe 'ISSN' do
     context 'when it consists of 8 numbers with a dash in the middle' do
       it 'is well-formed' do
         expect { ISSN::ISSN.new('1234-8694') }.not_to raise_exception
+      end
+    end
+
+    context "when it consists of more than 8 numbers with a '-' in the middle" do
+      it 'is malformed' do
+        expect { ISSN::ISSN.new('4586434-93546584') }
+            .to raise_exception ISSN::ISSN::Malformed
       end
     end
   end
