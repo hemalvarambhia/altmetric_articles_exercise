@@ -122,6 +122,12 @@ describe 'ISSN' do
       end
     end
 
+    describe '#to_s' do
+      it 'returns the underlying code' do
+        expect(issn('9685-2480').to_s).to eq '9685-2480'
+      end
+    end
+
     def issn(code)
       ISSN::ISSN.new(code)
     end

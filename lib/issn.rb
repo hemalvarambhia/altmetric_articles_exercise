@@ -32,5 +32,9 @@ module ISSN
     def eql?(other)
       code.eql?(other.code)
     end
+
+    def to_s
+      code
+    end
   end
 end
