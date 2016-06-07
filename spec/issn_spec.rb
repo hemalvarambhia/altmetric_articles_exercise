@@ -21,9 +21,7 @@ describe 'ISSN' do
       class ISSN
         Malformed = Class.new(Exception)
         def initialize(code)
-          raise Malformed.new("ISSN '#{code}' is malformed") unless code.scan(/\d/).count == 8
-          raise Malformed.new("ISSN '#{code}' is malformed") if code.scan(/[a-z]/i).any?
-          raise Malformed.new("ISSN '#{code}' is malformed") unless code[4] =='-'
+          raise Malformed.new("ISSN '#{code}' is malformed") unless code=~/^\d{4}-\d{4}$/
         end
       end
     end
@@ -56,9 +54,15 @@ describe 'ISSN' do
       end
     end
 
-    context "when the '-' is not in middle" do
+    context "when the '-' is not in the middle" do
       it 'is malformed' do
         expect { ISSN::ISSN.new('12-346789') }.to raise_exception ISSN::ISSN::Malformed
+      end
+    end
+
+    context "when there is anything but a '-' in the middle" do
+      it 'is malformed' do
+        expect { ISSN::ISSN.new('1234/6789') }.to raise_exception ISSN::ISSN::Malformed
       end
     end
   end
