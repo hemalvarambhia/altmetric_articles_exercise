@@ -21,7 +21,7 @@ describe 'ISSN' do
       class ISSN
         Malformed = Class.new(Exception)
         def initialize(code)
-          raise Malformed.new("'#{code}' is malformed")
+          raise Malformed.new("ISSN '#{code}' is malformed") if code.empty?
         end
       end
     end
@@ -29,6 +29,12 @@ describe 'ISSN' do
     context 'when it is blank' do
       it 'is malformed' do
         expect { ISSN::ISSN.new('') }.to raise_exception ISSN::ISSN::Malformed
+      end
+    end
+
+    context 'when it consists of 8 numbers with a dash in the middle' do
+      it 'is well-formed' do
+        expect { ISSN::ISSN.new('1234-8694') }.not_to raise_exception
       end
     end
   end
