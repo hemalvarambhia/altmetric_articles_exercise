@@ -19,9 +19,12 @@ describe 'ISSN' do
   describe 'an ISSN' do
     module ISSN
       class ISSN
+        attr_reader :code
+
         Malformed = Class.new(Exception)
         def initialize(code)
           raise Malformed.new("ISSN '#{code}' is malformed") unless code=~/^\d{4}-\d{4}$/
+          @code = code
         end
       end
     end
@@ -64,6 +67,10 @@ describe 'ISSN' do
       it 'is malformed' do
         expect { ISSN::ISSN.new('1234/6789') }.to raise_exception ISSN::ISSN::Malformed
       end
+    end
+
+    it 'stores the code' do
+      expect(ISSN::ISSN.new('6849-2347').code).to eq '6849-2347'
     end
   end
 end
