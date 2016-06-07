@@ -6,4 +6,5 @@ TODO
  - Handling ISSNs with invalid checksum digits
  - Add integration tests - DONE
  - OStruct instead of Hash for ArticleCSVDoc - DONE
- - Points 2 - 4 indicate the need for value objects
+ - ISSN is a value object DONE
+ - DOI is a value object
