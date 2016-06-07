@@ -23,6 +23,7 @@ describe 'ISSN' do
         def initialize(code)
           raise Malformed.new("ISSN '#{code}' is malformed") if code.empty?
           raise Malformed.new("ISSN '#{code}' is malformed") if code.scan(/\d/).count > 8
+          raise Malformed.new("ISSN '#{code}' is malformed") if code.scan(/[a-z]/i).any?
         end
       end
     end
@@ -42,6 +43,15 @@ describe 'ISSN' do
     context "when it consists of more than 8 numbers with a '-' in the middle" do
       it 'is malformed' do
         expect { ISSN::ISSN.new('4586434-93546584') }
+            .to raise_exception ISSN::ISSN::Malformed
+      end
+    end
+
+    context 'when it contains any letter characters' do
+      it 'is malformed' do
+        expect { ISSN::ISSN.new('9b4c8s2-954a2') }
+            .to raise_exception ISSN::ISSN::Malformed
+        expect { ISSN::ISSN.new('1A2B3C4D-6T7D89') }
             .to raise_exception ISSN::ISSN::Malformed
       end
     end
