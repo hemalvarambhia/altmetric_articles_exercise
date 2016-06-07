@@ -1,9 +1,4 @@
 require 'issn'
-
-def issn(code)
-  ISSN::ISSN.new(code)
-end
-
 describe 'ISSN' do
   include ISSN
 
@@ -35,6 +30,10 @@ describe 'ISSN' do
 
         def dash_missing?(code)
           code.scan(/-/).none?
+        end
+
+        def ==(other)
+          code == other.code
         end
       end
     end
@@ -100,6 +99,17 @@ describe 'ISSN' do
 
         expect(issn_1).to eq issn_1
       end
+
+      it 'is symmetric' do
+        issn_1 = issn('9355-1983')
+        issn_2 = issn('9355-1983')
+
+        expect(issn_1).to eq issn_2
+      end
+    end
+
+    def issn(code)
+      ISSN::ISSN.new(code)
     end
   end
 end
