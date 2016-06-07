@@ -33,7 +33,11 @@ describe 'ISSN' do
         end
 
         def ==(other)
-          code == other.code
+          if other.class == ISSN
+            code == other.code
+          else
+            code == other
+          end
         end
       end
     end
@@ -115,6 +119,10 @@ describe 'ISSN' do
         expect(issn_1).to eq issn_2
         expect(issn_2).to eq issn_3
         expect(issn_3).to eq issn_1
+      end
+
+      it 'confirms that a String with the same value is equal' do
+        expect(issn('5968-4879')).to eq '5968-4879'
       end
     end
 
