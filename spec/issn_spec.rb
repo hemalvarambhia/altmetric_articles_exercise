@@ -17,8 +17,11 @@ describe 'ISSN' do
   end
 
   describe 'an ISSN' do
+    require 'forwardable'
     module ISSN
       class ISSN
+        extend Forwardable
+        def_delegators :@code, :hash
         attr_reader :code
 
         Malformed = Class.new(Exception)
@@ -36,10 +39,6 @@ describe 'ISSN' do
           return code == other unless other.class == ISSN
 
           code == other.code
-        end
-
-        def hash
-          code.hash
         end
 
         def eql?(other)
