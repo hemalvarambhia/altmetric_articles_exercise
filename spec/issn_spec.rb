@@ -21,8 +21,7 @@ describe 'ISSN' do
       class ISSN
         Malformed = Class.new(Exception)
         def initialize(code)
-          raise Malformed.new("ISSN '#{code}' is malformed") if code.empty?
-          raise Malformed.new("ISSN '#{code}' is malformed") if code.scan(/\d/).count > 8
+          raise Malformed.new("ISSN '#{code}' is malformed") unless code.scan(/\d/).count == 8
           raise Malformed.new("ISSN '#{code}' is malformed") if code.scan(/[a-z]/i).any?
         end
       end
