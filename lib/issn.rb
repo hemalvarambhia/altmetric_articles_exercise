@@ -11,10 +11,6 @@ class ISSN
     @code = code.insert(4, '-') if dash_missing?(code)
   end
 
-  def dash_missing?(code)
-    code.scan(/-/).none?
-  end
-
   def ==(other)
     return code == other unless other.class == ISSN
 
@@ -27,5 +23,11 @@ class ISSN
 
   def to_s
     code
+  end
+
+  private
+
+  def dash_missing?(code)
+    code.scan(/-/).none?
   end
 end
