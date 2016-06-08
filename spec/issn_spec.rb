@@ -3,7 +3,7 @@ describe 'ISSN' do
   describe 'an ISSN' do
     context 'when it is blank' do
       it 'is malformed' do
-        expect { issn('') }.to raise_exception ISSN::ISSN::Malformed
+        expect { issn('') }.to raise_exception ISSN::Malformed
       end
     end
 
@@ -16,28 +16,28 @@ describe 'ISSN' do
     context "when it consists of more than 8 numbers with a '-' in the middle" do
       it 'is malformed' do
         expect { issn('4586434-93546584') }
-            .to raise_exception ISSN::ISSN::Malformed
+            .to raise_exception ISSN::Malformed
       end
     end
 
     context 'when it contains any letter characters' do
       it 'is malformed' do
         expect { issn('9b4c8s2-954a2') }
-            .to raise_exception ISSN::ISSN::Malformed
+            .to raise_exception ISSN::Malformed
         expect { issn('1A2B3C4D-6T7D89') }
-            .to raise_exception ISSN::ISSN::Malformed
+            .to raise_exception ISSN::Malformed
       end
     end
 
     context "when the '-' is not in the middle" do
       it 'is malformed' do
-        expect { issn('12-346789') }.to raise_exception ISSN::ISSN::Malformed
+        expect { issn('12-346789') }.to raise_exception ISSN::Malformed
       end
     end
 
     context "when there is anything but a '-' in the middle" do
       it 'is malformed' do
-        expect { issn('1234/6789') }.to raise_exception ISSN::ISSN::Malformed
+        expect { issn('1234/6789') }.to raise_exception ISSN::Malformed
       end
     end
 
@@ -113,7 +113,7 @@ describe 'ISSN' do
     end
 
     def issn(code)
-      ISSN::ISSN.new(code)
+      ISSN.new(code)
     end
   end
 end
