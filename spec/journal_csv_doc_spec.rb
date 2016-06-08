@@ -1,5 +1,4 @@
 require 'support/create_issn'
-require 'forwardable'
 require 'journal_csv_doc'
 describe 'The journal csv doc' do
   include CreateISSN, ISSN

@@ -1,7 +1,7 @@
 require 'support/create_doi'
 require 'support/create_issn'
 require 'support/create_author'
-require 'journal_helper'
+require 'support/journal_helper'
 require 'in_format'
 describe 'Outputting combined documents' do
   include CreateAuthor, JournalHelper, CreateDOI, CreateISSN

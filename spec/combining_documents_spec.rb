@@ -2,7 +2,7 @@ require 'ostruct'
 require 'support/create_doi'
 require 'support/create_issn'
 require 'support/create_author'
-require 'journal_helper'
+require 'support/journal_helper'
 require 'documents_combined'
 describe 'combining articles, journals and authors documents' do
   include CreateAuthor, JournalHelper, CreateDOI, CreateISSN
