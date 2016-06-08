@@ -1,4 +1,4 @@
-require 'doi_helper'
+require 'support/create_doi'
 require 'author_json_doc'
 describe 'An author JSON doc' do
   include CreateDOI

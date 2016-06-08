@@ -1,6 +1,6 @@
 require 'ostruct'
-require 'doi_helper'
-require 'issn_helper'
+require 'support/create_doi'
+require 'support/create_issn'
 require 'author_helper'
 require 'journal_helper'
 require 'documents_combined'

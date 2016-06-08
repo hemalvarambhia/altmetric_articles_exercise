@@ -1,6 +1,6 @@
 require 'ostruct'
-require 'doi_helper'
-require 'issn_helper'
+require 'support/create_doi'
+require 'support/create_issn'
 require 'article_csv_doc'
 describe 'An article CSV doc' do
   include CreateDOI, CreateISSN
