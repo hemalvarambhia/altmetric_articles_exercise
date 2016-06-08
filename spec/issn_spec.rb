@@ -1,7 +1,5 @@
 require 'issn'
 describe 'ISSN' do
-  include ISSN
-
   describe 'an ISSN' do
     context 'when it is blank' do
       it 'is malformed' do

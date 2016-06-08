@@ -2,12 +2,11 @@ require 'forwardable'
 require 'issn'
 class JournalCSVDoc
   extend Forwardable
-  include ISSN
   def_delegator :@journals, :empty?
 
   def initialize(content = [])
     @journals = Hash[
-        content.collect { |row| [to_issn(row[:issn]), row[:title]] }
+        content.collect { |row| [ISSN.new(row[:issn]), row[:title]] }
     ]
   end
 

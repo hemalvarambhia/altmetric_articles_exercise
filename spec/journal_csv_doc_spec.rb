@@ -1,7 +1,7 @@
 require 'support/create_issn'
 require 'journal_csv_doc'
 describe 'The journal csv doc' do
-  include CreateISSN, ISSN
+  include CreateISSN
   it 'is empty by default' do
     journal_csv_doc = JournalCSVDoc.new
 
@@ -55,5 +55,9 @@ describe 'The journal csv doc' do
         'Nature',
         'Phys. Rev. Lett.',
     ].sample
+  end
+
+  def to_issn(issn)
+    ISSN.new issn
   end
 end
