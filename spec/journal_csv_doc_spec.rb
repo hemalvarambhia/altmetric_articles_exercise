@@ -15,14 +15,14 @@ describe 'The journal csv doc' do
     context 'when there is a title for the given issn' do
       it 'returns the title' do
         journal_csv_doc = given_a_journal_csv_doc_with(
-            some_content_including(title: 'Phys. Rev. A', issn: @issn))
+            journals_including(title: 'Phys. Rev. A', issn: @issn))
 
         expect(journal_csv_doc.find(to_issn(@issn))).to eq 'Phys. Rev. A'
       end
 
       it 'returns the title for any given ISSN' do
         journal_csv_doc = given_a_journal_csv_doc_with(
-            some_content_including(title: 'Chem. Phys Lett.', issn: @issn))
+            journals_including(title: 'Chem. Phys Lett.', issn: @issn))
 
         expect(journal_csv_doc.find(to_issn(@issn))).to eq 'Chem. Phys Lett.'
       end
@@ -30,22 +30,22 @@ describe 'The journal csv doc' do
 
     context 'when there is no title for the given ISSN' do
       it 'returns no title' do
-        journal_csv_doc = given_a_journal_csv_doc_with(some_content)
+        journal_csv_doc = given_a_journal_csv_doc_with(some_journals)
 
         expect(journal_csv_doc.find(to_issn(@issn))).to eq ''
       end
     end
   end
 
-  def given_a_journal_csv_doc_with(content)
-    JournalCSVDoc.new(content)
+  def given_a_journal_csv_doc_with(journals)
+    JournalCSVDoc.new(journals)
   end
 
-  def some_content_including(row)
-    some_content + [ row ]
+  def journals_including(journal)
+    some_journals + [ journal ]
   end
 
-  def some_content
+  def some_journals
     Array.new(3) { {title: a_journal, issn: generate_issn} }
   end
 
