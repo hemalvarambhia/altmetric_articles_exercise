@@ -52,4 +52,13 @@ describe 'A DOI' do
 
     expect(doi.code).to eq '10.3444/altmetric0493'
   end
+
+
+  describe '#==' do
+    it 'is reflexive' do
+      doi = DOI.new '10.74509/altmetric03234'
+
+      expect(doi).to eq doi
+    end
+  end
 end
