@@ -10,6 +10,8 @@ describe 'A DOI' do
       separator = code.index('/')
       registrant = code[3..separator - 1]
       raise Malformed.new("DOI '#{code}' is malformed") if registrant.empty?
+      item_id = code[separator + 1..-1]
+      raise Malformed.new("DOI '#{code}' is malformed") if item_id.empty?
     end
   end
 
@@ -34,6 +36,12 @@ describe 'A DOI' do
   context 'when it has no registrant' do
     it 'is malformed' do
       expect { DOI.new('10./altmetric546') }.to raise_exception DOI::Malformed
+    end
+  end
+
+  context 'when the item ID is missing' do
+    it 'is malformed' do
+      expect { DOI.new('10.1234/') }.to raise_exception DOI::Malformed
     end
   end
 end
