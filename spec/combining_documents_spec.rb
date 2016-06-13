@@ -99,7 +99,7 @@ describe 'combining articles, journals and authors documents' do
 
     def an_article
       OpenStruct.new(
-        doi: generate_doi, title: 'Science Article', issn: generate_issn
+        doi: DOI.new(generate_doi), title: 'Science Article', issn: ISSN.new(generate_issn)
       )
     end
   end

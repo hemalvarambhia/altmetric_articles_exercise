@@ -15,6 +15,7 @@ class AuthorJSONDoc
   private
 
   def published_by?(author, doi)
-    author['articles'].include?(doi)
+    publications = author['articles'].collect { |doi| DOI.new(doi) }
+    publications.include?(doi)
   end
 end

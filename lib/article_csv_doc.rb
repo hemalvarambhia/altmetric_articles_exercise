@@ -1,4 +1,5 @@
 require 'issn'
+require 'doi'
 require 'forwardable'
 class ArticleCSVDoc
   extend Forwardable
@@ -8,7 +9,7 @@ class ArticleCSVDoc
     @rows = Array.new(
       content.collect do |row|
         OpenStruct.new(
-          doi: row[:doi], title: row[:title], issn: ISSN.new(row[:issn])
+          doi: DOI.new(row[:doi]), title: row[:title], issn: ISSN.new(row[:issn])
         )
       end
     )
