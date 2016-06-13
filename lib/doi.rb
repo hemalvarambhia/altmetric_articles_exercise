@@ -14,8 +14,8 @@ class DOI
   end
 
   def ==(other)
-    return code == other if other.is_a?(String)
-    return false unless other.class == DOI
+    return code == other unless other.class == DOI
+
     code == other.code
   end
 
