@@ -3,6 +3,7 @@ require 'rspec'
 describe 'A DOI' do
   class DOI
     Malformed = Class.new(Exception)
+    attr_reader :code
 
     def initialize(code)
       registry = code[0..2]
@@ -12,6 +13,7 @@ describe 'A DOI' do
       raise Malformed.new("DOI '#{code}' is malformed") if registrant.empty?
       item_id = code[separator + 1..-1]
       raise Malformed.new("DOI '#{code}' is malformed") if item_id.empty?
+      @code = code
     end
   end
 
@@ -43,5 +45,11 @@ describe 'A DOI' do
     it 'is malformed' do
       expect { DOI.new('10.1234/') }.to raise_exception DOI::Malformed
     end
+  end
+
+  it 'stores the code passed to it' do
+    doi = DOI.new '10.3444/altmetric0493'
+
+    expect(doi.code).to eq '10.3444/altmetric0493'
   end
 end
