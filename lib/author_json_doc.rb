@@ -1,4 +1,5 @@
 require 'forwardable'
+require 'doi'
 class AuthorJSONDoc
   extend Forwardable
   def_delegator :@content, :empty?
