@@ -6,6 +6,7 @@ describe 'A DOI' do
     attr_reader :code
 
     def initialize(code)
+      raise Malformed.new("DOI '#{code}' is malformed") if code.nil?
       registry = code[0..2]
       raise Malformed.new("DOI '#{code}' is malformed") unless registry == '10.'
       separator = code.index('/')
@@ -20,6 +21,7 @@ describe 'A DOI' do
   context 'when it is blank' do
     it 'is malformed' do
       expect { DOI.new('') }.to raise_exception DOI::Malformed
+      expect { DOI.new(nil) }.to raise_exception DOI::Malformed
     end
   end
 
