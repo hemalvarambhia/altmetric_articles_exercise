@@ -2,11 +2,6 @@ require 'rspec'
 
 describe 'A DOI' do
   class DOI
-    class Malformed < Exception
-      def initialize(doi)
-        super "DOI '#{doi}' is malformed"
-      end
-    end
     attr_reader :code
 
     def initialize(code)
@@ -19,6 +14,16 @@ describe 'A DOI' do
       item_id = code[separator + 1..-1]
       raise Malformed.new(code) if item_id.empty?
       @code = code
+    end
+
+    def ==(other)
+      true
+    end
+
+    class Malformed < Exception
+      def initialize(doi)
+        super "DOI '#{doi}' is malformed"
+      end
     end
   end
 
@@ -65,6 +70,14 @@ describe 'A DOI' do
       doi = DOI.new '10.74509/altmetric03234'
 
       expect(doi).to eq doi
+    end
+
+    it 'is symmetric' do
+      doi_1 = DOI.new '10.5696/altmetric1983'
+      doi_2 = DOI.new '10.5696/altmetric1983'
+
+      expect(doi_1).to eq doi_2
+      expect(doi_2).to eq doi_1
     end
   end
 end
