@@ -26,7 +26,7 @@ describe 'combining articles, journals and authors documents' do
     
     context 'when the journal and author(s) are present in the docs' do
       before :each do
-        @author = ['Author']
+        @author = ['Heisenberg']
         allow(@author_json_doc)
           .to receive(:find).with(@article[:doi]).and_return @author
         @journal = 'Nature'
