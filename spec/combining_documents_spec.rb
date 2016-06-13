@@ -1,4 +1,6 @@
 require 'ostruct'
+require 'doi'
+require 'issn'
 require 'support/create_doi'
 require 'support/create_issn'
 require 'support/create_author'
