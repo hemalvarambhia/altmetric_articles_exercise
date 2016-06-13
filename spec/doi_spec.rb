@@ -23,13 +23,13 @@ describe 'A DOI' do
     end
   end
 
-  context "when it has a registry that is '10.'" do
+  context "when the registry is '10.'" do
     it 'is well-formed' do
       expect { DOI.new('10.1234/altmetric032') }.not_to raise_exception
     end
   end
 
-  context "when it has a registry that is anything other than '10.'" do
+  context "when the registry is anything other than '10.'" do
     it 'is malformed' do
       expect { DOI.new('12.7658/altmetric244') }.to raise_exception DOI::Malformed
     end
