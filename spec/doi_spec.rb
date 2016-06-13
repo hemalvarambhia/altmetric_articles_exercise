@@ -18,6 +18,7 @@ describe 'A DOI' do
 
     def ==(other)
       return code == other if other.is_a?(String)
+      return false unless other.class == DOI
       code == other.code
     end
 
@@ -106,6 +107,13 @@ describe 'A DOI' do
       doi = DOI.new '10.9786/altmetric333'
 
       expect(doi).to eq '10.9786/altmetric333'
+    end
+
+    it 'marks a DOI and object of any other class as unequal' do
+      doi = DOI.new '10.1000/altmetric073'
+
+      expect(doi).not_to eq Hash.new
+      expect(doi).not_to eq nil
     end
   end
 
