@@ -17,6 +17,7 @@ describe 'A DOI' do
     end
 
     def ==(other)
+      return code == other if other.is_a?(String)
       code == other.code
     end
 
@@ -95,6 +96,12 @@ describe 'A DOI' do
       expect(doi_1).to eq doi_2
       expect(doi_2).to eq doi_1
       expect(doi_3).to eq doi_1
+    end
+
+    it 'is equal to a string that has the same serial code' do
+      doi = DOI.new '10.9786/altmetric333'
+
+      expect(doi).to eq '10.9786/altmetric333'
     end
   end
 end
