@@ -21,6 +21,10 @@ describe 'A DOI' do
       code == other.code
     end
 
+    def to_s
+      code
+    end
+
     class Malformed < Exception
       def initialize(doi)
         super "DOI '#{doi}' is malformed"
@@ -102,6 +106,13 @@ describe 'A DOI' do
       doi = DOI.new '10.9786/altmetric333'
 
       expect(doi).to eq '10.9786/altmetric333'
+    end
+  end
+
+  describe '#to_s' do
+    it 'returns the underlying serial code' do
+      doi = DOI.new '10.6546/altmetric879'
+      expect(doi.to_s).to eq '10.6546/altmetric879'
     end
   end
 end
