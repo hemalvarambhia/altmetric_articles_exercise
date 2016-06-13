@@ -17,7 +17,7 @@ describe 'A DOI' do
     end
 
     def ==(other)
-      true
+      code == other.code
     end
 
     class Malformed < Exception
@@ -78,6 +78,13 @@ describe 'A DOI' do
 
       expect(doi_1).to eq doi_2
       expect(doi_2).to eq doi_1
+    end
+
+    it 'marks two different DOIs as unequal' do
+      doi = DOI.new '10.1234/altmetric123'
+      different_doi = DOI.new '10.4321/nature111'
+
+      expect(doi).not_to eq different_doi
     end
   end
 end
